@@ -7,8 +7,8 @@ var app = express();
 var parser = require('body-parser');
 
 // routing
-// var router = require('./routes');
-// app.use('/', router); // what is the base thing that we're adding endpoints to?
+var router = require('./routes');
+app.use('', router); // base that we're adding endpoints to?
 
 // serve static client-facing files
 app.use(express.static('../public'));
