@@ -26,6 +26,11 @@ module.exports = {
       res.send('controller tags.post');
     }
   },
+  categories: {
+    get: function(req, res) {
+      res.send('controller categories.get');
+    }
+  },
   submit: {
     post: function(req, res) {
       // db.Posts.findOrCreate({where: {username: req.body.username}})
