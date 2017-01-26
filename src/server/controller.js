@@ -17,6 +17,8 @@ module.exports = {
   },
   posts: {
     get: function(req, res) {
+      console.log('in the posts get function');
+      res.send('hello world');
 
     },
     post: function(req, res) {

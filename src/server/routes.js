@@ -1,15 +1,25 @@
 var router = require('express').Router();
 var controller = require('./controller');
 
-// Define routes for sign up, sign in
-// router.get('/signup', ); // serve signup page
-router.post('/signup', controller.users.post);
-// router.get('/signin', ); // serve signin page
+// Routes for signup
+router.get('/signup', controller.users.get); // serve signup page
+router.post('/signup', controller.users.post); // add a new user to the db
+
+// Routes for signin
+router.get('/signin', controller.users.get); // serve signin page
 router.post('/signin', controller.users.post);
 
-// Define routes for home and posts to home
-router.get('/', controller.get.post); // serve static content, check authentication
-router.post('/', controller.posts.post);
-// more for tags?
+// Routes for getting homepage resource content
+router.get('/', controller.posts.get);
+
+// Routes for resource posts
+router.post('/post', controller.posts.post);
+// router.post('/delete', controller.delete.post); // delete a post from the db
+
+// Route for upvoting and downvoting
+router.post('/rank', controller.rank.post);
+
+// Routes for tagging 
+router.post('/tag', controller.tag.post);
 
 module.exports = router;
