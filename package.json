@@ -1,0 +1,21 @@
+{
+  "name": "Code_Wiki",
+  "version": "1.1.0",
+  "description": "A Wiki to share helpful bits on coding topics",
+  "author": "Justin Mendelson, Kay Christensen, Brenner Spear",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "scripts": {},
+  "dependencies": {
+    "mysql": "^2.4.2",
+    "sequelize": "^3.30.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "2.3.3",
+    "sinon": "1.17.3"
+  }
+}
