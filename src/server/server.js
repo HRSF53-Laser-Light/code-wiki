@@ -11,7 +11,7 @@ var router = require('./routes');
 app.use('/', router); // what is the base thing that we're adding endpoints to?
 
 // serve static client-facing files
-app.use(express.static(__dirname + '/src/public/index'));
+app.use(express.static(__dirname + '/src/public'));
 
 // spin up server
 app.listen('3000', function() {

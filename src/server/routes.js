@@ -9,7 +9,7 @@ router.post('/signup', controller.users.post); // add a new user to the db
 router.get('/signin', controller.users.get); // serve signin page
 router.post('/signin', controller.users.post);
 
-// Routes for getting homepage resource content
+// Routes for homepage content
 router.get('/', controller.posts.get);
 
 // Routes for resource posts
