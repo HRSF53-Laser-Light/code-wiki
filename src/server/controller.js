@@ -1,26 +1,32 @@
 var db = require('../db/schema');
 
 module.exports = {
-  users: {
-    get: function(req, res) {
-      // db.Users.findAll()
-      //   .then(function(users) {
-      //     res.json(users);
-      //   });
-      res.send('welcome to controller users.get');
-    },
+  signup: {
     post: function(req, res) {
-      // db.Users.findOrCreate({where: {username: req.body.username}})
-      //   .spread(function(user, created) {
-      //     res.sendStatus(created ? 201 : 200);
-      //   });
-      res.send('welcome to controller users.post');
+      res.send('controller signup.post');
+    }
+  },
+  signin: {
+    post: function(req, res) {
+      res.send('controller signin.post');
+    }
+  },
+  signout: {
+    post: function(req, res) {
+      res.send('controller signout.post');
     }
   },
   posts: {
     get: function(req, res) {
-      res.send('welcome to controller posts.get');
-    },
+      res.send('controller posts.get');
+    }
+  },
+  tags: {
+    get: function(req, res) {
+      res.send('controller tags.post');
+    }
+  },
+  submit: {
     post: function(req, res) {
       // db.Posts.findOrCreate({where: {username: req.body.username}})
       //   .spread(function(user, created) {
@@ -32,33 +38,22 @@ module.exports = {
       //       res.sendStatus(201);
       //     });
       //   });
-      res.send('welcome to controller posts.post');
-    }
-  },
-  tags: {
-    post: function(req, res) {
-      res.send('welcome to controller tags.post');
+      res.send('controller submit.post');
     }
   },
   delete: {
     post: function(req, res) {
-      res.send('welcome to controller delete.post');
-    }
-  }
-  signup: {
-    get: function(req, res) {
-      res.send('wecome to controller signup.get');
-    }, 
-    post: function(req, res) {
-      res.send('wecome to controller signup.post');
+      res.send('controller delete.post');
     }
   },
-  signout: {
-    get: function(req, res) {
-      res.send('wecome to controller signout.get');
-    }, 
+  upvote: {
     post: function(req, res) {
-      res.send('wecome to controller signout.post');
+      res.send('controller upvote.post');
+    }
+  },
+  downvote: {
+    post: function(req, res) {
+      res.send('controller downvote.post');
     }
   }
 };
