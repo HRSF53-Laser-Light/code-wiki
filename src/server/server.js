@@ -1,5 +1,6 @@
 var express = require('express');
 var db = require('../db/schema');
+var path = require('path');
 
 var app = express();
 
@@ -11,7 +12,7 @@ var router = require('./routes');
 app.use('', router); // base that we're adding endpoints to?
 
 // serve static client-facing files
-app.use(express.static('../public'));
+app.use(express.static(path.resolve(__dirname, '../public')));
 
 // spin up server
 app.listen('3000', function() {
