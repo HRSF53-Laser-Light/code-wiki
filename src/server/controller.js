@@ -44,7 +44,7 @@ module.exports = {
     post: function(req, res) {
       res.send('welcome to controller delete.post');
     }
-  }
+  },
   signup: {
     get: function(req, res) {
       res.send('wecome to controller signup.get');
