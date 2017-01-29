@@ -10,9 +10,9 @@ var controller = require('./controller');
 // router.post('/signin', controller.signin.post);
 
 // Routes for homepage content
-router.get('/', function(req, res) {
-  res.send('this is the homepage');
-});
+// router.get('/', function(req, res) {
+//   res.send('this is the homepage');
+// });
 
 // Routes for resource posts
 router.get('/posts', controller.posts.get);
