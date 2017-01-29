@@ -68,6 +68,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var TopNav = __webpack_require__(178);
+
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
 
@@ -83,7 +85,8 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        'Hello World'
+	        'Hello World',
+	        _react2.default.createElement(TopNav, null)
 	      );
 	    }
 	  }]);
@@ -21529,6 +21532,34 @@
 
 	module.exports = ReactDOMInvalidARIAHook;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ },
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// export default var TopNav = (props)
+
+	var TopNav = function TopNav(props) {
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'container top-nav' },
+	    'Top nav bar'
+	  );
+	};
+
+	module.exports = TopNav;
 
 /***/ }
 /******/ ]);

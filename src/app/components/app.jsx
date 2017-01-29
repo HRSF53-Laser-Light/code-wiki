@@ -1,5 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
+var TopNav = require('./topNav.jsx');
 
 export default class App extends React.Component {
   constructor() {
@@ -9,6 +10,7 @@ export default class App extends React.Component {
     return (
       <div>
         Hello World
+        <TopNav />
       </div>
     );
   }
