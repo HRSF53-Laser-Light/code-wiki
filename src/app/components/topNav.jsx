@@ -1,11 +1,15 @@
 import React from 'react'
 
-// export default var TopNav = (props)
+export default class TopNav extends React.Component {
+  constructor() {
+    super();
+  }
 
-var TopNav = (props) => (
-  <div className='container top-nav'>
-    Top nav bar
-  </div>
-);
-
-module.exports = TopNav;
+  render() {
+    return (
+      <div className='container top-nav'>
+        Top nav bar
+      </div>
+    );
+  }
+}
