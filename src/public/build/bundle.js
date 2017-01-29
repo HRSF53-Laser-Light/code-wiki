@@ -21576,7 +21576,12 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'container top-nav' },
-	        'Top nav bar'
+	        _react2.default.createElement('img', { className: 'logo', src: 'http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/magic-marker-icons-natural-wonders/115691-magic-marker-icon-natural-wonders-sun9-sc37.png' }),
+	        _react2.default.createElement(
+	          'span',
+	          null,
+	          ' Code-wiki '
+	        )
 	      );
 	    }
 	  }]);
