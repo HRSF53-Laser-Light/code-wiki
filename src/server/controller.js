@@ -43,7 +43,7 @@ module.exports = {
       // res.send('controller signout.post');
     }
   },
-  // Retrieve latest 10 posts in Posts table
+  // Retrieve 10 most recent posts in Posts table
   posts: {
     get: function(req, res) {
       db.Post.findAndCountAll({
@@ -73,26 +73,53 @@ module.exports = {
         });
     }
   },
-  // Insert a newly created post into Posts table
+  // Add a new post to database
   submit: {
     post: function(req, res) {
-        // link, comment, tags, category
-        // initialize votes to 0
+      db.Post.findOne({
+        where: {
+          problem_statement: req.body.problem,
+          resource: req.body.resource
+        }
+      })
+        .then(function(results) {
+          // Message if exact post has already been made
+          if (results !== null) {
+            console.log('Your message has already been posted');
+          // Create new post
+          } else {
+            db.Category.findOne({
+              where: { name: req.body.category }
+            })
+              .then(function(results) {
+                /**** TO DO: createdAt, updatedAt, CategoryId ****/
+                db.Post.create({
+                  problem_statement: req.body.problem,
+                  resource: req.body.resource,
+                  vote_count: 0,
+                  CategoryId: results.dataValues.id
+                })
+                  .then(function() {
+                    res.sendStatus(201);
+                  });
+              })
+          }
+        })
     }
   },
-  // Delete post from Posts table
+  // Delete post from database
   delete: {
     post: function(req, res) {
       db.Post.destroy({
         where: { id: req.body.id },
         limit: 1
       })
-        .then(function(results) {
+        .then(function(result) {
           res.sendStatus(200);
         });
     }
   },
-  // Increment vote count on post in Posts table
+  // Increment vote count on post
   upvote: {
     post: function(req, res) {
       db.Post.findOne({
@@ -104,8 +131,8 @@ module.exports = {
         });
     }
   },
-  // Deccrement vote count on post in Posts table
-  // Note: decrementing is allowed even on 0 and negative numbers
+  // Decrement vote count on post
+  // Note: can decrement counts <= 0
   downvote: {
     post: function(req, res) {
       db.Post.findOne({
