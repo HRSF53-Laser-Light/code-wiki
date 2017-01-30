@@ -4,13 +4,13 @@ var path = require('path');
 
 var app = express();
 
-// middleware
+// middleware - parsing
 var parser = require('body-parser');
 app.use(parser.json());
 
 // routing
 var router = require('./routes');
-app.use('', router); // base that we're adding endpoints to?
+app.use('', router);
 
 // serve static client-facing files
 app.use(express.static(path.resolve(__dirname, '../public')));
