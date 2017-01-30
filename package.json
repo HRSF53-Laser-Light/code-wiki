@@ -12,6 +12,7 @@
     "start": "webpack --watch | nodemon --ignore node_modules ./src/server/server.js"
   },
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.9.2",
     "express": "^4.10.1",
     "morgan": "^1.4.1",
