@@ -1,13 +1,24 @@
 var db = require('../db/schema');
+var bcrypt = require('bcrypt');
+
+var _saltRounds = 10;
 
 module.exports = {
   signup: {
     post: function(req, res) {
-      // hash password supplied by user
-      // post username and hashed password to database
-      // set up session
+      // check if username already in database
+        // if not, it is free
+          // hash password supplied by user
+          bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
+            // Store hash in your password DB. 
+            // post username and hashed password to db
+          });
+          // set up session
+          // direct to homepage
 
-      // res.send('controller signup.post');
+        // if yes, it is already taken
+          // prompt to choose different username
+          // redirect to signup page again
     }
   },
   signin: {
@@ -32,26 +43,34 @@ module.exports = {
       // res.send('controller signout.post');
     }
   },
+  // Retrieve latest 10 posts in Posts table
   posts: {
     get: function(req, res) {
-      // retrieve all posts in posts table
-      // filter to latest 10 results
-
-      // res.send('controller posts.get');
+      db.Post.findAndCountAll({
+        order: [['createdAt', 'DESC']],
+        limit: 10
+      })
+        .then(function(posts) {
+          res.json(posts);
+        });
     }
   },
+  // Retrieve all tags in Tags table
   tags: {
     get: function(req, res) {
-      // retrieve all tags from tags table
-
-      // res.send('controller tags.post');
+      db.Tag.findAll()
+        .then(function(tags) {
+          res.json(tags);
+        });
     }
   },
+  // Retrieve all categories in Categories table
   categories: {
     get: function(req, res) {
-      // retrieve all categories from categories table
-
-      // res.send('controller categories.get');
+      db.Category.findAll()
+        .then(function(categories) {
+          res.json(categories);
+        });
     }
   },
   submit: {
@@ -63,6 +82,7 @@ module.exports = {
       // res.send('controller submit.post');
     }
   },
+  // Delete post from Posts table
   delete: {
     post: function(req, res) {
       // remove post from posts table
