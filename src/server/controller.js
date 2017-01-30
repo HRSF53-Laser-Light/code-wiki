@@ -73,35 +73,48 @@ module.exports = {
         });
     }
   },
+  // Insert a newly created post into Posts table
   submit: {
     post: function(req, res) {
-      // add a newly created post to the posts table
         // link, comment, tags, category
         // initialize votes to 0
-
-      // res.send('controller submit.post');
     }
   },
   // Delete post from Posts table
   delete: {
     post: function(req, res) {
-      // remove post from posts table
-
-      // res.send('controller delete.post');
+      db.Post.destroy({
+        where: { id: req.body.id },
+        limit: 1
+      })
+        .then(function(results) {
+          res.sendStatus(200);
+        });
     }
   },
+  // Increment vote count on post in Posts table
   upvote: {
     post: function(req, res) {
-      // increment 'votes' on post in posts table
-
-      // res.send('controller upvote.post');
+      db.Post.findOne({
+        where: { id: req.body.id },
+      })
+        .then(function(result) {
+          result.increment('vote_count');
+          res.sendStatus(200);
+        });
     }
   },
+  // Deccrement vote count on post in Posts table
+  // Note: decrementing is allowed even on 0 and negative numbers
   downvote: {
     post: function(req, res) {
-      // decrement 'votes' on post in posts table
-
-      // res.send('controller downvote.post');
+      db.Post.findOne({
+        where: { id: req.body.id },
+      })
+        .then(function(result) {
+          result.decrement('vote_count');
+          res.sendStatus(200);
+        });
     }
   }
 };
