@@ -1,0 +1,109 @@
+#app {
+  height: 100%;
+}
+.navbar {
+  margin-bottom: 0;
+}
+.form-control {
+  margin-right: 5px;
+}
+.main {
+  background-color: gray;
+}
+.navbar-side {
+  background-color: lightblue;
+}
+.navbar-side-container,
+.main-container {
+  padding: 0;
+}
+.main {
+  padding: 20px;
+}
+.navbar-side {
+  padding: 20px;
+  height: calc(100vh - 51px);
+}
+.category-list {
+  margin-top: 10px;
+}
+
+.category-list li {
+  font-size: 14px;
+  line-height: 20px;
+  color: #732cf3;
+}
+
+.category-list li:hover {
+  background-color: #67daff;
+  cursor: pointer;
+  padding-left: 5px;
+  margin-left: -2px;
+  border-left: 2px solid blue;
+}
+
+.category-list li:focus,
+.category-list li:visited,
+.category-list li:active {
+  text-decoration: none;
+}
+
+.category-list li a {
+  color: inherit;
+}
+
+.category-list li a:hover,
+.category-list li a:focus,
+.category-list li a:visited,
+.category-list li a:active {
+  text-decoration: none;
+}
+
+
+/*FIX DEFAULT STYLING*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+
+
