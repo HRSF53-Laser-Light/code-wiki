@@ -80,9 +80,8 @@ module.exports = {
   },
   signout: {
     post: function(req, res) {
-      // reset session
-
-      // res.send('controller signout.post');
+      // Reset session?
+      res.redirect('/api/signout');
     }
   },
   // Retrieve 10 most recent posts in Posts table
