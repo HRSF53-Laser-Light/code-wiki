@@ -1,24 +1,52 @@
 var db = require('../db/schema');
 var bcrypt = require('bcrypt');
 
-var _saltRounds = 10;
+var saltRounds = 10;
 
 module.exports = {
   signup: {
     post: function(req, res) {
-      // check if username already in database
-        // if not, it is free
-          // hash password supplied by user
-          bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
-            // Store hash in your password DB. 
-            // post username and hashed password to db
-          });
-          // set up session
-          // direct to homepage
-
-        // if yes, it is already taken
-          // prompt to choose different username
-          // redirect to signup page again
+      // Check database for username
+      db.User.findAll({
+        where: { username: req.body.username }
+      })
+        .then(function(results) {
+          // Username is free
+          console.log('results are', results);
+          if (results.length === 0) {
+            // Hash password
+            bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+              if (err) {
+                console.log('Error hashing password', err);
+              // Add username and hashed pw to database
+              } else {
+                console.log('hash is', hash);
+                db.User.create({
+                  username: req.body.username,
+                  password: hash
+                })
+                  .then(function() {
+                    // Set up session?
+                    res.redirect('/');
+                  });
+              }
+            })
+          // Username is already in database
+          } else {
+            console.log('username is already in database?');
+            // bcrypt.compare(req.body.password, hash, function(err, res) {
+            //   // Username is in database and password supplied matches its password --> already have an account
+            //   if (res === true) {
+            //     console.log('Looks like you already have an account. Sign in.')
+            //     res.redirect('/api/signin');
+            //   // Username is in database and password supplied doesn't match --> must choose a different username
+            //   } else {
+            //     console.log('That username is already taken. Please try another one.');
+            //     res.redirect('/api/signup');
+            //   }
+            // });
+          }
+        })
     }
   },
   signin: {
