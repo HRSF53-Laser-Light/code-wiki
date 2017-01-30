@@ -6,6 +6,7 @@ var app = express();
 
 // middleware
 var parser = require('body-parser');
+app.use(parser.json());
 
 // routing
 var router = require('./routes');
