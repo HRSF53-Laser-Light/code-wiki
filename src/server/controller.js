@@ -11,13 +11,14 @@ module.exports = {
         where: { username: req.body.username }
       })
         .then(function(users) {
-          // Username is free
+          // If username is free
           if (users.length === 0) {
             // Hash password
             bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
               if (err) {
                 console.log('Error hashing password', err);
               } else {
+                // Add username and hashed pw to database
                 db.User.create({
                   username: req.body.username,
                   password: hash
