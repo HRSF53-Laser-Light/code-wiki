@@ -49,17 +49,33 @@ module.exports = {
   },
   signin: {
     post: function(req, res) {
-      // get username and password from db
-        // if it's not there
-          // redirect to signup pag
-        // if it's there
-          // bcrypt compare username and password from signin and from db
-          // if they match
-            // set up a session
-          // if they don't match
-            // send back to signin page and encourage to sign in again
-
-      // res.send('controller signin.post');
+      // Check database for username
+      db.User.findAll({
+        where: { username: req.body.username }
+      })
+        .then(function(users) {
+          // Username is not in database
+          if (users.length === 0) {
+            console.log('There is no account with that username. Please try again.');
+            res.redirect('/api/signin');
+          // Username is in database
+          } else {   
+            bcrypt.compare(req.body.password, users[0].dataValues.password, function(err, comparison) {
+              if (err) {
+                console.log('Error in comparison', err);
+              } else {
+                // Passwords match
+                if (comparison === true) {
+                  res.redirect('/');
+                // Passwords don't match
+                } else {
+                  console.log('Password does not match. Please try again.');
+                  res.redirect('/api/signin');
+                }
+              }
+            });
+          }
+        })
     }
   },
   signout: {
