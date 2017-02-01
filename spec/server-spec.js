@@ -14,8 +14,8 @@ describe('Sign up', function() {
   var server;
 
   before(function() {
-    server = app.listen(4568, function() {
-      console.log('Test is listening on 4568');
+    server = app.listen(3000, function() {
+      console.log('Test is listening on 3000');
     });
   });
 
@@ -44,8 +44,8 @@ describe('Sign in', function() {
   var server;
 
   before(function() {
-    server = app.listen(4568, function() {
-      console.log('Test is listening on 4568');
+    server = app.listen(3000, function() {
+      console.log('Test is listening on 3000');
     });
   });
 
@@ -66,8 +66,8 @@ describe('Sign out', function() {
   var server;
 
   before(function() {
-    server = app.listen(4568, function() {
-      console.log('Test is listening on 4568');
+    server = app.listen(3000, function() {
+      console.log('Test is listening on 3000');
     });
   });
 
@@ -80,3 +80,106 @@ describe('Sign out', function() {
   });
 }
 
+describe('Posting', function() {
+  var server;
+
+  before(function() {
+    server = app.listen(3000, function() {
+      console.log('Test is listening on 3000');
+    });
+  });
+
+  after(function() {
+    server.close();
+  });
+
+  describe('Retrieves latest 10 posts from database for frontend to render', function() {
+
+  });
+
+  describe('Adds brand new post to database', function() {
+
+  });
+
+  describe('Does not add identical posts to database', function() {
+
+  });
+
+  describe('Deletes post from database when user removes post', function() {
+
+  });
+}
+
+describe('Tagging', function() {
+  var server;
+
+  before(function() {
+    server = app.listen(3000, function() {
+      console.log('Test is listening on 3000');
+    });
+  });
+
+  after(function() {
+    server.close();
+  });
+
+  describe('Retrieves all created tags for frontend render', function() {
+
+  });
+
+  describe('Adds correct tags to post', function() {
+
+  });
+
+  describe('Deletes tag from post in database when user removes tag', function() {
+
+  });
+}
+
+describe('Categories', function() {
+  var server;
+
+  before(function() {
+    server = app.listen(3000, function() {
+      console.log('Test is listening on 3000');
+    });
+  });
+
+  after(function() {
+    server.close();
+  });
+
+  describe('Correctly adds category to post', function() {
+
+  });
+
+  describe('Can add brand new category', function() {
+
+  });
+}
+
+describe('Ranking', function() {
+  var server;
+
+  before(function() {
+    server = app.listen(3000, function() {
+      console.log('Test is listening on 3000');
+    });
+  });
+
+  after(function() {
+    server.close();
+  });
+
+  describe('Adds one to vote count when user upvotes post', function() {
+
+  });
+
+  describe('Subtracts one from vote count when user downvotes post', function() {
+
+  });
+
+  describe('Decrements vote count even when vote is zero or negative', function() {
+
+  });
+}
