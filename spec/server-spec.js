@@ -1,10 +1,10 @@
 var expect = require('chai').expect;
 var request = require('request');
 
-var db = require('./src/db/schema');
-var controller = require('./src/server/controller');
-var routes = require('./src/server/routes');
-var app = require('./src/server/server');
+var db = require('../src/db/schema');
+var controller = require('../src/server/controller');
+var routes = require('../src/server/routes');
+var app = require('../src/server/server');
 
 
 var beforeEach = function() {};
@@ -38,7 +38,7 @@ describe('Sign up', function() {
   describe('Redirects to sign in page when user enters account info in database', function() {
 
   });
-}
+});
 
 describe('Sign in', function() {
   var server;
@@ -60,7 +60,7 @@ describe('Sign in', function() {
   describe('Redirects to home page if correct username and password info entered', function() {
 
   });
-}
+});
 
 describe('Sign out', function() {
   var server;
@@ -78,7 +78,7 @@ describe('Sign out', function() {
   describe('Redirects to sign out page', function() {
 
   });
-}
+});
 
 describe('Posting', function() {
   var server;
@@ -108,7 +108,7 @@ describe('Posting', function() {
   describe('Deletes post from database when user removes post', function() {
 
   });
-}
+});
 
 describe('Tagging', function() {
   var server;
@@ -134,7 +134,7 @@ describe('Tagging', function() {
   describe('Deletes tag from post in database when user removes tag', function() {
 
   });
-}
+});
 
 describe('Categories', function() {
   var server;
@@ -156,7 +156,7 @@ describe('Categories', function() {
   describe('Can add brand new category', function() {
 
   });
-}
+});
 
 describe('Ranking', function() {
   var server;
@@ -182,4 +182,4 @@ describe('Ranking', function() {
   describe('Decrements vote count even when vote is zero or negative', function() {
 
   });
-}
+});
