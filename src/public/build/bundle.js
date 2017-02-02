@@ -64,6 +64,14 @@
 
 	var _sideNav2 = _interopRequireDefault(_sideNav);
 
+	var _mainHeader = __webpack_require__(180);
+
+	var _mainHeader2 = _interopRequireDefault(_mainHeader);
+
+	var _posts = __webpack_require__(181);
+
+	var _posts2 = _interopRequireDefault(_posts);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -164,11 +172,9 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'main' },
-	            _react2.default.createElement(
-	              'span',
-	              null,
-	              'hello'
-	            )
+	            _react2.default.createElement(_mainHeader2.default, null),
+	            _react2.default.createElement('div', { className: 'divider-full' }),
+	            _react2.default.createElement(_posts2.default, null)
 	          )
 	        )
 	      );
@@ -21691,13 +21697,335 @@
 	            ),
 	            _react2.default.createElement(
 	              'li',
-	              null,
+	              { className: 'active' },
 	              _react2.default.createElement(
 	                'a',
 	                { href: '#' },
 	                'Angular'
 	              )
+	            ),
+	            _react2.default.createElement(
+	              'li',
+	              null,
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#' },
+	                'Mongo DB'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'li',
+	              null,
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#' },
+	                'SQL'
+	              )
 	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return SideNav;
+	}(_react2.default.Component);
+
+	exports.default = SideNav;
+
+/***/ },
+/* 179 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SideNav = function (_React$Component) {
+	  _inherits(SideNav, _React$Component);
+
+	  function SideNav() {
+	    _classCallCheck(this, SideNav);
+
+	    return _possibleConstructorReturn(this, (SideNav.__proto__ || Object.getPrototypeOf(SideNav)).call(this));
+	  }
+
+	  _createClass(SideNav, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'li',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row mb10' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-sm-6' },
+	            _react2.default.createElement(
+	              'span',
+	              { className: 'username' },
+	              'Kay'
+	            ),
+	            _react2.default.createElement(
+	              'span',
+	              { className: 'posted-details' },
+	              'posted yesterday'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-sm-6 text-right' },
+	            _react2.default.createElement(
+	              'ul',
+	              { className: 'tag-list' },
+	              _react2.default.createElement(
+	                'li',
+	                null,
+	                'Debugging'
+	              )
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row mb10' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-sm-1 text-center' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'votes' },
+	              _react2.default.createElement(
+	                'a',
+	                null,
+	                _react2.default.createElement('i', { className: 'fa fa-arrow-circle-up fa-2x', 'aria-hidden': 'true' })
+	              ),
+	              _react2.default.createElement(
+	                'span',
+	                { className: 'votes-numb' },
+	                '12'
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                null,
+	                _react2.default.createElement('i', { className: 'fa fa-arrow-circle-down fa-2x', 'aria-hidden': 'true' })
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-sm-2 text-center' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'post-img' },
+	              _react2.default.createElement('img', { src: 'assets/img/angular.png' })
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-sm-9' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'post-content' },
+	              _react2.default.createElement(
+	                'h4',
+	                null,
+	                'How to start your server with npm'
+	              ),
+	              _react2.default.createElement(
+	                'p',
+	                null,
+	                'Here is how to start a server. You\u2019ll learn how to start a server in this tutorial. You\u2019ll learn how to debug things in this tutorial. This tutorial was written by a very advanced, senior engineer from a highly respected company. He has been writing code and starting servers for over 2 decades and still writes tutorials because he loves it.'
+	              )
+	            )
+	          )
+	        ),
+	        _react2.default.createElement('div', { className: 'divider-full mb10' }),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-sm-12' },
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'TL;DR - The solution is easy. Start the server with npm start. This will fix it.'
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return SideNav;
+	}(_react2.default.Component);
+
+	exports.default = SideNav;
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SideNav = function (_React$Component) {
+	  _inherits(SideNav, _React$Component);
+
+	  function SideNav() {
+	    _classCallCheck(this, SideNav);
+
+	    return _possibleConstructorReturn(this, (SideNav.__proto__ || Object.getPrototypeOf(SideNav)).call(this));
+	  }
+
+	  _createClass(SideNav, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'row' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'col-sm-4' },
+	          _react2.default.createElement(
+	            'h3',
+	            null,
+	            'Angular'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'col-sm-8 text-right' },
+	          _react2.default.createElement(
+	            'span',
+	            null,
+	            'Filter By: '
+	          ),
+	          _react2.default.createElement(
+	            'ul',
+	            { className: 'tag-list' },
+	            _react2.default.createElement(
+	              'li',
+	              null,
+	              'Debugging'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'span',
+	            { className: 'add-filter' },
+	            _react2.default.createElement(
+	              'a',
+	              { href: '#' },
+	              'add filter'
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return SideNav;
+	}(_react2.default.Component);
+
+	exports.default = SideNav;
+
+/***/ },
+/* 181 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(32);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _post = __webpack_require__(179);
+
+	var _post2 = _interopRequireDefault(_post);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SideNav = function (_React$Component) {
+	  _inherits(SideNav, _React$Component);
+
+	  function SideNav() {
+	    _classCallCheck(this, SideNav);
+
+	    return _possibleConstructorReturn(this, (SideNav.__proto__ || Object.getPrototypeOf(SideNav)).call(this));
+	  }
+
+	  _createClass(SideNav, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'row' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'col-sm-12' },
+	          _react2.default.createElement(
+	            'ul',
+	            { className: 'posts' },
+	            _react2.default.createElement(_post2.default, null)
 	          )
 	        )
 	      );

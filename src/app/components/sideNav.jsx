@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
 
 export default class SideNav extends React.Component {
   constructor() {
@@ -13,7 +13,9 @@ export default class SideNav extends React.Component {
           <ul className="category-list">
             <li><a href="#">All</a></li>
             <li><a href="#">React</a></li>
-            <li><a href="#">Angular</a></li>
+            <li className="active"><a href="#">Angular</a></li>
+            <li><a href="#">Mongo DB</a></li>
+            <li><a href="#">SQL</a></li>
           </ul>
         </div>
       </div>

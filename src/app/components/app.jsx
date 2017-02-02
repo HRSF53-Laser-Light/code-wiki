@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import SideNav from './sideNav.jsx';
+import MainHeader from './mainHeader.jsx';
+import Posts from './posts.jsx';
 
 export default class App extends React.Component {
   constructor() {
@@ -35,7 +37,9 @@ export default class App extends React.Component {
           <SideNav />
           <div className="col-sm-10 main-container">
             <div className="main">
-              <span>hello</span>
+              <MainHeader />
+              <div className="divider-full"></div>
+              <Posts />
             </div>
           </div>
       </div>
@@ -56,3 +60,8 @@ export default class App extends React.Component {
 
 
 ReactDOM.render(<App />, document.getElementById('app'));
+
+
+
+
+
