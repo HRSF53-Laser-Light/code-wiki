@@ -4,6 +4,7 @@ var controller = require('./controller');
 
 /** SIGN UP, SIGN IN, SIGN OUT **/
 
+
 // Routes for signup, signin, and signout
 router.post('/api/signup', controller.signup.post);
 
