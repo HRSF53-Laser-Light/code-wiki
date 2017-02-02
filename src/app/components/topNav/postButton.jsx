@@ -7,9 +7,10 @@ export default class PostButton extends React.Component {
 
   render() {
     return (
-      <span className='container'>
-      Post Button
-      </span>
+      <a href="#">Post</a>
     );
   }
 }
+
+
+
