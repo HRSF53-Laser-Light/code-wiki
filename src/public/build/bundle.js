@@ -72,6 +72,10 @@
 	
 	var _mainView2 = _interopRequireDefault(_mainView);
 	
+	var _guestView = __webpack_require__(195);
+	
+	var _guestView2 = _interopRequireDefault(_guestView);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -89,19 +93,50 @@
 	  function App() {
 	    _classCallCheck(this, App);
 	
-	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+	
+	    _this.state = {
+	      signedIn: false
+	    };
+	    return _this;
 	  }
 	
 	  _createClass(App, [{
-	    key: 'render',
-	    value: function render() {
+	    key: 'updateUser',
+	    value: function updateUser(boolValue) {
+	      this.setState({
+	        signedIn: boolValue
+	      });
+	    }
+	  }, {
+	    key: 'signedInView',
+	    value: function signedInView() {
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(_topNav2.default, null),
+	        _react2.default.createElement(_topNav2.default, { signedIn: this.state.signedIn, updateUser: this.updateUser.bind(this) }),
 	        _react2.default.createElement(_sideNav2.default, null),
 	        _react2.default.createElement(_mainView2.default, null)
 	      );
+	    }
+	  }, {
+	    key: 'signedOutView',
+	    value: function signedOutView() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(_topNav2.default, { signedIn: this.state.signedIn, updateUser: this.updateUser.bind(this) }),
+	        _react2.default.createElement(_guestView2.default, null)
+	      );
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      if (this.state.signedIn) {
+	        return this.signedInView();
+	      } else {
+	        return this.signedOutView();
+	      }
 	    }
 	  }]);
 	
@@ -21599,65 +21634,95 @@
 	var TopNav = function (_React$Component) {
 	  _inherits(TopNav, _React$Component);
 	
-	  function TopNav() {
+	  function TopNav(props) {
 	    _classCallCheck(this, TopNav);
 	
-	    return _possibleConstructorReturn(this, (TopNav.__proto__ || Object.getPrototypeOf(TopNav)).call(this));
+	    return _possibleConstructorReturn(this, (TopNav.__proto__ || Object.getPrototypeOf(TopNav)).call(this, props));
 	  }
 	
 	  _createClass(TopNav, [{
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(
-	        'nav',
-	        { className: 'navbar navbar-default navbar-static-top' },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'container-fluid' },
+	      if (this.props.signedIn) {
+	        return _react2.default.createElement(
+	          'nav',
+	          { className: 'navbar navbar-default navbar-static-top' },
 	          _react2.default.createElement(
-	            'ul',
-	            { className: 'nav navbar-nav navbar-left' },
+	            'div',
+	            { className: 'container-fluid' },
 	            _react2.default.createElement(
-	              'li',
-	              null,
-	              _react2.default.createElement('img', { className: 'logo', src: 'http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/magic-marker-icons-natural-wonders/115691-magic-marker-icon-natural-wonders-sun9-sc37.png' })
-	            ),
-	            _react2.default.createElement(
-	              'li',
-	              null,
+	              'ul',
+	              { className: 'nav navbar-nav navbar-left' },
 	              _react2.default.createElement(
-	                'a',
-	                { href: '../', className: 'navbar-brand' },
-	                'Code Wiki'
+	                'li',
+	                null,
+	                _react2.default.createElement('img', { className: 'logo', src: 'http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/magic-marker-icons-natural-wonders/115691-magic-marker-icon-natural-wonders-sun9-sc37.png' })
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '../', className: 'navbar-brand' },
+	                  'Code Wiki'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement(_postButton2.default, null)
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement(_searchBox2.default, null)
 	              )
 	            ),
 	            _react2.default.createElement(
-	              'li',
-	              null,
-	              _react2.default.createElement(_postButton2.default, null)
-	            ),
-	            _react2.default.createElement(
-	              'li',
-	              null,
-	              _react2.default.createElement(_searchBox2.default, null)
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'ul',
-	            { className: 'nav navbar-nav navbar-right' },
-	            _react2.default.createElement(
-	              'li',
-	              null,
-	              _react2.default.createElement(_accountLink2.default, null)
-	            ),
-	            _react2.default.createElement(
-	              'li',
-	              null,
-	              _react2.default.createElement(_signoutButton2.default, null)
+	              'ul',
+	              { className: 'nav navbar-nav navbar-right' },
+	              _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement(_accountLink2.default, null)
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement(_signoutButton2.default, null)
+	              )
 	            )
 	          )
-	        )
-	      );
+	        );
+	      } else {
+	        return _react2.default.createElement(
+	          'nav',
+	          { className: 'navbar navbar-default navbar-static-top' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'container-fluid' },
+	            _react2.default.createElement(
+	              'ul',
+	              { className: 'nav navbar-nav navbar-left' },
+	              _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement('img', { className: 'logo', src: 'http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/magic-marker-icons-natural-wonders/115691-magic-marker-icon-natural-wonders-sun9-sc37.png' })
+	              ),
+	              _react2.default.createElement(
+	                'li',
+	                null,
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: '../', className: 'navbar-brand' },
+	                  'Code Wiki'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement('ul', { className: 'nav navbar-nav navbar-right' })
+	          )
+	        );
+	      }
 	    }
 	  }]);
 	
@@ -22118,6 +22183,148 @@
 	}(_react2.default.Component);
 	
 	exports.default = MainHeader;
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var GuestView = function (_React$Component) {
+	  _inherits(GuestView, _React$Component);
+	
+	  function GuestView(props) {
+	    _classCallCheck(this, GuestView);
+	
+	    var _this = _possibleConstructorReturn(this, (GuestView.__proto__ || Object.getPrototypeOf(GuestView)).call(this, props));
+	
+	    _this.state = {
+	      newUser: false
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(GuestView, [{
+	    key: "toggleView",
+	    value: function toggleView() {
+	      this.setState({
+	        newUser: !this.state.newUser
+	      });
+	    }
+	  }, {
+	    key: "newUserView",
+	    value: function newUserView() {
+	      var _this2 = this;
+	
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "container" },
+	        _react2.default.createElement(
+	          "div",
+	          { className: "row" },
+	          _react2.default.createElement(
+	            "div",
+	            { className: "col-sm-6 col-sm-offset-3" },
+	            _react2.default.createElement(
+	              "form",
+	              { className: "sign-in" },
+	              _react2.default.createElement(
+	                "div",
+	                { className: "form-group" },
+	                _react2.default.createElement("input", { id: "username", type: "text", className: "form-control", placeholder: "username" }),
+	                _react2.default.createElement("input", { id: "password", type: "text", className: "form-control", placeholder: "password" }),
+	                _react2.default.createElement("input", { id: "password2", type: "text", className: "form-control", placeholder: "re-enter password" })
+	              ),
+	              _react2.default.createElement(
+	                "button",
+	                { type: "submit", className: "btn btn-default" },
+	                "Sign Up"
+	              ),
+	              _react2.default.createElement(
+	                "a",
+	                { href: "#", onClick: function onClick() {
+	                    return _this2.toggleView();
+	                  } },
+	                "Sign In"
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }, {
+	    key: "existingUserView",
+	    value: function existingUserView() {
+	      var _this3 = this;
+	
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "container" },
+	        _react2.default.createElement(
+	          "div",
+	          { className: "row" },
+	          _react2.default.createElement(
+	            "div",
+	            { className: "col-sm-6 col-sm-offset-3" },
+	            _react2.default.createElement(
+	              "form",
+	              { className: "sign-in" },
+	              _react2.default.createElement(
+	                "div",
+	                { className: "form-group" },
+	                _react2.default.createElement("input", { id: "username", type: "text", className: "form-control", placeholder: "username" }),
+	                _react2.default.createElement("input", { id: "password", type: "text", className: "form-control", placeholder: "password" })
+	              ),
+	              _react2.default.createElement(
+	                "button",
+	                { type: "submit", className: "btn btn-default" },
+	                "Sign In"
+	              ),
+	              _react2.default.createElement(
+	                "a",
+	                { href: "#", onClick: function onClick() {
+	                    return _this3.toggleView();
+	                  } },
+	                "Sign Up"
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      if (this.state.newUser) {
+	        return this.newUserView();
+	      } else {
+	        return this.existingUserView();
+	      }
+	    }
+	  }]);
+	
+	  return GuestView;
+	}(_react2.default.Component);
+	
+	exports.default = GuestView;
 
 /***/ }
 /******/ ]);
