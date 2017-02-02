@@ -1,30 +1,41 @@
 var router = require('express').Router();
 var controller = require('./controller');
 
-// Routes for signup
-// router.get('/signup', controller.signup.get); // serve signup page
-// router.post('/signup', controller.signup.post); // add a new user to the db
 
-// Routes for signin
-// router.get('/signin', controller.signin.get); // serve signin page
-// router.post('/signin', controller.signin.post);
+/** SIGN UP, SIGN IN, SIGN OUT **/
 
-// Routes for homepage content
-// router.get('/', function(req, res) {
-//   res.send('this is the homepage');
-// });
 
-// Routes for resource posts
-router.get('/posts', controller.posts.get);
+// Routes for signup, signin, and signout
+router.post('/api/signup', controller.signup.post);
 
-router.get('/delete', function(req, res) {
-  res.send('this deletes things');
-}); // delete a post from the db
+router.post('/api/signin', controller.signin.post);
 
-// Route for upvoting and downvoting
-// router.post('/rank', controller.rank.post);
+router.post('/api/signout', controller.signout.post);
 
-// // Routes for tagging 
-// router.post('/tag', controller.tag.post);
+
+
+/** LOADING COMPONENTS ON HOMEPAGE **/
+
+// Routes for getting posts, tags, and categories in db
+router.get('/api/posts', controller.posts.get);
+
+router.get('/api/tags', controller.tags.get);
+
+router.get('/api/categories', controller.categories.get);
+
+
+
+/** USER ACTIONS ON POST **/
+
+// Routes for submitting a new post, deleting a post, upvoting a post, and downvoting a post
+router.post('/api/submit', controller.submit.post);
+
+router.post('/api/delete', controller.delete.post);
+
+router.post('/api/upvote', controller.upvote.post);
+
+router.post('/api/downvote', controller.downvote.post);
+
+
 
 module.exports = router;
