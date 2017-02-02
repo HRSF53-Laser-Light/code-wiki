@@ -41,12 +41,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    if(this.state.signedIn) {
-      return this.signedInView();
-    }
-    else {
-      return this.signedOutView();
-    }
+    return this.state.signedIn ? this.signedInView() : this.signedOutView();
   }
 }
 

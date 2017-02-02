@@ -16,6 +16,7 @@ export default class GuestView extends React.Component {
 
   newUserForm() {
     return (
+      <div className="text-center">
       <form className="sign-in">
         <div className="form-group">
           <input id="username" type="text" className="form-control" placeholder="username" />
@@ -23,21 +24,24 @@ export default class GuestView extends React.Component {
           <input id="password2" type="text" className="form-control" placeholder="re-enter password" />
         </div>
         <button type="submit" className="btn btn-default">Sign Up</button>
-        <a href="#" onClick={()=>this.toggleView()}>Sign In</a>
       </form>
+        <a href="#" onClick={()=>this.toggleView()}>Sign In</a>
+      </div>
     );
   }
 
   existingUserForm() {
     return (
+      <div className="text-center">
       <form className="sign-in">
         <div className="form-group">
           <input id="username" type="text" className="form-control" placeholder="username" />
           <input id="password" type="text" className="form-control" placeholder="password" />
         </div>
         <button type="submit" className="btn btn-default">Sign In</button>
-        <a href="#" onClick={()=>this.toggleView()}>Sign Up</a>
       </form>
+      <a href="#" onClick={()=>this.toggleView()}>Sign Up</a>
+      </div>
     );
   }
 
