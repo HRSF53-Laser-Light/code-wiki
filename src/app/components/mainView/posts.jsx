@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import Post from './post.jsx';
 
-export default class SideNav extends React.Component {
+export default class Posts extends React.Component {
   constructor() {
     super();
   }
