@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+//components
+import TopNav from './topNav.jsx'
 import SideNav from './sideNav.jsx';
 
 export default class App extends React.Component {
@@ -38,6 +40,7 @@ export default class App extends React.Component {
               <span>hello</span>
             </div>
           </div>
+        <TopNav />
       </div>
     );
   }
