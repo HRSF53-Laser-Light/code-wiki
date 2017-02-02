@@ -21,4 +21,4 @@ app.listen('3000', function() {
 });
 
 // export app
-module.exports.app = app;
+module.exports = app;
