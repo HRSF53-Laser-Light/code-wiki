@@ -1,7 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom'
 
-export default class SideNav extends React.Component {
+export default class MainHeader extends React.Component {
   constructor() {
     super();
   }
@@ -22,8 +21,3 @@ export default class SideNav extends React.Component {
     );
   }
 }
-
-
-
-
-
