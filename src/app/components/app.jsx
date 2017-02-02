@@ -1,11 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 
 //components
 import TopNav from './topNav.jsx'
 import SideNav from './sideNav.jsx';
 import MainHeader from './mainHeader.jsx';
 import Posts from './posts.jsx';
+
+var endpoint = 'https://api.linkpreview.net';
+var target = 'https://www.codementor.io/tamizhvendan/beginner-guide-setup-reactjs-environment-npm-babel-6-webpack-du107r9zr';
+
+axios.post('/api/externalReq/linkPreview', {
+  endpoint: endpoint,
+  target: target
+})
+.then(function(response) {
+  console.log(response.data);
+})
+.catch(function(error) {
+  console.log(error);
+})
 
 export default class App extends React.Component {
   constructor() {

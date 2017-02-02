@@ -1,5 +1,6 @@
 var db = require('../db/schema');
 var bcrypt = require('bcrypt');
+var request = require('request');
 
 var saltRounds = 10;
 
@@ -185,5 +186,35 @@ module.exports = {
           res.sendStatus(200);
         });
     }
+  },
+  // make API requests as a proxy for the front end
+  externalRequest: {
+    // link preview api (http://www.linkpreview.net/)
+    linkPreview: {
+      post: function(req, res) {
+        request({
+          uri: req.body.endpoint,
+          qs: {
+            key: '58938a7d097b0590f713356c5c1fb7d74a0e589166b5a',
+            q: req.body.target
+          }
+        }).pipe(res);
+      }
+    }
   }
 };
+
+
+
+// $.ajax({
+//   url: 'https://api.linkpreview.net',
+//   type: 'GET',
+//   dataType: 'jsonp',
+//   data: {
+//     q: target,
+//     key: linkPreviewKey
+//   },
+//   success: function(preview) {
+//     console.log(preview);
+//   }
+// });
