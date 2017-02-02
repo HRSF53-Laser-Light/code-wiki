@@ -9,9 +9,11 @@
     "node": ">=4.0.0"
   },
   "scripts": {
-    "start": "webpack --watch | nodemon --ignore node_modules ./src/server/server.js"
+    "start": "webpack --watch | nodemon --ignore node_modules ./src/server/server.js",
+    "test": "mocha --bail spec/server-spec.js"
   },
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.9.2",
     "bootstrap": "^3.3.7",
     "express": "^4.10.1",

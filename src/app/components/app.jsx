@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+//components
+import TopNav from './topNav.jsx'
 import SideNav from './sideNav.jsx';
 import MainHeader from './mainHeader.jsx';
 import Posts from './posts.jsx';
@@ -42,6 +44,7 @@ export default class App extends React.Component {
               <Posts />
             </div>
           </div>
+        <TopNav />
       </div>
     );
   }

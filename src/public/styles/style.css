@@ -260,5 +260,6 @@ table {
   border-spacing: 0;
 }
 
-
-
+.logo {
+  height: 50px;
+}
