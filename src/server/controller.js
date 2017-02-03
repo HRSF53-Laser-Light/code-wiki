@@ -5,6 +5,7 @@ var bcrypt = require('bcrypt');
 var saltRounds = 10;
 
 module.exports = {
+  // Sign up new user
   signup: {
     post: function(req, res) {
       var username = req.body.username;
@@ -34,7 +35,7 @@ module.exports = {
                   password: hash
                 })
 
-                // Create session and send back 201: Created status
+                // Create session and send back 201: Created code
                 .then(function(user) {
                   var sess = req.session
                   util.createSession(req, res, user);
@@ -49,7 +50,7 @@ module.exports = {
                 console.log('Error in password comparison', err);
               }
 
-              // Supplied password matches; user already has account
+              // Supplied password matches, user already has account; send to Signin page
               if (comparison === true) {
                 res.sendStatus(204);
 
@@ -63,7 +64,7 @@ module.exports = {
       }
     }
   },
-  // Sign in page
+  // Sign in user
   signin: {
     post: function(req, res) {
       var username = req.body.username;
@@ -85,9 +86,9 @@ module.exports = {
               console.log('Error in comparison', err);
             }
 
-            // Passwords match; send 200: OK status
+            // Passwords match; create session
             if (comparison === true) {
-              res.sendStatus(200);
+              util.createSession(req, res, users[0]);
 
             // Passwords don't match; send 401: Unauthorized status
             } else {
@@ -99,7 +100,7 @@ module.exports = {
     }
   },
 
-  // Sign out page
+  // Sign out user
   signout: {
     post: function(req, res) {
       req.session.destroy(function() {
