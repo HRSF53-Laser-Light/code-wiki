@@ -144,6 +144,16 @@
   color: #67daff;
 }
 
+.form-group label {
+  margin-bottom: 5px;
+}
+
+.form-group small {
+  color: #dadada;
+  font-size: 11px;
+  line-height: 15px;
+}
+
 /*==================================*/
 /*============ Spacing =============*/
 /*==================================*/
