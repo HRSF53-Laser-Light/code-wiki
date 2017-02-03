@@ -1,4 +1,5 @@
 var db = require('../db/schema');
+var util = require('../lib/utility');
 var bcrypt = require('bcrypt');
 
 var saltRounds = 10;
@@ -6,46 +7,62 @@ var saltRounds = 10;
 module.exports = {
   signup: {
     post: function(req, res) {
-      // Check database for username
+      var username = req.body.username;
+      var password = req.body.password;
+
+      // If username or password left blank, send back 400: Bad request
+      if (username === '' || password === '') {
+        res.write('')
+        res.sendStatus(400);
+      }
+
+      // Check database for supplied username
       db.User.findAll({
-        where: { username: req.body.username }
+        where: { username: username }
       })
-        .then(function(users) {
-          // If username is free
-          if (users.length === 0) {
-            // Hash password
-            bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-              if (err) {
-                console.log('Error hashing password', err);
-              } else {
-                // Add username and hashed pw to database
-                db.User.create({
-                  username: req.body.username,
-                  password: hash
-                })
-                  .then(function() {
-                    // Set up session?
-                    res.redirect('/');
-                  });
-              }
+      .then(function(results) {
+
+        // Username is free; hash password
+        if (results.length === 0) {
+          bcrypt.hash(password, saltRounds, function(err, hash) {
+            if (err) {
+              console.log('Error hashing password', err);
+            }
+
+            // Add new user to database
+            db.User.create({
+              username: username,
+              password: hash
             })
-          // Username is already in database
-          } else {   
-            bcrypt.compare(req.body.password, users[0].dataValues.password, function(err, comparison) {
-              if (err) {
-                console.log('Error in comparison', err);
-              } else {
-                if (comparison === true) {
-                  console.log('Looks like you already have an account. Please sign in.');
-                  res.redirect('/api/signin');
-                } else {
-                  console.log('That username is already taken. Please choose another one.');
-                  res.redirect('/api/signup');
-                }
-              }
+
+            // Create session and send back 201: Created status
+            .then(function(user) {
+              // create a session
+
+              res.sendStatus(201);
             });
-          }
-        })
+          })
+
+        // Username is already in db; compare supplied password to pw in db
+        } else {
+          bcrypt.compare(password, results[0].dataValues.password, function(err, comparison) {
+            if (err) {
+              console.log('Error in password comparison', err);
+            }
+
+            // Supplied password matches; user already has account
+            if (comparison === true) {
+              // Message: 'Looks like you already have an account. Please sign in.'
+              res.sendStatus(204);
+
+            // Supplied pw doesn't match; probably new user & should choose another username
+            } else {
+              // Message: 'The username is already taken. Please choose another one.'
+              res.sendStatus(409);
+            }
+          });
+        }
+      });
     }
   },
   signin: {
@@ -79,12 +96,15 @@ module.exports = {
         })
     }
   },
+
+  // Sign out user
   signout: {
     post: function(req, res) {
       // Reset session?
       res.redirect('/api/signout');
     }
   },
+
   // Retrieve 10 most recent posts in Posts table
   posts: {
     get: function(req, res) {
@@ -97,6 +117,7 @@ module.exports = {
         });
     }
   },
+
   // Retrieve all tags in Tags table
   tags: {
     get: function(req, res) {
@@ -106,6 +127,7 @@ module.exports = {
         });
     }
   },
+
   // Retrieve all categories in Categories table
   categories: {
     get: function(req, res) {
@@ -115,6 +137,7 @@ module.exports = {
         });
     }
   },
+
   // Add a new post to database
   submit: {
     post: function(req, res) {
@@ -134,7 +157,7 @@ module.exports = {
               where: { name: req.body.category }
             })
               .then(function(results) {
-                /**** TO DO: CategoryId ****/
+                /**** TODO: CategoryId and Tagpost ****/
                 db.Post.create({
                   problem_statement: req.body.problem,
                   resource: req.body.resource,
@@ -148,6 +171,7 @@ module.exports = {
         })
     }
   },
+
   // Delete post from database
   delete: {
     post: function(req, res) {
@@ -160,6 +184,7 @@ module.exports = {
         });
     }
   },
+
   // Increment vote count on post
   upvote: {
     post: function(req, res) {
@@ -172,6 +197,7 @@ module.exports = {
         });
     }
   },
+
   // Decrement vote count on post
   // Note: can decrement counts <= 0
   downvote: {
