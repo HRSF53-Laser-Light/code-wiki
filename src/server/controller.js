@@ -134,7 +134,7 @@ module.exports = {
               where: { name: req.body.category }
             })
               .then(function(results) {
-                /**** TO DO: createdAt, updatedAt, CategoryId ****/
+                /**** TO DO: CategoryId ****/
                 db.Post.create({
                   problem_statement: req.body.problem,
                   resource: req.body.resource,
