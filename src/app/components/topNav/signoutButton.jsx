@@ -7,9 +7,7 @@ export default class SignoutButton extends React.Component {
 
   render() {
     return (
-      <span className='container'>
-      Signout Button
-      </span>
+      <a href="#" onClick={()=>this.props.updateUser(false)}>Sign out</a>
     );
   }
 }
