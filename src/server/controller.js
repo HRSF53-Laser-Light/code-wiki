@@ -13,55 +13,57 @@ module.exports = {
       // If username or password left blank, send back 400: Bad request
       if (username === '' || password === '') {
         res.sendStatus(400);
-      }
 
-      // Check database for supplied username
-      db.User.findAll({
-        where: { username: username }
-      })
-      .then(function(users) {
+      } else {
+        // Check database for supplied username
+        db.User.findAll({
+          where: { username: username }
+        })
+        .then(function(users) {
 
-        // Username is free; hash password
-        if (users.length === 0) {
-          bcrypt.hash(password, saltRounds, function(err, hash) {
-            if (err) {
-              console.log('Error hashing password', err);
-            }
+          // Username is free; hash password
+          if (users.length === 0) {
+            bcrypt.hash(password, saltRounds, function(err, hash) {
+              if (err) {
+                console.log('Error hashing password', err);
+              } else {
 
-            // Add new user to database
-            db.User.create({
-              username: username,
-              password: hash
-            })
+                // Add new user to database
+                db.User.create({
+                  username: username,
+                  password: hash
+                })
 
-            // Create session and send back 201: Created status
-            .then(function(user) {
-              // create a session
-
-              res.sendStatus(201);
+                // Create session and send back 201: Created status
+                .then(function(user) {
+                  var sess = req.session
+                  util.createSession(req, res, user);
+                });
+              }
             });
-          })
 
-        // Username is already in db; compare supplied password to pw in db
-        } else {
-          bcrypt.compare(password, results[0].dataValues.password, function(err, comparison) {
-            if (err) {
-              console.log('Error in password comparison', err);
-            }
+          // Username is already in db; compare supplied password to pw in db
+          } else {
+            bcrypt.compare(password, users[0].dataValues.password, function(err, comparison) {
+              if (err) {
+                console.log('Error in password comparison', err);
+              }
 
-            // Supplied password matches; user already has account
-            if (comparison === true) {
-              res.sendStatus(204);
+              // Supplied password matches; user already has account
+              if (comparison === true) {
+                res.sendStatus(204);
 
-            // Supplied pw doesn't match; probably new user & should choose another username
-            } else {
-              res.sendStatus(401);
-            }
-          });
-        }
-      });
+              // Supplied pw doesn't match; probably new user & should choose another username
+              } else {
+                res.sendStatus(401);
+              }
+            });
+          }
+        });
+      }
     }
   },
+  // Sign in page
   signin: {
     post: function(req, res) {
       var username = req.body.username;
@@ -97,11 +99,12 @@ module.exports = {
     }
   },
 
-  // Sign out user
+  // Sign out page
   signout: {
     post: function(req, res) {
-      // Reset session?
-      res.redirect('/api/signout');
+      req.session.destroy(function() {
+        res.sendStatus(200);
+      });
     }
   },
 
