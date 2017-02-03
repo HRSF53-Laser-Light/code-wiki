@@ -14,18 +14,22 @@ app.use(parser.json());
 // middleware - parse forms
 app.use(parser.urlencoded({ extended: true }));
 
+// set up authentication session
+app.use(session({
+  secret: 'saucecat',
+  resave: false,
+  saveUnitialized: true,
+  cookie: {
+    secure: true, 
+    maxAge: 3600000 
+  }
+}));
+
 // routing
 app.use('', router);
 
 // serve static client-facing files
 app.use(express.static(path.resolve(__dirname, '../public')));
-
-// set up authentication session
-app.use(session({
-  secret: 'saucefi3ld2o8',
-  resave: false,
-  saveUnitialized: true
-}))
 
 // spin up server
 app.listen('3000', function() {
