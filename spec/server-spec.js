@@ -19,10 +19,6 @@ describe('', function() {
     server = app.listen(4568, function() {
       console.log('Test server is listening on 4568');
     });
-
-    db.User.destroy({
-        where: { username: 'sterlingarcher' }
-      });
   });
 
   after(function() {
@@ -30,9 +26,6 @@ describe('', function() {
   });
 
   beforeEach(function() {
-    // log out currently signed in user, if any
-    request('http://127.0.0.1:4568/api/signout', function(err, res, body) {});
-
     // remove Sterling Archer from db
     db.User.destroy({
       where: { username: 'sterlingarcher' }
@@ -101,10 +94,12 @@ describe('', function() {
   });
 
   xdescribe('Sign in:', function() {
-    // db.User.create({
-    //   username: 'sterlingarcher',
-    //   password: 'phrasing'
-    // });
+    before(function() {
+      db.User.create({
+        username: 'sterlingarcher',
+        password: 'phrasing'
+      });
+    });
 
     // TODO: test status code when frontend components complete
     xit('Prompts user to correct password if stored username is entered but password does not match', function(done) {
@@ -220,11 +215,39 @@ describe('', function() {
     });
   });
 
-  xdescribe('Tagging:', function() {
+  describe('Tagging:', function() {
+    before(function() {
+      db.Tag.destroy({
+        where: {}
+      });
 
+      db.Tag.create({
+        tag: 'lana'
+      });
+
+      db.Tag.create({
+        tag: 'mother'
+      });
+
+      db.Tag.create({
+        tag: 'weebabyseamus'
+      });
+
+      db.Tag.create({
+        tag: 'mawp'
+      });
+    });
    
-    xit('Retrieves all created tags for frontend render', function(done) {
+    it('Retrieves all created tags for frontend render', function(done) {
+      var options = {
+        'method': 'GET',
+        'url': 'http://127.0.0.1:4568/api/tags'
+      }
 
+      request(options, function(err, res, body) {
+        expect(JSON.parse(body).length).to.equal(4);
+        done();
+      });
     });
 
     xit('Adds correct tags to post', function(done) {
@@ -242,23 +265,29 @@ describe('', function() {
 
     });
 
+    // TODO: create test when this functionality exists
     xit('Can add brand new category', function(done) {
 
     });
   });
 
-  describe('Ranking:', function() {
-    db.Post.create({
-      problem_statement: 'not enough black turtlenecks',
-      resource: 'http://www.turtlenecksgalore.com',
-      vote_count: 0
+  xdescribe('Ranking:', function() {
+    before(function() {
+      db.Post.destroy({
+        where: { problem_statement: 'not enough black turtlenecks' }
+      });
+
+      db.Post.create({
+        problem_statement: 'not enough black turtlenecks',
+        resource: 'http://www.turtlenecksgalore.com',
+        vote_count: 0
+      });
     });
 
     it('Adds one to vote count when user upvotes post', function(done) {
       db.Post.find({
         where: { problem_statement: 'not enough black turtlenecks' }
       }).then(function(results) {
-        // console.log(results);
         var options = {
           'method': 'POST',
           'uri': 'http://127.0.0.1:4568/api/upvote',
@@ -281,7 +310,6 @@ describe('', function() {
       db.Post.find({
         where: { problem_statement: 'not enough black turtlenecks' }
       }).then(function(results) {
-        // console.log(results);
         var options = {
           'method': 'POST',
           'uri': 'http://127.0.0.1:4568/api/downvote',
@@ -304,7 +332,6 @@ describe('', function() {
       db.Post.find({
         where: { problem_statement: 'not enough black turtlenecks' }
       }).then(function(results) {
-        // console.log(results);
         var options = {
           'method': 'POST',
           'uri': 'http://127.0.0.1:4568/api/downvote',
