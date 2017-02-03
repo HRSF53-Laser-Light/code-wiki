@@ -196,23 +196,28 @@ describe('', function() {
       })
     });
 
-    xit('Deletes post from database when user removes post', function(done) {
-      var options = {
-        'method': 'POST',
-        'uri': 'http://127.0.0.1:4568/api/delete',
-        'json': {
-          'id': 1
-        }
-      };
-
-      request(options, function(err, res, body) {
-        db.Post.findById({
-          where: { id: 1 }
-        }).then(function(results) {
-          expect(results).to.equal(undefined);
-          done();
-        })
+    it('Deletes post from database when user removes post', function(done) {
+      db.Post.find({
+        where: { problem_statement: 'problem1' }
+      })
+      .then(function(results) {
+        var options = {
+          'method': 'POST',
+          'uri': 'http://127.0.0.1:4568/api/delete',
+          'json': {
+            'id': results.dataValues.id
+          }
+        };
+        request(options, function(err, res, body) {
+          db.Post.find({
+            where: { id: results.dataValues.id }
+          }).then(function(results) {
+            expect(results).to.equal(null);
+            done();
+          })
+        });
       });
+
     });
   });
 
@@ -257,7 +262,7 @@ describe('', function() {
     });
   });
 
-  describe('Categories:', function() {
+  xdescribe('Categories:', function() {
     before(function() {
       db.Category.destroy({
         where: {}
@@ -284,6 +289,7 @@ describe('', function() {
       });
     });
     
+    // TODO: category to post
     xit('Adds category to post', function(done) {
 
     });
