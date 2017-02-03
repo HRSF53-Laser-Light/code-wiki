@@ -39,9 +39,6 @@ router.post('/api/downvote', controller.downvote.post);
 
 /** MAKING EXTERNAL API REQUESTS **/
 
-router.post('/api/externalReq/linkPreview', controller.externalRequest.linkPreview.post);
-
-
 
 
 

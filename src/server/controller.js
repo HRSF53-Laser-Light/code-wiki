@@ -1,7 +1,7 @@
 var db = require('../db/schema');
+var helpers = require('./helpers');
 var bcrypt = require('bcrypt');
 var request = require('request');
-
 var saltRounds = 10;
 
 module.exports = {
@@ -119,7 +119,31 @@ module.exports = {
   // Add a new post to database
   submit: {
     post: function(req, res) {
-      console.log(req.body);
+      var comment = req.body.comment;
+      var category = req.body.category;
+      var tags = req.body.tags;
+      var link_url;
+      var link_description;
+      var link_image;
+      var link_title;
+
+      // Parse out any links within the comment
+      if (helpers.findUrls(comment).length > 0) {
+        link_url = helpers.findUrls(comment)[0];
+      }
+
+      console.log(link_url);
+
+      request({
+        uri: 'http://www.linkpreview.net/',
+        qs: {
+          key: '58938a7d097b0590f713356c5c1fb7d74a0e589166b5a',
+          q: link_url
+        }
+      }, function(err, res, body) {
+        console.log(body);
+      });
+
       // db.Post.findOne({
       //   where: {
       //     problem_statement: req.body.problem,
@@ -187,21 +211,6 @@ module.exports = {
           res.sendStatus(200);
         });
     }
-  },
-  // make API requests as a proxy for the front end
-  externalRequest: {
-    // link preview api (http://www.linkpreview.net/)
-    linkPreview: {
-      post: function(req, res) {
-        request({
-          uri: req.body.endpoint,
-          qs: {
-            key: '58938a7d097b0590f713356c5c1fb7d74a0e589166b5a',
-            q: req.body.target
-          }
-        }).pipe(res);
-      }
-    }
   }
 };
 
@@ -235,4 +244,19 @@ module.exports = {
 //   post.createTag({tag: 'Debugging'});
 //   post.createTag({tag: 'Tutorial'});
 //   post.createTag({tag: 'Random'});
+// })
+
+
+// var endpoint = 'https://api.linkpreview.net';
+// var target = 'https://www.codementor.io/tamizhvendan/beginner-guide-setup-reactjs-environment-npm-babel-6-webpack-du107r9zr';
+
+// axios.post('/api/externalReq/linkPreview', {
+//   endpoint: endpoint,
+//   target: target
+// })
+// .then(function(response) {
+//   console.log(response.data);
+// })
+// .catch(function(error) {
+//   console.log(error);
 // })
