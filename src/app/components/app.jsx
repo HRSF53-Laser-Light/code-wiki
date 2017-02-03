@@ -11,7 +11,7 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      signedIn: false,
+      signedIn: true,
       username: null
     }
   }
