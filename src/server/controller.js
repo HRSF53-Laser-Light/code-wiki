@@ -138,8 +138,7 @@ module.exports = {
                 db.Post.create({
                   problem_statement: req.body.problem,
                   resource: req.body.resource,
-                  vote_count: 0,
-                  CategoryId: results.dataValues.id
+                  vote_count: 0
                 })
                   .then(function() {
                     res.sendStatus(201);
