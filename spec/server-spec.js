@@ -26,7 +26,7 @@ describe('', function() {
   });
 
   beforeEach(function() {
-    // remove Sterling Archer from db
+    // remove Sterling Archer from db for future tests
     db.User.destroy({
       where: { username: 'sterlingarcher' }
     }).then(function(results) {
@@ -152,35 +152,36 @@ describe('', function() {
     });
   });
 
-  xdescribe('Posting:', function() {
+  describe('Posting:', function() {
 
-    // for (var i = 1; i < 15; i++) {
-    //   db.Post.create({
-    //     problem_statement: 'problem' + i,
-    //     resource: 'link' + i,
-    //     vote_count: 0
-    //   });
-    // }
+    before(function() {
+      db.Post.destroy({
+        where: {}
+      });
+
+      for (var i = 0; i < 14; i++) {
+        db.Post.create({
+          problem_statement: 'problem' + i,
+          resource: 'link' + i,
+          vote_count: 0
+        });
+      }
+    });
     
-    xit('Retrieves latest 10 posts from database for frontend to render', function(done) {
+    it('Retrieves latest 10 posts from database for frontend to render', function(done) {
       var options = {
         'method': 'GET',
         'url': 'http://127.0.0.1:4568/api/posts'
       }
 
       request(options, function(err, res, body) {
-        console.log(res.body);
         expect(res.statusCode).to.equal(200);
-        // expect(res.body.id)
+        expect(JSON.parse(body).rows.length).to.equal(10);
         done();
       });
     });
 
-    // it('Adds brand new post to database', function(done) {
-
-    // });
-
-    xit('Does not add identical posts to database', function(done) {
+    it('Does not add identical posts to database', function(done) {
       var options = {
         'method': 'POST',
         'uri': 'http://127.0.0.1:4568/api/submit',
@@ -191,7 +192,7 @@ describe('', function() {
       };
 
       request(options, function(err, res, body) {
-
+        done();
       })
     });
 
@@ -215,7 +216,7 @@ describe('', function() {
     });
   });
 
-  describe('Tagging:', function() {
+  xdescribe('Tagging:', function() {
     before(function() {
       db.Tag.destroy({
         where: {}
@@ -238,7 +239,7 @@ describe('', function() {
       });
     });
    
-    it('Retrieves all created tags for frontend render', function(done) {
+    it('Retrieves all tags for frontend render', function(done) {
       var options = {
         'method': 'GET',
         'url': 'http://127.0.0.1:4568/api/tags'
@@ -250,23 +251,40 @@ describe('', function() {
       });
     });
 
-    xit('Adds correct tags to post', function(done) {
-
-    });
-
-    xit('Deletes tag from post in database when user removes tag', function(done) {
+    // TODO: 
+    xit('Adds tags to post', function(done) {
 
     });
   });
 
-  xdescribe('Categories:', function() {
-    
-    xit('Correctly adds category to post', function(done) {
+  describe('Categories:', function() {
+    before(function() {
+      db.Category.destroy({
+        where: {}
+      });
 
+      db.Category.create({
+        name: 'missions'
+      });
+
+      db.Category.create({
+        name: 'lacrosse'
+      });
     });
 
-    // TODO: create test when this functionality exists
-    xit('Can add brand new category', function(done) {
+    it('Retrieves all categories for frontend render', function(done) {
+      var options = {
+        'method': 'GET',
+        'url': 'http://127.0.0.1:4568/api/categories'
+      }
+
+      request(options, function(err, res, body) {
+        expect(JSON.parse(body).length).to.equal(2);
+        done();
+      });
+    });
+    
+    xit('Adds category to post', function(done) {
 
     });
   });
