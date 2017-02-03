@@ -4,7 +4,8 @@ var isLoggedIn = function(req) {
 
 module.exports.checkUser = function(req, res, next){
   if (!isLoggedIn(req)) {
-    res.redirect('/signin');
+    // User must be redirected to signin page
+    res.sendStatus(401);
   } else {
     next();
   }
@@ -13,6 +14,7 @@ module.exports.checkUser = function(req, res, next){
 module.exports.createSession = function(req, res, newUser) {
   return req.session.regenerate(function() {
       req.session.user = newUser;
-      res.redirect('/');
+      // Send 201: Created status and new user's username back to client
+      res.send(201, { username: newUser.dataValues.username });
     });
 };
