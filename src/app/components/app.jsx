@@ -35,7 +35,7 @@ export default class App extends React.Component {
     return (
       <div>
         <TopNav signedIn={this.state.signedIn} updateUser={this.updateUser.bind(this)}/>
-        <GuestView />
+        <GuestView updateUser={this.updateUser.bind(this)}/>
       </div>
     );
   }

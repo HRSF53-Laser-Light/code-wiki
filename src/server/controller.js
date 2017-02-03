@@ -12,7 +12,6 @@ module.exports = {
 
       // If username or password left blank, send back 400: Bad request
       if (username === '' || password === '') {
-        res.write('')
         res.sendStatus(400);
       }
 
@@ -58,7 +57,7 @@ module.exports = {
             // Supplied pw doesn't match; probably new user & should choose another username
             } else {
               // Message: 'The username is already taken. Please choose another one.'
-              res.sendStatus(409);
+              res.sendStatus(401);
             }
           });
         }
@@ -75,7 +74,8 @@ module.exports = {
           // Username is not in database
           if (users.length === 0) {
             console.log('There is no account with that username. Please try again.');
-            res.redirect('/api/signin');
+            res.sendStatus(401);
+            //res.redirect('/api/signin');
           // Username is in database
           } else {   
             bcrypt.compare(req.body.password, users[0].dataValues.password, function(err, comparison) {
@@ -84,11 +84,13 @@ module.exports = {
               } else {
                 // Passwords match
                 if (comparison === true) {
-                  res.redirect('/');
+                  res.sendStatus(200);
+                  // res.redirect('/');
                 // Passwords don't match
                 } else {
                   console.log('Password does not match. Please try again.');
-                  res.redirect('/api/signin');
+                  res.sendStatus(401);
+                  // res.redirect('/api/signin');
                 }
               }
             });
