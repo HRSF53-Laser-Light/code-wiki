@@ -35,7 +35,7 @@ describe('', function() {
   });
 
 
-  xdescribe('Sign up:', function() {
+  describe('Sign up:', function() {
 
     it('Adds username to the database on sign up', function(done) {
       var options = {
@@ -93,11 +93,24 @@ describe('', function() {
     });
   });
 
-  xdescribe('Sign in:', function() {
-    before(function() {
-      db.User.create({
-        username: 'sterlingarcher',
-        password: 'phrasing'
+  describe('Sign in:', function() {
+    
+    before(function(done) {
+      db.User.destroy({
+        where: {}
+      });
+
+      var options = {
+        'method': 'POST',
+        'url': 'http://127.0.0.1:4568/api/signup',
+        'json': {
+          'username': 'sterlingarcher',
+          'password': 'phrasing'
+        }
+      };
+
+      request(options, function(err, res, body) {
+        done();
       });
     });
 
@@ -119,7 +132,7 @@ describe('', function() {
     });
 
     // TODO: test status code when frontend components complete
-    xit('Redirects to home page if correct username and password info entered', function(done) {
+    it('Redirects to home page if correct username and password info entered', function(done) {
       var options = {
         'method': 'POST',
         'uri': 'http://127.0.0.1:4568/api/signin',
@@ -130,15 +143,14 @@ describe('', function() {
       }
 
       request(options, function(err, res, body) {
-        expect(res.statusCode).to.equal(200);
+        expect(res.statusCode).to.equal(302);
         done();
       });
     });
   });
 
   // TODO: test status code and/or session when frontend components complete and authentication/sessions done
-  xdescribe('Sign out:', function() {
-
+  describe('Sign out:', function() {
     it('Redirects to sign out page', function(done) {
       var options = {
         'method': 'POST',
@@ -146,14 +158,13 @@ describe('', function() {
       }
 
       request(options, function(err, res, body) {
-        expect(res.statusCode).to.equal(200);
+        expect(res.statusCode).to.equal(302);
         done();
       });
     });
   });
 
   describe('Posting:', function() {
-
     before(function() {
       db.Post.destroy({
         where: {}
@@ -211,7 +222,8 @@ describe('', function() {
         request(options, function(err, res, body) {
           db.Post.find({
             where: { id: results.dataValues.id }
-          }).then(function(results) {
+          })
+          .then(function(results) {
             expect(results).to.equal(null);
             done();
           })
@@ -221,27 +233,19 @@ describe('', function() {
     });
   });
 
-  xdescribe('Tagging:', function() {
+  describe('Tagging:', function() {
     before(function() {
       db.Tag.destroy({
         where: {}
       });
 
-      db.Tag.create({
-        tag: 'lana'
-      });
+      var tags = ['lana', 'mother', 'weebabyseamus', 'mawp'];
 
-      db.Tag.create({
-        tag: 'mother'
-      });
-
-      db.Tag.create({
-        tag: 'weebabyseamus'
-      });
-
-      db.Tag.create({
-        tag: 'mawp'
-      });
+      for (var i = 0; i < tags.length; i++) {
+        db.Tag.create({
+          tag: tags[i]
+        })
+      }
     });
    
     it('Retrieves all tags for frontend render', function(done) {
@@ -256,13 +260,17 @@ describe('', function() {
       });
     });
 
-    // TODO: 
+    // TODO: tagpost test
     xit('Adds tags to post', function(done) {
-
+      db.Post.create({
+        problem_statement: 'too many kriegers',
+        resource: 'http://www.nokriegers.com',
+        vote_count: 0
+      });
     });
   });
 
-  xdescribe('Categories:', function() {
+  describe('Categories:', function() {
     before(function() {
       db.Category.destroy({
         where: {}
@@ -295,7 +303,7 @@ describe('', function() {
     });
   });
 
-  xdescribe('Ranking:', function() {
+  describe('Ranking:', function() {
     before(function() {
       db.Post.destroy({
         where: { problem_statement: 'not enough black turtlenecks' }
