@@ -72,7 +72,8 @@ module.exports = {
               } else {
                 // Passwords match
                 if (comparison === true) {
-                  res.sendStatus(200);
+                  //TEMPORARY
+                  res.send(users[0].dataValues);
                   // res.redirect('/');
                 // Passwords don't match
                 } else {

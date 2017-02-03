@@ -19,7 +19,7 @@ export default class TopNav extends React.Component {
           <li><SearchBox /></li>
         </ul>
         <ul className="nav navbar-nav navbar-right">
-          <li><AccountLink /></li>
+          <li><AccountLink username={this.props.username}/></li>
           <li><SignoutButton updateUser={this.props.updateUser}/></li>
         </ul>
       </div>
