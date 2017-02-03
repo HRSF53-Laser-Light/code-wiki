@@ -19,10 +19,10 @@ module.exports = {
       db.User.findAll({
         where: { username: username }
       })
-      .then(function(results) {
+      .then(function(users) {
 
         // Username is free; hash password
-        if (results.length === 0) {
+        if (users.length === 0) {
           bcrypt.hash(password, saltRounds, function(err, hash) {
             if (err) {
               console.log('Error hashing password', err);
@@ -51,12 +51,10 @@ module.exports = {
 
             // Supplied password matches; user already has account
             if (comparison === true) {
-              // Message: 'Looks like you already have an account. Please sign in.'
               res.sendStatus(204);
 
             // Supplied pw doesn't match; probably new user & should choose another username
             } else {
-              // Message: 'The username is already taken. Please choose another one.'
               res.sendStatus(401);
             }
           });
@@ -66,36 +64,36 @@ module.exports = {
   },
   signin: {
     post: function(req, res) {
+      var username = req.body.username;
+      var password = req.body.password;
+      
       // Check database for username
       db.User.findAll({
-        where: { username: req.body.username }
+        where: { username: username }
       })
-        .then(function(users) {
-          // Username is not in database
-          if (users.length === 0) {
-            console.log('There is no account with that username. Please try again.');
-            res.sendStatus(401);
-            //res.redirect('/api/signin');
-          // Username is in database
-          } else {   
-            bcrypt.compare(req.body.password, users[0].dataValues.password, function(err, comparison) {
-              if (err) {
-                console.log('Error in comparison', err);
-              } else {
-                // Passwords match
-                if (comparison === true) {
-                  res.sendStatus(200);
-                  // res.redirect('/');
-                // Passwords don't match
-                } else {
-                  console.log('Password does not match. Please try again.');
-                  res.sendStatus(401);
-                  // res.redirect('/api/signin');
-                }
-              }
-            });
-          }
-        })
+      .then(function(users) {
+        // If username is not in database, send back 401 code
+        if (users.length === 0) {
+          res.sendStatus(401);
+
+        // If username is in database, compare supplied password with stored password
+        } else {   
+          bcrypt.compare(password, users[0].dataValues.password, function(err, comparison) {
+            if (err) {
+              console.log('Error in comparison', err);
+            }
+
+            // Passwords match; send 200: OK status
+            if (comparison === true) {
+              res.sendStatus(200);
+
+            // Passwords don't match; send 401: Unauthorized status
+            } else {
+              res.sendStatus(401);
+            }
+          });
+        }
+      })
     }
   },
 
