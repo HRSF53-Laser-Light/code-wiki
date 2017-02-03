@@ -12,8 +12,11 @@ var Tag = sequelize.define('tag', {
 });
 
 var Post = sequelize.define('post', {
-  problem_statement: Sequelize.STRING,
-  resource: Sequelize.STRING,
+  comment: Sequelize.STRING,
+  link_url: Sequelize.STRING,
+  link_description: Sequelize.STRING,
+  link_image: Sequelize.STRING,
+  link_title: Sequelize.STRING,
   vote_count: Sequelize.INTEGER
 });
 
@@ -22,6 +25,7 @@ var Category = sequelize.define('category', {
 });
 
 Category.hasMany(Post);
+Post.belongsTo(Category);
 Post.belongsToMany(Tag, {through: 'tagpost'});
 Tag.belongsToMany(Post, {through: 'tagpost'});
 
@@ -31,5 +35,7 @@ module.exports.User = User;
 module.exports.Tag = Tag;
 module.exports.Post = Post;
 module.exports.Category = Category;
+
+
 
 

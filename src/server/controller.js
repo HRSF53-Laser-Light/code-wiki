@@ -119,35 +119,36 @@ module.exports = {
   // Add a new post to database
   submit: {
     post: function(req, res) {
-      db.Post.findOne({
-        where: {
-          problem_statement: req.body.problem,
-          resource: req.body.resource
-        }
-      })
-        .then(function(results) {
-          // Message if exact post has already been made
-          if (results !== null) {
-            console.log('Your message has already been posted');
-          // Create new post
-          } else {
-            db.Category.findOne({
-              where: { name: req.body.category }
-            })
-              .then(function(results) {
-                /**** TO DO: createdAt, updatedAt, CategoryId ****/
-                db.Post.create({
-                  problem_statement: req.body.problem,
-                  resource: req.body.resource,
-                  vote_count: 0,
-                  CategoryId: results.dataValues.id
-                })
-                  .then(function() {
-                    res.sendStatus(201);
-                  });
-              })
-          }
-        })
+      console.log(req.body);
+      // db.Post.findOne({
+      //   where: {
+      //     problem_statement: req.body.problem,
+      //     resource: req.body.resource
+      //   }
+      // })
+      //   .then(function(results) {
+      //     // Message if exact post has already been made
+      //     if (results !== null) {
+      //       console.log('Your message has already been posted');
+      //     // Create new post
+      //     } else {
+      //       db.Category.findOne({
+      //         where: { name: req.body.category }
+      //       })
+      //         .then(function(results) {
+      //           /**** TO DO: createdAt, updatedAt, CategoryId ****/
+      //           db.Post.create({
+      //             problem_statement: req.body.problem,
+      //             resource: req.body.resource,
+      //             vote_count: 0,
+      //             CategoryId: results.dataValues.id
+      //           })
+      //             .then(function() {
+      //               res.sendStatus(201);
+      //             });
+      //         })
+      //     }
+      //   })
     }
   },
   // Delete post from database
@@ -218,3 +219,20 @@ module.exports = {
 //     console.log(preview);
 //   }
 // });
+
+
+// Category.create({
+//   name: 'Angular'
+// })
+// .then(function(category) {
+//   return category.createPost({
+//     problem_statement: 'this is a comment',
+//     resource: 'https://learn.makerpass.com/',
+//     vote_count: 0
+//   })
+// })
+// .then(function(post) {
+//   post.createTag({tag: 'Debugging'});
+//   post.createTag({tag: 'Tutorial'});
+//   post.createTag({tag: 'Random'});
+// })
