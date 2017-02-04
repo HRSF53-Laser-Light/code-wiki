@@ -5,11 +5,10 @@ export default class SignoutButton extends React.Component {
     super();
   }
 
+  //@TODO delete session
   render() {
     return (
-      <span className='container'>
-      Signout Button
-      </span>
+      <a href="#" onClick={()=>this.props.updateUser(false, null)}>Sign out</a>
     );
   }
 }

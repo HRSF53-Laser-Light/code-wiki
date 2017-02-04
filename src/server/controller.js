@@ -27,7 +27,8 @@ module.exports = {
                 })
                   .then(function() {
                     // Set up session?
-                    res.redirect('/');
+                    res.sendStatus(201);
+                    // res.redirect('/');
                   });
               }
             })
@@ -38,11 +39,14 @@ module.exports = {
                 console.log('Error in comparison', err);
               } else {
                 if (comparison === true) {
+                  //we should coordinate so that we can have these as pop-ups on the client
                   console.log('Looks like you already have an account. Please sign in.');
-                  res.redirect('/api/signin');
+                  res.sendStatus(401);
+                  // res.redirect('/api/signin');
                 } else {
                   console.log('That username is already taken. Please choose another one.');
-                  res.redirect('/api/signup');
+                  res.sendStatus(401);
+                  // res.redirect('/api/signup');
                 }
               }
             });
@@ -60,7 +64,8 @@ module.exports = {
           // Username is not in database
           if (users.length === 0) {
             console.log('There is no account with that username. Please try again.');
-            res.redirect('/api/signin');
+            res.sendStatus(401);
+            //res.redirect('/api/signin');
           // Username is in database
           } else {   
             bcrypt.compare(req.body.password, users[0].dataValues.password, function(err, comparison) {
@@ -69,11 +74,14 @@ module.exports = {
               } else {
                 // Passwords match
                 if (comparison === true) {
-                  res.redirect('/');
+                  //TEMPORARY
+                  res.send(users[0].dataValues);
+                  // res.redirect('/');
                 // Passwords don't match
                 } else {
                   console.log('Password does not match. Please try again.');
-                  res.redirect('/api/signin');
+                  res.sendStatus(401);
+                  // res.redirect('/api/signin');
                 }
               }
             });

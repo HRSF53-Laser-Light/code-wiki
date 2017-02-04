@@ -5,8 +5,8 @@ import Posts from './posts.jsx';
 import NewPost from './newPost.jsx';
 
 export default class MainView extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       createPost: true
     }
@@ -14,7 +14,7 @@ export default class MainView extends React.Component {
   showExistingPosts() {
     return (
       <div>
-        <MainHeader />
+        <MainHeader category={this.props.category}/>
         <div className="divider-full"></div>
         <Posts />
       </div>

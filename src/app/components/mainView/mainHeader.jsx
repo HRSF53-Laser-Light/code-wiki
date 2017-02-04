@@ -1,14 +1,14 @@
 import React from 'react';
 
 export default class MainHeader extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
   render() {
     return (
       <div className="row">
         <div className="col-sm-4">
-          <h3>Angular</h3>
+          <h3>{this.props.category}</h3>
         </div>
         <div className="col-sm-8 text-right">
           <span>Filter By: </span>
