@@ -14,16 +14,25 @@ export default class App extends React.Component {
     this.state = {
       signedIn: true,
       username: null,
+      userId: null,
       category: 'All',
-      tags: []
-
+      tags: [],
+      createPost: false
     }
+    //@TODO move bind calls to here
   }
 
-  updateUser(boolValue, username) {
+  setCreatePost(e, boolValue) {
+    this.setState({
+      createPost: boolValue
+    });
+  }
+
+  updateUser(boolValue, username, userId) {
     this.setState({
       signedIn: boolValue,
-      username: username
+      username: username,
+      userId: userId
     });
   }
 
@@ -38,9 +47,21 @@ export default class App extends React.Component {
   signedInView() {
     return (
       <div>
-        <TopNav username={this.state.username} signedIn={this.state.signedIn} updateUser={this.updateUser.bind(this)} resetCategory={this.updateCategory.bind(this)}/>
-        <SideNav category={this.state.category} updateCategory={this.updateCategory.bind(this)}/>
-        <MainView category={this.state.category}/>
+        <TopNav
+        username={this.state.username}
+        signedIn={this.state.signedIn}
+        updateUser={this.updateUser.bind(this)}
+        resetCategory={this.updateCategory.bind(this)}
+        setCreatePost={this.setCreatePost.bind(this)}/>
+
+        <SideNav
+        category={this.state.category}
+        updateCategory={this.updateCategory.bind(this)}/>
+
+        <MainView
+        category={this.state.category}
+        createPost={this.state.createPost}
+        setCreatePost={this.setCreatePost.bind(this)}/>
       </div>
     );
   }
@@ -48,8 +69,12 @@ export default class App extends React.Component {
   signedOutView() {
     return (
       <div>
-        <TopNav signedIn={this.state.signedIn} updateUser={this.updateUser.bind(this)}/>
-        <GuestView updateUser={this.updateUser.bind(this)}/>
+        <TopNav
+        signedIn={this.state.signedIn}
+        updateUser={this.updateUser.bind(this)}/>
+
+        <GuestView
+        updateUser={this.updateUser.bind(this)}/>
       </div>
     );
   }

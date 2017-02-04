@@ -1,13 +1,13 @@
 import React from 'react'
 
 export default class PostButton extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
 
   render() {
     return (
-      <a href="#">Post</a>
+      <a href="#" onClick={(e)=>this.props.setCreatePost(e, true)}>Post</a>
     );
   }
 }

@@ -8,7 +8,7 @@ export default class SignoutButton extends React.Component {
   //@TODO delete session
   render() {
     return (
-      <a href="#" onClick={()=>this.props.updateUser(false, null)}>Sign out</a>
+      <a href="#" onClick={()=>this.props.updateUser(false, null, null)}>Sign out</a>
     );
   }
 }
