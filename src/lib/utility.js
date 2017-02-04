@@ -19,6 +19,8 @@ module.exports.createSession = function(req, res, newUser) {
     req.session.user = newUser;
     console.log('req.session is', req.session)
     console.log('req.session.user', req.session.user);
-    res.status(201).send({ username: newUser.dataValues.username });
+    res.status(201).send({
+      username: newUser.dataValues.username,
+      userId: newUser.dataValues.id });
   });
 };

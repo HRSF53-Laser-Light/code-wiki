@@ -14,16 +14,18 @@ export default class App extends React.Component {
     this.state = {
       signedIn: true,
       username: null,
+      userId: null,
       category: 'All',
       tags: []
 
     }
   }
 
-  updateUser(boolValue, username) {
+  updateUser(boolValue, username, userId) {
     this.setState({
       signedIn: boolValue,
-      username: username
+      username: username,
+      userId: userId
     });
   }
 
