@@ -1,5 +1,5 @@
 var request = require('request');
-
+var Promise = require('bluebird');
 
 // Extract URLs from a string
 var findUrls = (text) => {
@@ -20,20 +20,23 @@ var findUrls = (text) => {
 // make API requests as a proxy for the front end
 var externalRequest = {
   // link preview api (http://www.linkpreview.net/)
-  linkPreview: function(target) {
-    request({
-      uri: 'http://www.linkpreview.net/',
-      qs: {
-        key: '58938a7d097b0590f713356c5c1fb7d74a0e589166b5a',
-        q: target
-      }
-    }, function(err, res, body) {
-      if (err) {return console.log(err);}
-      return res;
-    })
+  linkPreview: function(target, callback) {
+    return new Promise(function(resolve, reject) {
+      request('http://api.linkpreview.net/?key=58938a7d097b0590f713356c5c1fb7d74a0e589166b5a&q=' + target, function(err, res, body) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(body);
+        }
+      });
+    });
   }
 }
 
-
 exports.externalRequest = externalRequest;
 exports.findUrls = findUrls;
+
+
+
+
+

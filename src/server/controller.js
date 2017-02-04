@@ -2,6 +2,7 @@ var db = require('../db/schema');
 var helpers = require('./helpers');
 var bcrypt = require('bcrypt');
 var request = require('request');
+var Promise = require('bluebird');
 var saltRounds = 10;
 
 module.exports = {
@@ -119,30 +120,85 @@ module.exports = {
   // Add a new post to database
   submit: {
     post: function(req, res) {
-      var comment = req.body.comment;
-      var category = req.body.category;
-      var tags = req.body.tags;
-      var link_url;
-      var link_description;
-      var link_image;
-      var link_title;
+      // var comment = req.body.comment;
+      // var category = req.body.category;
+      // var tags = req.body.tags;
+      // var link_url;
+      // var link_description;
+      // var link_image;
+      // var link_title;
+
+      var comment = 'this is my comment';
+      var category = 'React';
+      var tags = 'tutorial';
+      var link_url = 'https://www.google.com';
+      var link_description = 'this is some description';
+      var link_image = 'some image';
+      var link_title = 'a link title';
 
       // Parse out any links within the comment
       if (helpers.findUrls(comment).length > 0) {
         link_url = helpers.findUrls(comment)[0];
       }
 
-      console.log(link_url);
+      // Store everything in the database
+      // db.Category.create({
+      //   name: category
+      // })
+      // .then(function(category) {
+      //   return category.createPost({
+      //     comment: comment,
+      //     link_url: link_url,
+      //     link_description: link_description,
+      //     link_image: link_image,
+      //     link_title: link_title,
+      //     vote_count: 0
+      //   })
+      // })
+      // .then(function(post) {
+      //   post.createTag({tag: tags});
+      // })
 
-      request({
-        uri: 'http://www.linkpreview.net/',
-        qs: {
-          key: '58938a7d097b0590f713356c5c1fb7d74a0e589166b5a',
-          q: link_url
-        }
-      }, function(err, res, body) {
-        console.log(body);
-      });
+
+      // db.Category.create({
+      //   name: category
+      // })
+      // .then(function(category) {        
+      //   return db.Post.create({
+      //     comment: comment,
+      //     link_url: link_url,
+      //     link_description: link_description,
+      //     link_image: link_image,
+      //     link_title: link_title,
+      //     vote_count: 0,
+      //     categoryId: category.dataValues.id
+      //   })
+      // })
+      // .then(function(post) {
+      //   return db.Tag.create({
+      //     tag: tags
+      //   })
+      // })
+      // .then(function(tag, post) {
+      //   console.log('post ' + post);
+      // });
+
+      var scrape = function(target) {
+        return helpers.externalRequest.linkPreview(target)
+          .then(function(metaData) {
+            if (metaData) {
+              link_url = metaData.url;
+              link_description = metaData.description;
+              link_image = metaData.image;
+              link_title = metaData.title;
+
+            // TODO: deal with situation where there is no link in comment
+            } else {
+
+            }
+          })
+      }
+      // scrape(link_url);
 
       // db.Post.findOne({
       //   where: {
@@ -214,49 +270,3 @@ module.exports = {
   }
 };
 
-
-
-// $.ajax({
-//   url: 'https://api.linkpreview.net',
-//   type: 'GET',
-//   dataType: 'jsonp',
-//   data: {
-//     q: target,
-//     key: linkPreviewKey
-//   },
-//   success: function(preview) {
-//     console.log(preview);
-//   }
-// });
-
-
-// Category.create({
-//   name: 'Angular'
-// })
-// .then(function(category) {
-//   return category.createPost({
-//     problem_statement: 'this is a comment',
-//     resource: 'https://learn.makerpass.com/',
-//     vote_count: 0
-//   })
-// })
-// .then(function(post) {
-//   post.createTag({tag: 'Debugging'});
-//   post.createTag({tag: 'Tutorial'});
-//   post.createTag({tag: 'Random'});
-// })
-
-
-// var endpoint = 'https://api.linkpreview.net';
-// var target = 'https://www.codementor.io/tamizhvendan/beginner-guide-setup-reactjs-environment-npm-babel-6-webpack-du107r9zr';
-
-// axios.post('/api/externalReq/linkPreview', {
-//   endpoint: endpoint,
-//   target: target
-// })
-// .then(function(response) {
-//   console.log(response.data);
-// })
-// .catch(function(error) {
-//   console.log(error);
-// })
