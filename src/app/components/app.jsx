@@ -13,7 +13,7 @@ export default class App extends React.Component {
     this.state = {
       signedIn: true,
       username: null,
-      category: 'all',
+      category: 'All',
     }
   }
 
@@ -36,7 +36,7 @@ export default class App extends React.Component {
     return (
       <div>
         <TopNav username={this.state.username} signedIn={this.state.signedIn} updateUser={this.updateUser.bind(this)}/>
-        <SideNav updateCategory={this.updateCategory.bind(this)}/>
+        <SideNav category={this.state.category} updateCategory={this.updateCategory.bind(this)}/>
         <MainView />
       </div>
     );

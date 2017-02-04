@@ -6,7 +6,7 @@ export default class SideNav extends React.Component {
     super(props);
     this.state = {
       test: false,
-      categories : []
+      categories : ['All']
     }
   }
 
@@ -19,18 +19,29 @@ export default class SideNav extends React.Component {
     axios.get('/api/categories')
     .then(response => {
       var data = response.data;
-      this.state.categories = [];
+
+      //default to always having an 'All' category. also the default for App's state.category
+      var newCategories = ['All'];
+
       for(var i = 0; i < data.length; i++) {
-        this.setState({categories: this.state.categories.concat(data[i].name)});
+        newCategories.push(data[i].name);
       }
+
+      this.setState({categories: newCategories});
     });
   }
 
   renderCategories() {
     return (
-      this.state.categories.map(name => (
-        <li key={name} onClick={(e)=>this.props.updateCategory(e, name)}>{name}</li>
-      ))
+      this.state.categories.map(name => {
+        
+        //Sets the class to active based on the App's state
+        var activeStatus = (name === this.props.category ? 'active' : '');
+
+        return (
+          <li className={activeStatus} key={name} onClick={(e)=>this.props.updateCategory(e, name)}>{name}</li>
+        )
+      })
     );
   }
 
