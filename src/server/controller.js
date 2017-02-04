@@ -1,6 +1,10 @@
+var bcrypt = require('bcrypt');
+var request = require('request');
+var Promise = require('bluebird');
+
 var db = require('../db/schema');
 var util = require('../lib/utility');
-var bcrypt = require('bcrypt');
+var helpers = require('./helpers');
 
 var saltRounds = 10;
 
@@ -97,6 +101,33 @@ module.exports = {
           });
         }
       })
+        .then(function(users) {
+          // Username is not in database
+          if (users.length === 0) {
+            console.log('There is no account with that username. Please try again.');
+            res.sendStatus(401);
+            //res.redirect('/api/signin');
+          // Username is in database
+          } else {   
+            bcrypt.compare(req.body.password, users[0].dataValues.password, function(err, comparison) {
+              if (err) {
+                console.log('Error in comparison', err);
+              } else {
+                // Passwords match
+                if (comparison === true) {
+                  //TEMPORARY
+                  res.send(users[0].dataValues);
+                  // res.redirect('/');
+                // Passwords don't match
+                } else {
+                  console.log('Password does not match. Please try again.');
+                  res.sendStatus(401);
+                  // res.redirect('/api/signin');
+                }
+              }
+            });
+          }
+        })
     }
   },
 
@@ -145,34 +176,53 @@ module.exports = {
   // Add a new post to database
   submit: {
     post: function(req, res) {
-      db.Post.findOne({
-        where: {
-          problem_statement: req.body.problem,
-          resource: req.body.resource
-        }
-      })
-        .then(function(results) {
-          // Message if exact post has already been made
-          if (results !== null) {
-            console.log('Your message has already been posted');
-          // Create new post
+
+      // Parse out any links within the comment
+      if (helpers.findUrls(req.body.comment).length > 0) {
+        var link_url = helpers.findUrls(req.body.comment)[0];
+      } else {
+        link_url = null;
+      }
+
+      // Separate tags into an array
+      var tags = helpers.separateTags(req.body.tags);
+
+      // First scrape for meta data with link from comment
+      helpers.externalRequest.linkPreview(link_url)
+        .then(function(metaData) {
+          // Store post in database with the link's metadata
+          if (metaData) {
+            metaData = JSON.parse(metaData);
+            db.Post.create({
+              comment: req.body.comment,
+              link_url: metaData.url,
+              link_description: metaData.description,
+              link_image: metaData.image,
+              link_title: metaData.title,
+              vote_count: 0,
+              category: {name: req.body.category},
+              tags: tags
+            }, {
+              include: [
+              {association: db.PostCategory},
+              {association: db.PostTags}
+              ]
+            });
+          // Store post in database when there is no link or metadata returned
           } else {
-            db.Category.findOne({
-              where: { name: req.body.category }
-            })
-              .then(function(results) {
-                /**** TODO: CategoryId and Tagpost ****/
-                db.Post.create({
-                  problem_statement: req.body.problem,
-                  resource: req.body.resource,
-                  vote_count: 0
-                })
-                  .then(function() {
-                    res.sendStatus(201);
-                  });
-              })
+            db.Post.create({
+              comment: req.body.comment,
+              vote_count: 0,
+              category: {name: req.body.category},
+              tags: tags
+            }, {
+              include: [
+              {association: db.PostCategory},
+              {association: db.PostTags}
+              ]
+            });
           }
-        })
+        });
     }
   },
 
@@ -216,3 +266,39 @@ module.exports = {
     }
   }
 };
+
+
+
+
+
+// OLD POST LOOKUP FUNCTIONALITY
+
+// db.Post.findOne({
+//   where: {
+//     problem_statement: req.body.problem,
+//     resource: req.body.resource
+//   }
+// })
+//   .then(function(results) {
+//     // Message if exact post has already been made
+//     if (results !== null) {
+//       console.log('Your message has already been posted');
+//     // Create new post
+//     } else {
+//       db.Category.findOne({
+//         where: { name: req.body.category }
+//       })
+//         .then(function(results) {
+//           /**** TO DO: createdAt, updatedAt, CategoryId ****/
+//           db.Post.create({
+//             problem_statement: req.body.problem,
+//             resource: req.body.resource,
+//             vote_count: 0,
+//             CategoryId: results.dataValues.id
+//           })
+//             .then(function() {
+//               res.sendStatus(201);
+//             });
+//         })
+//     }
+//   })

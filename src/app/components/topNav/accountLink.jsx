@@ -1,15 +1,13 @@
 import React from 'react'
 
 export default class AccountLink extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
 
   render() {
     return (
-      <span className='container'>
-      Account Link
-      </span>
+      <a href="#" >{this.props.username}</a>
     );
   }
 }
