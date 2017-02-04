@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 
 //components
 import TopNav from './topNav/topNav.jsx';
@@ -15,6 +16,7 @@ export default class App extends React.Component {
       username: null,
       category: 'All',
       tags: []
+
     }
   }
 
