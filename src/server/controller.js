@@ -142,22 +142,27 @@ module.exports = {
       }
 
       // Store everything in the database
-      // db.Category.create({
-      //   name: category
-      // })
-      // .then(function(category) {
-      //   return category.createPost({
-      //     comment: comment,
-      //     link_url: link_url,
-      //     link_description: link_description,
-      //     link_image: link_image,
-      //     link_title: link_title,
-      //     vote_count: 0
-      //   })
-      // })
-      // .then(function(post) {
-      //   post.createTag({tag: tags});
-      // })
+      db.Category.create({
+        name: category
+      })
+      .then(function(category) {
+        return db.Post.create({
+          comment: comment,
+          link_url: link_url,
+          link_description: link_description,
+          link_image: link_image,
+          link_title: link_title,
+          vote_count: 0,
+          categoryId: category.dataValues.id
+        })
+      })
+      .then(function(post) {        
+        db.Tag.create({tag: tags})
+        .then(function(tag) {
+          console.log('post id ' + post.dataValues.id);
+          console.log('tag id ' + tag.dataValues.id);
+        });
+      })
 
 
       // db.Category.create({
