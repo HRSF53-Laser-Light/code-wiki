@@ -21,6 +21,9 @@ export default class App extends React.Component {
       createPost: false
     }
     //@TODO move bind calls to here
+    this.setCreatePost  = this.setCreatePost.bind(this);
+    this.updateUser     = this.updateUser.bind(this);
+    this.updateCategory = this.updateCategory.bind(this);
   }
 
     componentDidMount() {
@@ -72,20 +75,20 @@ export default class App extends React.Component {
         <TopNav
         username={this.state.username}
         signedIn={this.state.signedIn}
-        updateUser={this.updateUser.bind(this)}
-        resetCategory={this.updateCategory.bind(this)}
-        setCreatePost={this.setCreatePost.bind(this)}/>
+        updateUser={this.updateUser}
+        resetCategory={this.updateCategory}
+        setCreatePost={this.setCreatePost}/>
 
         <SideNav
         currentCategory={this.state.currentCategory}
         allCategories={this.state.allCategories}
-        updateCategory={this.updateCategory.bind(this)}/>
+        updateCategory={this.updateCategory}/>
 
         <MainView
         currentCategory={this.state.currentCategory}
         allCategories={this.state.allCategories}
         createPost={this.state.createPost}
-        setCreatePost={this.setCreatePost.bind(this)}/>
+        setCreatePost={this.setCreatePost}/>
       </div>
     );
   }
@@ -95,10 +98,10 @@ export default class App extends React.Component {
       <div>
         <TopNav
         signedIn={this.state.signedIn}
-        updateUser={this.updateUser.bind(this)}/>
+        updateUser={this.updateUser}/>
 
         <GuestView
-        updateUser={this.updateUser.bind(this)}/>
+        updateUser={this.updateUser}/>
       </div>
     );
   }
