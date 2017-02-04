@@ -14,6 +14,7 @@ export default class App extends React.Component {
       signedIn: true,
       username: null,
       category: 'All',
+      tags: []
     }
   }
 
@@ -35,7 +36,7 @@ export default class App extends React.Component {
   signedInView() {
     return (
       <div>
-        <TopNav username={this.state.username} signedIn={this.state.signedIn} updateUser={this.updateUser.bind(this)}/>
+        <TopNav username={this.state.username} signedIn={this.state.signedIn} updateUser={this.updateUser.bind(this)} resetCategory={this.updateCategory.bind(this)}/>
         <SideNav category={this.state.category} updateCategory={this.updateCategory.bind(this)}/>
         <MainView category={this.state.category}/>
       </div>
