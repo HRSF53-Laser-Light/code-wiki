@@ -90,7 +90,7 @@ export default class NewPost extends React.Component {
             <button type="submit" className="btn btn-primary">Submit</button>
             {errorMsg}
           </form>
-          <a href="#" className="pull-right" onClick={(e)=>this.props.setCreatePost(e, false)}>cancel</a>
+            <a href="#" className="pull-right" onClick={(e)=>this.props.setCreatePost(e, false)}>cancel</a>
         </div>
       </div>
     );

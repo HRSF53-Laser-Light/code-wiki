@@ -11,7 +11,7 @@ export default class MainView extends React.Component {
   showExistingPosts() {
     return (
       <div>
-        <MainHeader category={this.props.category}/>
+        <MainHeader currentCategory={this.props.currentCategory}/>
         <div className="divider-full"></div>
         <Posts />
       </div>
@@ -19,7 +19,9 @@ export default class MainView extends React.Component {
   }
   createNewPost() {
     return (
-      <NewPost setCreatePost={this.props.setCreatePost}/>
+      <NewPost
+      allCategories={this.props.allCategories}
+      setCreatePost={this.props.setCreatePost}/>
     );
   }
   render() {
