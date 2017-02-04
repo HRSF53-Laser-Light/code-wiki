@@ -30,20 +30,25 @@ sequelize.sync();
 
 var seedCategories = ['Angular', 'React', 'Databases', 'Express'];
 
-// var promises = [];
+var promises = [];
 
-//   for(var i = 0; i < seedCategories.length; i++) {
-//     var newPromise = Category.create({
-//       name: seedCategories[i]
-//     });
-//     promises.push(newPromise);
-//   }
+  // for(var i = 0; i < seedCategories.length; i++) {
+  //   var newPromise = Category.create({
+  //     name: seedCategories[i]
+  //   });
+  //   console.log('pushing');
+  //   promises.push(newPromise);
+  // }
   
-//   Promise.all(promises).then( function(result) {
-//     console.log(result);
-//     sequelize.close();
-//     console.log('done'); 
-//   });
+  // console.log('before promise.all');
+
+  // Promise.all(promises).then( function(results) {
+  //   results.map(result => {
+  //     console.log(result.dataValues);
+  //   });
+  //   sequelize.close();
+  //   console.log('done'); 
+  // });
 
   // promises.then(function(newCategories) {
   //   sequelize.close();

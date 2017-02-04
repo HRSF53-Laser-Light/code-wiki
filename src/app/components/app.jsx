@@ -12,7 +12,8 @@ export default class App extends React.Component {
     super();
     this.state = {
       signedIn: true,
-      username: null
+      username: null,
+      category: 'all',
     }
   }
 
@@ -23,12 +24,19 @@ export default class App extends React.Component {
     });
   }
 
+  updateCategory(e, category) {
+    e.preventDefault();
+    this.setState({
+      category: category
+    });
+  }
+
   // @QUESTION should I be passing app state through as props into child components? Is this when we start using Flux/Redux?
   signedInView() {
     return (
       <div>
         <TopNav username={this.state.username} signedIn={this.state.signedIn} updateUser={this.updateUser.bind(this)}/>
-        <SideNav />
+        <SideNav updateCategory={this.updateCategory.bind(this)}/>
         <MainView />
       </div>
     );
