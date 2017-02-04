@@ -37,5 +37,9 @@ router.post('/api/upvote', controller.upvote.post);
 router.post('/api/downvote', controller.downvote.post);
 
 
+/** MAKING EXTERNAL API REQUESTS **/
+
+
+
 
 module.exports = router;
