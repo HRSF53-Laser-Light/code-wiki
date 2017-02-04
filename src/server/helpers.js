@@ -2,7 +2,7 @@ var request = require('request');
 var Promise = require('bluebird');
 
 // Extract URLs from a string
-var findUrls = (text) => {
+exports.findUrls = (text) => {
   var source = (text || '').toString();
   var urlArray = [];
   var url;
@@ -17,8 +17,17 @@ var findUrls = (text) => {
   return urlArray;
 }
 
-// make API requests as a proxy for the front end
-var externalRequest = {
+// Separate multiple tags into an array
+exports.separateTags = (string) => {
+  var tags = string.split(', ');
+  for (var i = 0; i < tags.length; i++) {
+    tags[i] = {tag: tags[i]};
+  }
+  return tags;
+}
+
+// Make API requests as a proxy for the front end
+exports.externalRequest = {
   // link preview api (http://www.linkpreview.net/)
   linkPreview: function(target, callback) {
     return new Promise(function(resolve, reject) {
@@ -32,9 +41,6 @@ var externalRequest = {
     });
   }
 }
-
-exports.externalRequest = externalRequest;
-exports.findUrls = findUrls;
 
 
 

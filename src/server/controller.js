@@ -121,12 +121,6 @@ module.exports = {
   submit: {
     post: function(req, res) {
 
-      // Separate multiple tags
-      var tags = req.body.tags.split(', ');
-      for (var i = 0; i < tags.length; i++) {
-        tags[i] = {tag: tags[i]};
-      }
-
       // Parse out any links within the comment
       if (helpers.findUrls(req.body.comment).length > 0) {
         var link_url = helpers.findUrls(req.body.comment)[0];
@@ -134,124 +128,45 @@ module.exports = {
         link_url = null;
       }
 
-      var scrape = function(target) {
-        return helpers.externalRequest.linkPreview(target)
-          .then(function(metaData) {
-            if (metaData) {
-              metaData = JSON.parse(metaData);
-              // Store everything in the database
-              db.Post.create({
-                comment: req.body.comment,
-                link_url: metaData.url,
-                link_description: metaData.description,
-                link_image: metaData.image,
-                link_title: metaData.title,
-                vote_count: 0,
-                category: {name: req.body.category},
-                tags: tags
-              }, {
-                include: [
-                {association: db.PostCategory},
-                {association: db.PostTags}
-                ]
-              });
-            // TODO: deal with situation where there is no link in comment
-            } else {
-              db.Post.create({
-                comment: req.body.comment,
-                vote_count: 0,
-                category: {name: req.body.category},
-                tags: tags
-              }, {
-                include: [
-                {association: db.PostCategory},
-                {association: db.PostTags}
-                ]
-              });
-            }
-          })
-      }
-      scrape(link_url);
+      // Separate tags into an array
+      var tags = helpers.separateTags(req.body.tags);
 
-      
-
-      // db.Category.create({
-      //   name: category
-      // })
-      // .then(function(category) {
-      //   return db.Post.create({
-      //     comment: comment,
-      //     link_url: link_url,
-      //     link_description: link_description,
-      //     link_image: link_image,
-      //     link_title: link_title,
-      //     vote_count: 0,
-      //     categoryId: category.dataValues.id
-      //   })
-      // })
-      // .then(function(post) {        
-      //   db.Tag.create({tag: tags})
-      //   .then(function(tag) {
-      //     console.log('post id ' + post.dataValues.id);
-      //     console.log('tag id ' + tag.dataValues.id);
-      //   });
-      // })
-
-
-      // db.Category.create({
-      //   name: category
-      // })
-      // .then(function(category) {        
-      //   return db.Post.create({
-      //     comment: comment,
-      //     link_url: link_url,
-      //     link_description: link_description,
-      //     link_image: link_image,
-      //     link_title: link_title,
-      //     vote_count: 0,
-      //     categoryId: category.dataValues.id
-      //   })
-      // })
-      // .then(function(post) {
-      //   return db.Tag.create({
-      //     tag: tags
-      //   })
-      // })
-      // .then(function(tag, post) {
-      //   console.log('post ' + post);
-      // });
-
-      
-
-      // db.Post.findOne({
-      //   where: {
-      //     problem_statement: req.body.problem,
-      //     resource: req.body.resource
-      //   }
-      // })
-      //   .then(function(results) {
-      //     // Message if exact post has already been made
-      //     if (results !== null) {
-      //       console.log('Your message has already been posted');
-      //     // Create new post
-      //     } else {
-      //       db.Category.findOne({
-      //         where: { name: req.body.category }
-      //       })
-      //         .then(function(results) {
-      //           /**** TO DO: createdAt, updatedAt, CategoryId ****/
-      //           db.Post.create({
-      //             problem_statement: req.body.problem,
-      //             resource: req.body.resource,
-      //             vote_count: 0,
-      //             CategoryId: results.dataValues.id
-      //           })
-      //             .then(function() {
-      //               res.sendStatus(201);
-      //             });
-      //         })
-      //     }
-      //   })
+      // First scrape for meta data with link from comment
+      helpers.externalRequest.linkPreview(link_url)
+        .then(function(metaData) {
+          // Store post in database with the link's metadata
+          if (metaData) {
+            metaData = JSON.parse(metaData);
+            db.Post.create({
+              comment: req.body.comment,
+              link_url: metaData.url,
+              link_description: metaData.description,
+              link_image: metaData.image,
+              link_title: metaData.title,
+              vote_count: 0,
+              category: {name: req.body.category},
+              tags: tags
+            }, {
+              include: [
+              {association: db.PostCategory},
+              {association: db.PostTags}
+              ]
+            });
+          // Store post in database when there is no link or metadata returned
+          } else {
+            db.Post.create({
+              comment: req.body.comment,
+              vote_count: 0,
+              category: {name: req.body.category},
+              tags: tags
+            }, {
+              include: [
+              {association: db.PostCategory},
+              {association: db.PostTags}
+              ]
+            });
+          }
+        });
     }
   },
   // Delete post from database
@@ -293,3 +208,38 @@ module.exports = {
   }
 };
 
+
+
+
+
+// OLD POST LOOKUP FUNCTIONALITY
+
+// db.Post.findOne({
+//   where: {
+//     problem_statement: req.body.problem,
+//     resource: req.body.resource
+//   }
+// })
+//   .then(function(results) {
+//     // Message if exact post has already been made
+//     if (results !== null) {
+//       console.log('Your message has already been posted');
+//     // Create new post
+//     } else {
+//       db.Category.findOne({
+//         where: { name: req.body.category }
+//       })
+//         .then(function(results) {
+//           /**** TO DO: createdAt, updatedAt, CategoryId ****/
+//           db.Post.create({
+//             problem_statement: req.body.problem,
+//             resource: req.body.resource,
+//             vote_count: 0,
+//             CategoryId: results.dataValues.id
+//           })
+//             .then(function() {
+//               res.sendStatus(201);
+//             });
+//         })
+//     }
+//   })
