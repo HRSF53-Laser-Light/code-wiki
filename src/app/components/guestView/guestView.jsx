@@ -49,7 +49,8 @@ export default class GuestView extends React.Component {
     })
     .then((response) => {
       if(response.status === 200) {
-        this.props.updateUser(true);
+        //@TODO update to match whatever Kay changes it to in controller.js
+        this.props.updateUser(true, response.data.username);
       }
       else{
         //@TODO flash an error
