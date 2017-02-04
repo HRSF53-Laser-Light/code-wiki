@@ -1,9 +1,11 @@
 var db = require('../db/schema');
 var util = require('../lib/utility');
 var helpers = require('./helpers');
+
 var bcrypt = require('bcrypt');
 var request = require('request');
 var Promise = require('bluebird');
+
 var saltRounds = 10;
 
 module.exports = {
@@ -181,20 +183,6 @@ module.exports = {
             });
           // Store post in database when there is no link or metadata returned
           } else {
-            db.Category.findOne({
-              where: { name: req.body.category }
-            })
-              .then(function(results) {
-                /**** TODO: CategoryId and Tagpost ****/
-                db.Post.create({
-                  problem_statement: req.body.problem,
-                  resource: req.body.resource,
-                  vote_count: 0
-                })
-                  .then(function() {
-                    res.sendStatus(201);
-                  });
-              })
             db.Post.create({
               comment: req.body.comment,
               vote_count: 0,
