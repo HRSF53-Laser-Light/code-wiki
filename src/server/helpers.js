@@ -18,7 +18,7 @@ exports.findUrls = (text) => {
 }
 
 // Separate multiple tags into an array
-exports.separateTags = (string) => {
+module.exports.separateTags = (string) => {
   var tags = string.split(', ');
   for (var i = 0; i < tags.length; i++) {
     tags[i] = {tag: tags[i]};
@@ -27,7 +27,7 @@ exports.separateTags = (string) => {
 }
 
 // Make API requests as a proxy for the front end
-exports.externalRequest = {
+module.exports.externalRequest = {
   // link preview api (http://www.linkpreview.net/)
   linkPreview: function(target, callback) {
     return new Promise(function(resolve, reject) {
