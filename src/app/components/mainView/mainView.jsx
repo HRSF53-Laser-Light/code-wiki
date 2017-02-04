@@ -7,9 +7,6 @@ import NewPost from './newPost.jsx';
 export default class MainView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      createPost: true
-    }
   }
   showExistingPosts() {
     return (
@@ -29,7 +26,7 @@ export default class MainView extends React.Component {
     return (
       <div className="col-sm-10 main-container">
         <div className="main">
-          {this.state.createPost ? this.createNewPost() : this.showExistingPosts()}
+          {this.props.createPost ? this.createNewPost() : this.showExistingPosts()}
         </div>
       </div>
     );

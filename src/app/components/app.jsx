@@ -16,9 +16,16 @@ export default class App extends React.Component {
       username: null,
       userId: null,
       category: 'All',
-      tags: []
-
+      tags: [],
+      createPost: false
     }
+    //@TODO move bind calls to here
+  }
+
+  setCreatePost(e, boolValue) {
+    this.setState({
+      createPost: boolValue
+    });
   }
 
   updateUser(boolValue, username, userId) {
@@ -44,14 +51,17 @@ export default class App extends React.Component {
         username={this.state.username}
         signedIn={this.state.signedIn}
         updateUser={this.updateUser.bind(this)}
-        resetCategory={this.updateCategory.bind(this)}/>
+        resetCategory={this.updateCategory.bind(this)}
+        setCreatePost={this.setCreatePost.bind(this)}/>
 
         <SideNav
         category={this.state.category}
         updateCategory={this.updateCategory.bind(this)}/>
 
         <MainView
-        category={this.state.category}/>
+        category={this.state.category}
+        createPost={this.state.createPost}
+        setCreatePost={this.setCreatePost.bind(this)}/>
       </div>
     );
   }
