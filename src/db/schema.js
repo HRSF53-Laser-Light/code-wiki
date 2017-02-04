@@ -24,10 +24,10 @@ var Category = sequelize.define('category', {
   name: Sequelize.STRING
 });
 
-Category.hasMany(Post);
-Post.belongsTo(Category);
-Post.belongsToMany(Tag, {through: 'tagpost'});
-Tag.belongsToMany(Post, {through: 'tagpost'});
+var CategoryPosts = Category.hasMany(Post);
+var PostCategory = Post.belongsTo(Category);
+var PostTags = Post.belongsToMany(Tag, {through: 'tagpost'});
+var TagPosts = Tag.belongsToMany(Post, {through: 'tagpost'});
 
 sequelize.sync();
 
@@ -35,6 +35,13 @@ module.exports.User = User;
 module.exports.Tag = Tag;
 module.exports.Post = Post;
 module.exports.Category = Category;
+
+module.exports.CategoryPosts = CategoryPosts;
+module.exports.PostCategory = PostCategory;
+module.exports.PostTags = PostTags;
+module.exports.TagPosts = TagPosts;
+
+
 
 
 

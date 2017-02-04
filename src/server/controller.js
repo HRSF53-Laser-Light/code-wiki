@@ -120,49 +120,82 @@ module.exports = {
   // Add a new post to database
   submit: {
     post: function(req, res) {
-      // var comment = req.body.comment;
-      // var category = req.body.category;
-      // var tags = req.body.tags;
-      // var link_url;
-      // var link_description;
-      // var link_image;
-      // var link_title;
 
-      var comment = 'this is my comment';
-      var category = 'React';
-      var tags = 'tutorial';
-      var link_url = 'https://www.google.com';
-      var link_description = 'this is some description';
-      var link_image = 'some image';
-      var link_title = 'a link title';
-
-      // Parse out any links within the comment
-      if (helpers.findUrls(comment).length > 0) {
-        link_url = helpers.findUrls(comment)[0];
+      // Separate multiple tags
+      var tags = req.body.tags.split(', ');
+      for (var i = 0; i < tags.length; i++) {
+        tags[i] = {tag: tags[i]};
       }
 
-      // Store everything in the database
-      db.Category.create({
-        name: category
-      })
-      .then(function(category) {
-        return db.Post.create({
-          comment: comment,
-          link_url: link_url,
-          link_description: link_description,
-          link_image: link_image,
-          link_title: link_title,
-          vote_count: 0,
-          categoryId: category.dataValues.id
-        })
-      })
-      .then(function(post) {        
-        db.Tag.create({tag: tags})
-        .then(function(tag) {
-          console.log('post id ' + post.dataValues.id);
-          console.log('tag id ' + tag.dataValues.id);
-        });
-      })
+      // Parse out any links within the comment
+      if (helpers.findUrls(req.body.comment).length > 0) {
+        var link_url = helpers.findUrls(req.body.comment)[0];
+      } else {
+        link_url = null;
+      }
+
+      var scrape = function(target) {
+        return helpers.externalRequest.linkPreview(target)
+          .then(function(metaData) {
+            if (metaData) {
+              metaData = JSON.parse(metaData);
+              // Store everything in the database
+              db.Post.create({
+                comment: req.body.comment,
+                link_url: metaData.url,
+                link_description: metaData.description,
+                link_image: metaData.image,
+                link_title: metaData.title,
+                vote_count: 0,
+                category: {name: req.body.category},
+                tags: tags
+              }, {
+                include: [
+                {association: db.PostCategory},
+                {association: db.PostTags}
+                ]
+              });
+            // TODO: deal with situation where there is no link in comment
+            } else {
+              db.Post.create({
+                comment: req.body.comment,
+                vote_count: 0,
+                category: {name: req.body.category},
+                tags: tags
+              }, {
+                include: [
+                {association: db.PostCategory},
+                {association: db.PostTags}
+                ]
+              });
+            }
+          })
+      }
+      scrape(link_url);
+
+      
+
+      // db.Category.create({
+      //   name: category
+      // })
+      // .then(function(category) {
+      //   return db.Post.create({
+      //     comment: comment,
+      //     link_url: link_url,
+      //     link_description: link_description,
+      //     link_image: link_image,
+      //     link_title: link_title,
+      //     vote_count: 0,
+      //     categoryId: category.dataValues.id
+      //   })
+      // })
+      // .then(function(post) {        
+      //   db.Tag.create({tag: tags})
+      //   .then(function(tag) {
+      //     console.log('post id ' + post.dataValues.id);
+      //     console.log('tag id ' + tag.dataValues.id);
+      //   });
+      // })
 
 
       // db.Category.create({
@@ -188,22 +221,7 @@ module.exports = {
       //   console.log('post ' + post);
       // });
 
-      var scrape = function(target) {
-        return helpers.externalRequest.linkPreview(target)
-          .then(function(metaData) {
-            if (metaData) {
-              link_url = metaData.url;
-              link_description = metaData.description;
-              link_image = metaData.image;
-              link_title = metaData.title;
-
-            // TODO: deal with situation where there is no link in comment
-            } else {
-
-            }
-          })
-      }
-      // scrape(link_url);
+      
 
       // db.Post.findOne({
       //   where: {
