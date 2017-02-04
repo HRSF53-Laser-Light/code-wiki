@@ -39,7 +39,12 @@ export default class SideNav extends React.Component {
         var activeStatus = (name === this.props.category ? 'active' : '');
 
         return (
-          <li className={activeStatus} key={name} onClick={(e)=>this.props.updateCategory(e, name)}>{name}</li>
+          <li
+          className={activeStatus}
+          key={name}
+          onClick={(e)=>this.props.updateCategory(e, name)}>
+          {name}
+          </li>
         )
       })
     );

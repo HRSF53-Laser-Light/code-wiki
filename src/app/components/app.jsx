@@ -36,9 +36,18 @@ export default class App extends React.Component {
   signedInView() {
     return (
       <div>
-        <TopNav username={this.state.username} signedIn={this.state.signedIn} updateUser={this.updateUser.bind(this)} resetCategory={this.updateCategory.bind(this)}/>
-        <SideNav category={this.state.category} updateCategory={this.updateCategory.bind(this)}/>
-        <MainView category={this.state.category}/>
+        <TopNav
+        username={this.state.username}
+        signedIn={this.state.signedIn}
+        updateUser={this.updateUser.bind(this)}
+        resetCategory={this.updateCategory.bind(this)}/>
+
+        <SideNav
+        category={this.state.category}
+        updateCategory={this.updateCategory.bind(this)}/>
+
+        <MainView
+        category={this.state.category}/>
       </div>
     );
   }
@@ -46,8 +55,12 @@ export default class App extends React.Component {
   signedOutView() {
     return (
       <div>
-        <TopNav signedIn={this.state.signedIn} updateUser={this.updateUser.bind(this)}/>
-        <GuestView updateUser={this.updateUser.bind(this)}/>
+        <TopNav
+        signedIn={this.state.signedIn}
+        updateUser={this.updateUser.bind(this)}/>
+
+        <GuestView
+        updateUser={this.updateUser.bind(this)}/>
       </div>
     );
   }
