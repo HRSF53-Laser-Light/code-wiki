@@ -29,7 +29,7 @@ exports.separateTags = (string) => {
 // Make API requests as a proxy for the front end
 exports.externalRequest = {
   // link preview api (http://www.linkpreview.net/)
-  linkPreview: function(target, callback) {
+  linkPreview: function(target) {
     return new Promise(function(resolve, reject) {
       request('http://api.linkpreview.net/?key=58938a7d097b0590f713356c5c1fb7d74a0e589166b5a&q=' + target, function(err, res, body) {
         if (err) {

@@ -222,6 +222,10 @@ module.exports = {
               ]
             });
           }
+        })
+        .then(function(err) {
+          if (err) {throw err;}
+          res.sendStatus(201);
         });
     }
   },

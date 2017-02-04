@@ -8,9 +8,11 @@ export default class MainView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      createPost: true
+      createPost: false
     }
+    this.newPostHandler = this.newPostHandler.bind(this);
   }
+
   showExistingPosts() {
     return (
       <div>
@@ -20,16 +22,17 @@ export default class MainView extends React.Component {
       </div>
     );
   }
-  createNewPost() {
-    return (
-      <NewPost />
-    );
+  newPostHandler(e) {
+    e.preventDefault();
+    this.setState({
+      createPost: !this.state.createPost
+    })
   }
   render() {
     return (
       <div className="col-sm-10 main-container">
         <div className="main">
-          {this.state.createPost ? this.createNewPost() : this.showExistingPosts()}
+          {this.state.createPost ? <NewPost newPostHandler={this.newPostHandler} /> : this.showExistingPosts()}
         </div>
       </div>
     );

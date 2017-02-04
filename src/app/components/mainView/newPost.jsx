@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 export default class Posts extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       comment: '',
       category: 'Choose a category',
@@ -32,7 +32,7 @@ export default class Posts extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
+    var _this = this;
     // Check if post has errors
     if (this.handleErrors()) {
       this.setState({errors: true});
@@ -46,7 +46,7 @@ export default class Posts extends React.Component {
         tags: this.state.tags
       })
       .then(function(response) {
-        console.log(response);
+        _this.props.newPostHandler(e);
       })
       .catch(function(error) {
         console.log(error);
