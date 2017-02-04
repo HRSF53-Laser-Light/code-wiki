@@ -19,7 +19,7 @@ export default class MainView extends React.Component {
   }
   createNewPost() {
     return (
-      <NewPost />
+      <NewPost setCreatePost={this.props.setCreatePost}/>
     );
   }
   render() {
