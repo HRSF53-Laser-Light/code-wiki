@@ -12,7 +12,7 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      signedIn: true,
+      signedIn: false,
       username: 'test2',
       userId: 1,
       allCategories: ['All'],
