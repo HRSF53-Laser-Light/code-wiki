@@ -43,10 +43,11 @@ export default class Posts extends React.Component {
       commentorId: this.props.userId
     })
     .then(response => {
-      var id = response.data.id;
+      var updatedPost = response.data;
+      var id = updatedPost.id;
 
       var data = this.state.data;
-      data[id].vote_count += 1;
+      data[id] = updatedPost;
 
       this.setState({data: data});
     });
@@ -58,10 +59,11 @@ export default class Posts extends React.Component {
       commentorId: this.props.userId
     })
     .then(response => {
-      var id = response.data.id;
+      var updatedPost = response.data;
+      var id = updatedPost.id;
 
       var data = this.state.data;
-      data[id].vote_count -= 1;
+      data[id] = updatedPost;
 
       this.setState({data: data});
     });
