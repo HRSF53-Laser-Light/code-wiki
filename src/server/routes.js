@@ -20,6 +20,7 @@ router.post('/api/signout', controller.signout.post);
 router.get('/api/posts', util.checkUser, controller.posts.get);
 
 router.get('/api/tags', util.checkUser, controller.tags.get);
+router.get('/api/tagId', util.checkUser, controller.tagId.get);
 
 router.get('/api/categories', util.checkUser, controller.categories.get);
 

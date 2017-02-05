@@ -13,8 +13,8 @@ export default class App extends React.Component {
     super();
     this.state = {
       signedIn: true,
-      username: null,
-      userId: null,
+      username: 'test2',
+      userId: 1,
       allCategories: ['All'],
       currentCategory: 'All',
       tags: [],
@@ -85,6 +85,7 @@ export default class App extends React.Component {
         updateCategory={this.updateCategory}/>
 
         <MainView
+        userId={this.state.userId}
         currentCategory={this.state.currentCategory}
         allCategories={this.state.allCategories}
         createPost={this.state.createPost}

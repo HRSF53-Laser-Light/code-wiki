@@ -1,10 +1,32 @@
 import React from 'react';
-import ReactDOM from 'react-dom'
+import axios from 'axios';
 
 export default class Post extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      tags: []
+    }
   }
+
+  componentDidMount() {
+    var _this = this;
+
+    axios.get('api/tagId', {
+      params: {
+        postId: this.props.data.id
+      }
+    })
+    .then(function(response) {
+      _this.setState({
+        tags: response.data
+      });
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+  }
+
   render() {
     return (
       <li>
@@ -15,16 +37,24 @@ export default class Post extends React.Component {
           </div>
           <div className="col-sm-2 text-right">
             <ul className="tag-list">
-              <li>Debugging</li>
+              {this.state.tags.map(tag => (<li>{tag}</li>))}
             </ul>
           </div>
         </div>
         <div className="row mb10">
           <div className="col-sm-1 text-center">
             <div className="votes">
-              <a><i className="fa fa-arrow-circle-up fa-2x" aria-hidden="true"></i></a>
+              <a><i
+              className="fa fa-arrow-circle-up fa-2x"
+              aria-hidden="true"
+              onClick={()=>this.props.upVotePost(this.props.data.id)}>
+              </i></a>
               <span className="votes-numb">{this.props.data.vote_count}</span>
-              <a><i className="fa fa-arrow-circle-down fa-2x" aria-hidden="true"></i></a>
+              <a><i
+              className="fa fa-arrow-circle-down fa-2x"
+              aria-hidden="true"
+              onClick={()=>this.props.downVotePost(this.props.data.id)}>
+              </i></a>
             </div>
           </div>
           <div className="col-sm-2 text-center">
@@ -39,12 +69,6 @@ export default class Post extends React.Component {
               </a>
               <p>{this.props.data.link_description}</p>
             </div>
-          </div>
-        </div>
-        <div className="divider-full mb10"></div>
-        <div className="row">
-          <div className="col-sm-12">
-            <p>TL;DR - The solution is easy. Start the server with npm start. This will fix it.</p>
           </div>
         </div>
       </li>
