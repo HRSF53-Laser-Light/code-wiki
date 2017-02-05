@@ -26,7 +26,6 @@ export default class GuestView extends React.Component {
 
   signUpNewUser(e) {
     e.preventDefault();
-    console.log(this.state.username, ' // ', this.state.password);
     axios.post('/api/signup', {
       username: this.state.username,
       password: this.state.password
@@ -48,9 +47,9 @@ export default class GuestView extends React.Component {
       password: this.state.password
     })
     .then((response) => {
-      if(response.status === 200) {
+      if(response.status === 201) {
         //@TODO update to match whatever Kay changes it to in controller.js
-        this.props.updateUser(true, response.data.username);
+        this.props.updateUser(true, response.data.username, response.data.userId);
       }
       else{
         //@TODO flash an error

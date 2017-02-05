@@ -15,7 +15,7 @@ export default class TopNav extends React.Component {
     return (
       <div>
         <ul className="nav navbar-nav navbar-left">
-          <li><PostButton /></li>
+          <li><PostButton setCreatePost={this.props.setCreatePost}/></li>
           <li><SearchBox /></li>
         </ul>
         <ul className="nav navbar-nav navbar-right">

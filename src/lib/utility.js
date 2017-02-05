@@ -17,8 +17,11 @@ module.exports.checkUser = function(req, res, next){
 
 module.exports.createSession = function(req, res, newUser) {
   return req.session.regenerate(function() {
-    req.session.user = newUser.dataValues;
-    console.log('createSession req.session', req.session);
-    res.status(201).send({ username: req.session.user.username });
+    req.session.user = newUser;
+    console.log('req.session is', req.session)
+    console.log('req.session.user', req.session.user);
+    res.status(201).send({
+      username: newUser.dataValues.username,
+      userId: newUser.dataValues.id });
   });
 };

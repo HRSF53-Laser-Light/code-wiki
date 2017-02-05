@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 
 import axios from 'axios';
 
-export default class Posts extends React.Component {
-  constructor() {
-    super();
+export default class NewPost extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
       comment: '',
       category: 'Choose a category',
@@ -90,6 +90,7 @@ export default class Posts extends React.Component {
             <button type="submit" className="btn btn-primary">Submit</button>
             {errorMsg}
           </form>
+          <a href="#" className="pull-right" onClick={(e)=>this.props.setCreatePost(e, false)}>cancel</a>
         </div>
       </div>
     );
