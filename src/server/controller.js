@@ -242,6 +242,8 @@ module.exports = {
     }
   },
 
+  //@TODO need to also add to the post-auth table using id (postId) and commentorId (userId)
+  //commentorId is req.body.commentorId
   // Increment vote count on post
   upvote: {
     post: function(req, res) {
@@ -250,11 +252,13 @@ module.exports = {
       })
         .then(function(result) {
           result.increment('vote_count');
-          res.sendStatus(200);
+          res.json(result);
         });
     }
   },
 
+  //@TODO need to also add to the post-auth table using id (postId) and commentorId (userId)
+  //commentorId is req.body.commentorId
   // Decrement vote count on post
   // Note: can decrement counts <= 0
   downvote: {
@@ -264,7 +268,7 @@ module.exports = {
       })
         .then(function(result) {
           result.decrement('vote_count');
-          res.sendStatus(200);
+          res.json(result);
         });
     }
   }
