@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Loader from 'react-loader';
 
 import Post from './post.jsx';
 
@@ -7,7 +8,8 @@ export default class Posts extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {}
+      data: {},
+      loaded: false
     }
     this.componentDidMount = this.componentDidMount.bind(this);
     this.upVotePost = this.upVotePost.bind(this);
@@ -26,7 +28,8 @@ export default class Posts extends React.Component {
           data[rows[i].id] = rows[i];
         }
         _this.setState({
-          data: data
+          data: data,
+          loaded: true
         });
       })
       .catch(function(err) {
@@ -40,10 +43,11 @@ export default class Posts extends React.Component {
       commentorId: this.props.userId
     })
     .then(response => {
-      var id = response.data.id;
+      var updatedPost = response.data;
+      var id = updatedPost.id;
 
       var data = this.state.data;
-      data[id].vote_count += 1;
+      data[id] = updatedPost;
 
       this.setState({data: data});
     });
@@ -55,10 +59,11 @@ export default class Posts extends React.Component {
       commentorId: this.props.userId
     })
     .then(response => {
-      var id = response.data.id;
+      var updatedPost = response.data;
+      var id = updatedPost.id;
 
       var data = this.state.data;
-      data[id].vote_count -= 1;
+      data[id] = updatedPost;
 
       this.setState({data: data});
     });
@@ -84,8 +89,9 @@ export default class Posts extends React.Component {
       <div className="row">
         <div className="col-sm-12">
           <ul className="posts">
-            {/*this.state.data.map((post, index)=> (<Post data={post} key={post.id} />))*/}
-            {this.renderPosts()}
+            <Loader loaded={this.state.loaded}>
+              {this.renderPosts()}
+            </Loader>
           </ul>
         </div>
       </div>

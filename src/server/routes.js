@@ -24,6 +24,12 @@ router.get('/api/tagId', util.checkUser, controller.tagId.get);
 
 router.get('/api/categories', util.checkUser, controller.categories.get);
 
+router.get('/api/user*', util.checkUser, controller.users.get);
+
+router.get('/api/tag*', util.checkUser, controller.tagName.get);
+
+router.get('/api/category*', util.checkUser, controller.categoryName.get);
+
 
 
 /** USER ACTIONS ON POST **/
@@ -36,6 +42,7 @@ router.post('/api/delete', util.checkUser, controller.delete.post);
 router.post('/api/upvote', util.checkUser, controller.upvote.post);
 
 router.post('/api/downvote', util.checkUser, controller.downvote.post);
+
 
 
 module.exports = router;
