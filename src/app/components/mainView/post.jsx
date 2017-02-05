@@ -44,9 +44,17 @@ export default class Post extends React.Component {
         <div className="row mb10">
           <div className="col-sm-1 text-center">
             <div className="votes">
-              <a><i className="fa fa-arrow-circle-up fa-2x" aria-hidden="true"></i></a>
+              <a><i
+              className="fa fa-arrow-circle-up fa-2x"
+              aria-hidden="true"
+              onClick={()=>this.props.upVotePost(this.props.data.id)}>
+              </i></a>
               <span className="votes-numb">{this.props.data.vote_count}</span>
-              <a><i className="fa fa-arrow-circle-down fa-2x" aria-hidden="true"></i></a>
+              <a><i
+              className="fa fa-arrow-circle-down fa-2x"
+              aria-hidden="true"
+              onClick={()=>this.props.downVotePost(this.props.data.id)}>
+              </i></a>
             </div>
           </div>
           <div className="col-sm-2 text-center">

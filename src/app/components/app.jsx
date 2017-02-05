@@ -13,8 +13,8 @@ export default class App extends React.Component {
     super();
     this.state = {
       signedIn: true,
-      username: null,
-      userId: null,
+      username: 'test2',
+      userId: 1,
       allCategories: ['All'],
       currentCategory: 'All',
       tags: [],
