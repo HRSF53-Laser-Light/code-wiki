@@ -41,7 +41,6 @@ export default class GuestView extends React.Component {
   //if this works, log user in
   signInUser(e) {
     e.preventDefault();
-    console.log(this.state.username, ' // ', this.state.password);
     axios.post('/api/signin', {
       username: this.state.username,
       password: this.state.password
