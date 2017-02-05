@@ -32,7 +32,7 @@ export default class NewPost extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
+    var _this = this;
     // Check if post has errors
     if (this.handleErrors()) {
       this.setState({errors: true});
@@ -46,7 +46,7 @@ export default class NewPost extends React.Component {
         tags: this.state.tags
       })
       .then(function(response) {
-        console.log(response);
+        _this.props.setCreatePost(e, false);
       })
       .catch(function(error) {
         console.log(error);

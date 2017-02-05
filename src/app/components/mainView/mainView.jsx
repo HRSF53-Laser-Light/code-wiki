@@ -8,6 +8,7 @@ export default class MainView extends React.Component {
   constructor(props) {
     super(props);
   }
+
   showExistingPosts() {
     return (
       <div>
@@ -17,6 +18,7 @@ export default class MainView extends React.Component {
       </div>
     );
   }
+
   createNewPost() {
     return (
       <NewPost
@@ -24,6 +26,7 @@ export default class MainView extends React.Component {
       setCreatePost={this.props.setCreatePost}/>
     );
   }
+
   render() {
     return (
       <div className="col-sm-10 main-container">
