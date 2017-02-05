@@ -3,6 +3,7 @@ var isLoggedIn = function(req) {
 };
 
 module.exports.checkUser = function(req, res, next){
+
   if (!isLoggedIn(req)) {
     // User must be redirected to Signin page
     res.sendStatus(401);
