@@ -145,6 +145,22 @@ module.exports = {
     }
   },
 
+  // Retrieve username associated with user id
+  users: {
+    get: function(req, res) {
+      var userId = req.url.slice(9);
+
+      db.User.findAll({
+        where: {
+          id: userId
+        }
+      })
+      .then(function(user) {
+        res.json(user[0].username);
+      });
+    }
+  },
+
   // Add a new post to database
   submit: {
     post: function(req, res) {
