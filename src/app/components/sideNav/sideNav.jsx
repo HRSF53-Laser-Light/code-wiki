@@ -6,6 +6,10 @@ export default class SideNav extends React.Component {
     super(props);
   }
 
+  componentDidMount() {
+    this.props.getCategories();  
+  }  
+
   renderCategories() {
     return (
       this.props.allCategories.map(name => {
