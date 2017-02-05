@@ -34,7 +34,7 @@ export default class Post extends React.Component {
           </div>
           <div className="col-sm-9">
             <div className="post-content">
-              <a href={this.props.data.link_url}>
+              <a href={this.props.data.link_url} target="_blank">
                 <h4>{this.props.data.link_title}</h4>
               </a>
               <p>{this.props.data.link_description}</p>

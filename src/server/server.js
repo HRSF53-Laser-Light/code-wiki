@@ -18,7 +18,7 @@ app.use(parser.urlencoded({ extended: true }));
 app.use(session({
   secret: 'saucecat',
   resave: false,
-  saveUnitialized: true,
+  saveUninitialized: true,
   cookie: {
     secure: true, 
     maxAge: 3600000 

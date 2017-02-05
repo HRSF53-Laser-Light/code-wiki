@@ -41,7 +41,6 @@ module.exports = {
 
                 // Create session and send back 201: Created code
                 .then(function(user) {
-                  var sess = req.session
                   util.createSession(req, res, user);
                 });
               }

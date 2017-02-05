@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import axios from 'axios';
 
-export default class Posts extends React.Component {
+export default class NewPost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -46,7 +46,7 @@ export default class Posts extends React.Component {
         tags: this.state.tags
       })
       .then(function(response) {
-        _this.props.newPostHandler(e);
+        _this.props.setCreatePost(e, false);
       })
       .catch(function(error) {
         console.log(error);
@@ -90,6 +90,7 @@ export default class Posts extends React.Component {
             <button type="submit" className="btn btn-primary">Submit</button>
             {errorMsg}
           </form>
+          <a href="#" className="pull-right" onClick={(e)=>this.props.setCreatePost(e, false)}>cancel</a>
         </div>
       </div>
     );

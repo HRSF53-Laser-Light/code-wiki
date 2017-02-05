@@ -7,10 +7,6 @@ import NewPost from './newPost.jsx';
 export default class MainView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      createPost: false
-    }
-    this.newPostHandler = this.newPostHandler.bind(this);
   }
 
   showExistingPosts() {
@@ -22,17 +18,18 @@ export default class MainView extends React.Component {
       </div>
     );
   }
-  newPostHandler(e) {
-    e.preventDefault();
-    this.setState({
-      createPost: !this.state.createPost
-    })
+
+  createNewPost() {
+    return (
+      <NewPost setCreatePost={this.props.setCreatePost}/>
+    );
   }
+
   render() {
     return (
       <div className="col-sm-10 main-container">
         <div className="main">
-          {this.state.createPost ? <NewPost newPostHandler={this.newPostHandler} /> : this.showExistingPosts()}
+          {this.props.createPost ? this.createNewPost() : this.showExistingPosts()}
         </div>
       </div>
     );
