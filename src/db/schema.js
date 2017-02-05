@@ -3,12 +3,12 @@ var Sequelize = require('sequelize');
 var sequelize = new Sequelize('wiki', 'root', '');
 
 var User = sequelize.define('user', {
-  username: Sequelize.STRING,
+  username: {type: Sequelize.STRING, unique: true},
   password: Sequelize.STRING
 });
 
 var Tag = sequelize.define('tag', {
-  tag: Sequelize.STRING
+  tag: {type: Sequelize.STRING, unique: false}
 });
 
 var Post = sequelize.define('post', {
@@ -21,7 +21,7 @@ var Post = sequelize.define('post', {
 });
 
 var Category = sequelize.define('category', {
-  name: Sequelize.STRING
+  name: {type: Sequelize.STRING, unique: false}
 });
 
 var CategoryPosts = Category.hasMany(Post);
