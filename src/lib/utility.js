@@ -1,5 +1,5 @@
 var isLoggedIn = function(req) {
-  // console.log('req session', req.session);
+  console.log('isLoggedIn req', req);
   // console.log('isLoggedIn req', req);
   return req.session ? !!req.session.user : false;
 };
