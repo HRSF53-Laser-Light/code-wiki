@@ -20,11 +20,26 @@ export default class App extends React.Component {
       tags: [],
       createPost: false
     }
-    //@TODO move bind calls to here
+
+    this.getUserFromSession();
+
     this.setCreatePost  = this.setCreatePost.bind(this);
     this.updateUser     = this.updateUser.bind(this);
     this.updateCategory = this.updateCategory.bind(this);
     this.getCategories = this.getCategories.bind(this);
+  }
+
+  getUserFromSession() {
+    axios.get('/api/session')
+    .then(response => {
+      if(response.status === 200) {
+        this.setState({
+          signedIn: true,
+          username: response.data.user.username,
+          userId: response.data.user.id
+        });
+      }
+    });
   }
 
   //@QUESTION should we be using for loops, or ForEach, by importing underscore? or .map?

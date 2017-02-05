@@ -10,6 +10,21 @@ var saltRounds = 10;
 
 module.exports = {
   // Sign up new user
+
+  session: {
+    get: function(req, res) {
+      if(req.session.user) { 
+        res.json({
+          user: req.session.user
+        });
+      }
+      else {
+        res.send(401);
+      }
+    }
+  },
+
+
   signup: {
     post: function(req, res) {
       var username = req.body.username;
