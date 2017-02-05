@@ -294,7 +294,9 @@ module.exports = {
       })
         .then(function(result) {
           result.increment('vote_count');
-          res.json(result);
+          result.reload().then(function() {
+            res.json(result);  
+          });
         });
     }
   },
@@ -310,7 +312,9 @@ module.exports = {
       })
         .then(function(result) {
           result.decrement('vote_count');
-          res.json(result);
+          result.reload().then(function() {
+            res.json(result);  
+          });
         });
     }
   }
@@ -320,87 +324,5 @@ module.exports = {
 
 
 
-// OLD POST LOOKUP FUNCTIONALITY
-
-// db.Post.findOne({
-//   where: {
-//     problem_statement: req.body.problem,
-//     resource: req.body.resource
-//   }
-// })
-//   .then(function(results) {
-//     // Message if exact post has already been made
-//     if (results !== null) {
-//       console.log('Your message has already been posted');
-//     // Create new post
-//     } else {
-//       db.Category.findOne({
-//         where: { name: req.body.category }
-//       })
-//         .then(function(results) {
-//           /**** TO DO: createdAt, updatedAt, CategoryId ****/
-//           db.Post.create({
-//             problem_statement: req.body.problem,
-//             resource: req.body.resource,
-//             vote_count: 0,
-//             CategoryId: results.dataValues.id
-//           })
-//             .then(function() {
-//               res.sendStatus(201);
-//             });
-//         })
-//     }
-//   })
 
 
-
-// // First lookup the id of the category which the post belongs to
-// db.Category.findOne({
-//   where: { name: req.body.category }
-// })
-// .then(function(category) {
-//   // Next scrape for meta data from any link in the comment
-//   console.log(req.body.userId);
-//   helpers.externalRequest.linkPreview(link_url)
-//     .then(function(metaData) {
-
-//       if (metaData) {
-//         metaData = JSON.parse(metaData);
-//         db.Post.create({
-//           comment: req.body.comment,
-//           link_url: metaData.url,
-//           link_description: metaData.description,
-//           link_image: metaData.image,
-//           link_title: metaData.title,
-//           vote_count: 0,
-//           categoryId: category.id,
-//           userId: req.body.userId,
-//           tags: tags
-//         }, {
-//           include: [
-//           // below is only needed if creating a new category when the post is created
-//           // {association: db.PostCategory},
-//           {association: db.PostTags}
-//           ]
-//         });
-
-//       } else {
-//         db.Post.create({
-//           comment: req.body.comment,
-//           vote_count: 0,
-//           categoryId: category.id,
-//           userId: req.body.userId,
-//           tags: tags
-//         }, {
-//           include: [
-//           // below is only needed if creating a new category when the post is created
-//           // {association: db.PostCategory},
-//           {association: db.PostTags}
-//           ]
-//         });
-//       }
-//     })
-// })
-// .then(function(result) {
-//   res.json('posted');
-// });

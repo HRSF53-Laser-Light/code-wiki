@@ -43,6 +43,7 @@ export default class Posts extends React.Component {
       commentorId: this.props.userId
     })
     .then(response => {
+      console.log(response);
       var updatedPost = response.data;
       var id = updatedPost.id;
 
