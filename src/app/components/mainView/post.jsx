@@ -29,7 +29,7 @@ export default class Post extends React.Component {
 
   render() {
     return (
-      <li>
+      <li key={this.props.data.id}>
         <div className="row mb10">
           <div className="col-sm-10">
             <span className="username">Kay</span>

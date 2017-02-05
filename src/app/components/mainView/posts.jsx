@@ -88,11 +88,11 @@ export default class Posts extends React.Component {
     return (
       <div className="row">
         <div className="col-sm-12">
-          <ul className="posts">
-            <Loader loaded={this.state.loaded}>
+          <Loader loaded={this.state.loaded}>
+            <ul className="posts">
               {this.renderPosts()}
-            </Loader>
-          </ul>
+            </ul>
+          </Loader>
         </div>
       </div>
     );
