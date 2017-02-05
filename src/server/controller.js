@@ -116,10 +116,16 @@ module.exports = {
   posts: {
     get: function(req, res) {
       db.Post.findAndCountAll({
+        include: [
+          {
+            model: db.User
+          }
+        ],
         order: [['createdAt', 'DESC']],
         limit: 10
       })
         .then(function(posts) {
+          console.log(posts.rows[0].dataValues);
           res.json(posts);
         });
     }
