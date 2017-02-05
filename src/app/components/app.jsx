@@ -15,11 +15,36 @@ export default class App extends React.Component {
       signedIn: true,
       username: null,
       userId: null,
-      category: 'All',
+      allCategories: ['All'],
+      currentCategory: 'All',
       tags: [],
       createPost: false
     }
     //@TODO move bind calls to here
+    this.setCreatePost  = this.setCreatePost.bind(this);
+    this.updateUser     = this.updateUser.bind(this);
+    this.updateCategory = this.updateCategory.bind(this);
+  }
+
+    componentDidMount() {
+    this.getCategories();
+  }
+
+  //@QUESTION should we be using for loops, or ForEach, by importing underscore? or .map?
+  getCategories() {
+    axios.get('/api/categories')
+    .then(response => {
+      var data = response.data;
+
+      //default to always having an 'All' category. also the default for App's state.category
+      var newCategories = ['All'];
+
+      for(var i = 0; i < data.length; i++) {
+        newCategories.push(data[i].name);
+      }
+
+      this.setState({allCategories: newCategories});
+    });
   }
 
   setCreatePost(e, boolValue) {
@@ -36,10 +61,10 @@ export default class App extends React.Component {
     });
   }
 
-  updateCategory(e, category) {
+  updateCategory(e, currentCategory) {
     e.preventDefault();
     this.setState({
-      category: category
+      currentCategory: currentCategory
     });
   }
 
@@ -50,18 +75,20 @@ export default class App extends React.Component {
         <TopNav
         username={this.state.username}
         signedIn={this.state.signedIn}
-        updateUser={this.updateUser.bind(this)}
-        resetCategory={this.updateCategory.bind(this)}
-        setCreatePost={this.setCreatePost.bind(this)}/>
+        updateUser={this.updateUser}
+        resetCategory={this.updateCategory}
+        setCreatePost={this.setCreatePost}/>
 
         <SideNav
-        category={this.state.category}
-        updateCategory={this.updateCategory.bind(this)}/>
+        currentCategory={this.state.currentCategory}
+        allCategories={this.state.allCategories}
+        updateCategory={this.updateCategory}/>
 
         <MainView
-        category={this.state.category}
+        currentCategory={this.state.currentCategory}
+        allCategories={this.state.allCategories}
         createPost={this.state.createPost}
-        setCreatePost={this.setCreatePost.bind(this)}/>
+        setCreatePost={this.setCreatePost}/>
       </div>
     );
   }
@@ -71,10 +98,10 @@ export default class App extends React.Component {
       <div>
         <TopNav
         signedIn={this.state.signedIn}
-        updateUser={this.updateUser.bind(this)}/>
+        updateUser={this.updateUser}/>
 
         <GuestView
-        updateUser={this.updateUser.bind(this)}/>
+        updateUser={this.updateUser}/>
       </div>
     );
   }

@@ -4,39 +4,14 @@ import axios from 'axios';
 export default class SideNav extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      test: false,
-      categories : ['All']
-    }
-  }
-
-  componentDidMount() {
-    this.getCategories();
-  }
-
-  //@QUESTION should we be using for loops, or ForEach, by importing underscore? or .map?
-  getCategories() {
-    axios.get('/api/categories')
-    .then(response => {
-      var data = response.data;
-
-      //default to always having an 'All' category. also the default for App's state.category
-      var newCategories = ['All'];
-
-      for(var i = 0; i < data.length; i++) {
-        newCategories.push(data[i].name);
-      }
-
-      this.setState({categories: newCategories});
-    });
   }
 
   renderCategories() {
     return (
-      this.state.categories.map(name => {
+      this.props.allCategories.map(name => {
         
         //Sets the class to active based on the App's state
-        var activeStatus = (name === this.props.category ? 'active' : '');
+        var activeStatus = (name === this.props.currentCategory ? 'active' : '');
 
         return (
           <li

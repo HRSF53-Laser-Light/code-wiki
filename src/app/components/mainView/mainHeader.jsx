@@ -8,7 +8,7 @@ export default class MainHeader extends React.Component {
     return (
       <div className="row">
         <div className="col-sm-4">
-          <h3>{this.props.category}</h3>
+          <h3>{this.props.currentCategory}</h3>
         </div>
         <div className="col-sm-8 text-right">
           <span>Filter By: </span>
