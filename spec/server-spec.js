@@ -25,14 +25,14 @@ describe('', function() {
     server.close();
   });
 
-  beforeEach(function() {
-    // remove Sterling Archer from db for future tests
-    db.User.destroy({
-      where: { username: 'sterlingarcher' }
-    }).then(function(results) {
-      console.log('results', results);
-    });
-  });
+  // beforeEach(function() {
+  //   // remove Sterling Archer from db for future tests
+  //   db.User.destroy({
+  //     where: { username: 'sterlingarcher' }
+  //   }).then(function(results) {
+  //     console.log('results', results);
+  //   });
+  // });
 
 
   describe('Sign up:', function() {
@@ -83,13 +83,39 @@ describe('', function() {
     });
 
     // TODO: fill out test when error components are complete
-    xit('Indicates when username is already taken', function(done) {
+    it('Indicates when username is already taken', function(done) {
+      var options = {
+        'method': 'POST',
+        'followAllRedirects': true,
+        'uri': 'http://127.0.0.1:4568/api/signup',
+        'json': {
+          'username': 'sterlingarcher',
+          'password': 'mawp'
+        }
+      };
 
+      request(options, function(err, res, body) {
+        expect(res.statusCode).to.equal(401);
+        done();
+      });
     });
 
     // TODO: fill out test when error components are complete
-    xit('Tells user to use sign in page when user enters account info in database', function(done) {
+    it('Tells user to use sign in page when user enters account info in database', function(done) {
+      var options = {
+        'method': 'POST',
+        'followAllRedirects': true,
+        'uri': 'http://127.0.0.1:4568/api/signup',
+        'json': {
+          'username': 'sterlingarcher',
+          'password': 'phrasing'
+        }
+      };
 
+      request(options, function(err, res, body) {
+        expect(res.statusCode).to.equal(204);
+        done();
+      });
     });
   });
 
@@ -115,7 +141,7 @@ describe('', function() {
     });
 
     // TODO: test status code when frontend components complete
-    xit('Prompts user to correct password if stored username is entered but password does not match', function(done) {
+    it('Prompts user to correct password if stored username is entered but password does not match', function(done) {
       var options = {
         'method': 'POST',
         'uri': 'http://127.0.0.1:4568/api/signin',
@@ -126,7 +152,7 @@ describe('', function() {
       };
 
       request(options, function(err, res, body) {
-        expect(res.statusCode).to.equal(404);
+        expect(res.statusCode).to.equal(401);
         done();
       });
     });
@@ -143,7 +169,7 @@ describe('', function() {
       }
 
       request(options, function(err, res, body) {
-        expect(res.statusCode).to.equal(302);
+        expect(res.statusCode).to.equal(201);
         done();
       });
     });
@@ -151,29 +177,58 @@ describe('', function() {
 
   // TODO: test status code and/or session when frontend components complete and authentication/sessions done
   describe('Sign out:', function() {
+
+    var requestWithSession = request.defaults({jar: true});
+
     it('Redirects to sign out page', function(done) {
       var options = {
         'method': 'POST',
         'uri': 'http://127.0.0.1:4568/api/signout',
       }
 
-      request(options, function(err, res, body) {
-        expect(res.statusCode).to.equal(302);
+      requestWithSession(options, function(err, res, body) {
+        expect(res.statusCode).to.equal(200);
         done();
       });
+    });
+
+    // TODO: check session destroy
+    xit('Destroys session cookie upon signout', function(done) {
+
     });
   });
 
   describe('Posting:', function() {
+
+    var requestWithSession = request.defaults({jar: true});
+
     before(function() {
+
+      // var options = {
+      //   'method': 'POST',
+      //   'uri': 'http://127.0.0.1:4568/api/signup',
+      //   'json': {
+      //     'username': 'sterlingarcher',
+      //     'password': 'phrasing'
+      //   }
+      // };
+
+      // request(options, function(err, res, body) {
+      //   console.log('res', res);
+      //   done();
+      // });
+
       db.Post.destroy({
         where: {}
       });
 
       for (var i = 0; i < 14; i++) {
         db.Post.create({
-          problem_statement: 'problem' + i,
-          resource: 'link' + i,
+          comment: 'problem' + i,
+          link_url: 'link' + i,
+          link_description: 'desc' + i,
+          link_image: 'img' + i,
+          link_title: 'title' + i,
           vote_count: 0
         });
       }
@@ -197,19 +252,19 @@ describe('', function() {
         'method': 'POST',
         'uri': 'http://127.0.0.1:4568/api/submit',
         'json': {
-          'problem_statement': 'problem3',
-          'resource': 'link3'
+          'comment': 'problem3',
+          'link_url': 'link3'
         }
       };
 
-      request(options, function(err, res, body) {
+      requestWithSession(options, function(err, res, body) {
         done();
       })
     });
 
     it('Deletes post from database when user removes post', function(done) {
       db.Post.find({
-        where: { problem_statement: 'problem1' }
+        where: { comment: 'problem1' }
       })
       .then(function(results) {
         var options = {
@@ -219,7 +274,7 @@ describe('', function() {
             'id': results.dataValues.id
           }
         };
-        request(options, function(err, res, body) {
+        requestWithSession(options, function(err, res, body) {
           db.Post.find({
             where: { id: results.dataValues.id }
           })
@@ -234,6 +289,8 @@ describe('', function() {
   });
 
   describe('Tagging:', function() {
+    var requestWithSession = request.defaults({jar: true});
+
     before(function() {
       db.Tag.destroy({
         where: {}
@@ -254,7 +311,7 @@ describe('', function() {
         'url': 'http://127.0.0.1:4568/api/tags'
       }
 
-      request(options, function(err, res, body) {
+      requestWithSession(options, function(err, res, body) {
         expect(JSON.parse(body).length).to.equal(4);
         done();
       });
@@ -263,14 +320,16 @@ describe('', function() {
     // TODO: tagpost test
     xit('Adds tags to post', function(done) {
       db.Post.create({
-        problem_statement: 'too many kriegers',
-        resource: 'http://www.nokriegers.com',
+        comment: 'too many kriegers',
+        link_url: 'http://www.nokriegers.com',
         vote_count: 0
       });
     });
   });
 
   describe('Categories:', function() {
+    var requestWithSession = request.defaults({jar: true});
+
     before(function() {
       db.Category.destroy({
         where: {}
@@ -291,7 +350,7 @@ describe('', function() {
         'url': 'http://127.0.0.1:4568/api/categories'
       }
 
-      request(options, function(err, res, body) {
+      requestWithSession(options, function(err, res, body) {
         expect(JSON.parse(body).length).to.equal(2);
         done();
       });
@@ -304,21 +363,26 @@ describe('', function() {
   });
 
   describe('Ranking:', function() {
+    var requestWithSession = request.defaults({jar: true});
+
     before(function() {
       db.Post.destroy({
-        where: { problem_statement: 'not enough black turtlenecks' }
+        where: { comment: 'not enough black turtlenecks' }
       });
 
       db.Post.create({
-        problem_statement: 'not enough black turtlenecks',
-        resource: 'http://www.turtlenecksgalore.com',
+        comment: 'my favorite black turtlenecks',
+        link_url: 'http://www.turtlenecksgalore.com',
+        link_description: 'turtlenecks up to your neck!',
+        link_image: 'http://www.turtlenecks.com',
+        link_title: 'turtlenecks galore',
         vote_count: 0
       });
     });
 
     it('Adds one to vote count when user upvotes post', function(done) {
       db.Post.find({
-        where: { problem_statement: 'not enough black turtlenecks' }
+        where: { comment: 'my favorite black turtlenecks' }
       }).then(function(results) {
         var options = {
           'method': 'POST',
@@ -327,9 +391,9 @@ describe('', function() {
             'id': results.dataValues.id
           }
         };
-        request(options, function(err, res, body) {
+        requestWithSession(options, function(err, res, body) {
           db.Post.find({
-            where: { problem_statement: 'not enough black turtlenecks' }
+            where: { comment: 'my favorite black turtlenecks' }
           }).then(function(posts) {
             expect(posts.dataValues.vote_count).to.equal(1);
             done();
@@ -340,7 +404,7 @@ describe('', function() {
 
     it('Subtracts one from vote count when user downvotes post', function(done) {
       db.Post.find({
-        where: { problem_statement: 'not enough black turtlenecks' }
+        where: { comment: 'my favorite black turtlenecks' }
       }).then(function(results) {
         var options = {
           'method': 'POST',
@@ -349,9 +413,9 @@ describe('', function() {
             'id': results.dataValues.id
           }
         };
-        request(options, function(err, res, body) {
+        requestWithSession(options, function(err, res, body) {
           db.Post.find({
-            where: { problem_statement: 'not enough black turtlenecks' }
+            where: { comment: 'my favorite black turtlenecks' }
           }).then(function(posts) {
             expect(posts.dataValues.vote_count).to.equal(0);
             done();
@@ -362,7 +426,7 @@ describe('', function() {
 
     it('Decrements vote count even when vote is zero or negative', function(done) {
       db.Post.find({
-        where: { problem_statement: 'not enough black turtlenecks' }
+        where: { comment: 'my favorite black turtlenecks' }
       }).then(function(results) {
         var options = {
           'method': 'POST',
@@ -371,9 +435,9 @@ describe('', function() {
             'id': results.dataValues.id
           }
         };
-        request(options, function(err, res, body) {
+        requestWithSession(options, function(err, res, body) {
           db.Post.find({
-            where: { problem_statement: 'not enough black turtlenecks' }
+            where: { comment: 'my favorite black turtlenecks' }
           }).then(function(posts) {
             expect(posts.dataValues.vote_count).to.equal(-1);
             done();

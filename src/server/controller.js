@@ -1,10 +1,10 @@
-var bcrypt = require('bcrypt');
-var request = require('request');
-var Promise = require('bluebird');
-
 var db = require('../db/schema');
 var util = require('../lib/utility');
 var helpers = require('./helpers');
+
+var bcrypt = require('bcrypt');
+var request = require('request');
+var Promise = require('bluebird');
 
 var saltRounds = 10;
 
@@ -100,33 +100,6 @@ module.exports = {
           });
         }
       })
-        .then(function(users) {
-          // Username is not in database
-          if (users.length === 0) {
-            console.log('There is no account with that username. Please try again.');
-            res.sendStatus(401);
-            //res.redirect('/api/signin');
-          // Username is in database
-          } else {   
-            bcrypt.compare(req.body.password, users[0].dataValues.password, function(err, comparison) {
-              if (err) {
-                console.log('Error in comparison', err);
-              } else {
-                // Passwords match
-                if (comparison === true) {
-                  //TEMPORARY
-                  res.send(users[0].dataValues);
-                  // res.redirect('/');
-                // Passwords don't match
-                } else {
-                  console.log('Password does not match. Please try again.');
-                  res.sendStatus(401);
-                  // res.redirect('/api/signin');
-                }
-              }
-            });
-          }
-        })
     }
   },
 
