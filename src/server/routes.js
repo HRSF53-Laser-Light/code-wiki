@@ -25,6 +25,10 @@ router.get('/api/categories', util.checkUser, controller.categories.get);
 
 router.get('/api/user*', util.checkUser, controller.users.get);
 
+router.get('/api/tag*', util.checkUser, controller.tagName.get);
+
+router.get('/api/category*', util.checkUser, controller.categoryName.get);
+
 
 
 /** USER ACTIONS ON POST **/
