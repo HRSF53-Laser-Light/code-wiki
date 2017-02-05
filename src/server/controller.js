@@ -135,6 +135,16 @@ module.exports = {
     }
   },
 
+  tagId: {
+    get: function(req, res) {
+      db.sequelize.query('select tag from tags where id in (select tagId from tagpost where postId = ' + req.query.postId + ');').spread(function(results, metadata) {
+        var tags = [];
+        results.map(tag => {tags.push(tag.tag);})
+        res.json(tags);
+      });
+    }
+  },
+
   // Retrieve all categories in Categories table
   categories: {
     get: function(req, res) {
@@ -159,41 +169,52 @@ module.exports = {
       // Separate tags into an array
       var tags = helpers.separateTags(req.body.tags);
 
-      // First scrape for meta data with link from comment
+      // First scrape for meta data
       helpers.externalRequest.linkPreview(link_url)
         .then(function(metaData) {
-          // Store post in database with the link's metadata
-          if (metaData) {
-            metaData = JSON.parse(metaData);
-            db.Post.create({
-              comment: req.body.comment,
-              link_url: metaData.url,
-              link_description: metaData.description,
-              link_image: metaData.image,
-              link_title: metaData.title,
-              vote_count: 0,
-              category: {name: req.body.category},
-              tags: tags
-            }, {
-              include: [
-              {association: db.PostCategory},
-              {association: db.PostTags}
-              ]
-            });
-          // Store post in database when there is no link or metadata returned
-          } else {
-            db.Post.create({
-              comment: req.body.comment,
-              vote_count: 0,
-              category: {name: req.body.category},
-              tags: tags
-            }, {
-              include: [
-              {association: db.PostCategory},
-              {association: db.PostTags}
-              ]
-            });
-          }
+
+          // Now lookup the id of the category submitted
+          db.Category.findOne({
+            where: { name: req.body.category }
+          })
+          .then(function(category) {
+
+            if (metaData) {
+              metaData = JSON.parse(metaData);
+              db.Post.create({
+                comment: req.body.comment,
+                link_url: metaData.url,
+                link_description: metaData.description,
+                link_image: metaData.image,
+                link_title: metaData.title,
+                vote_count: 0,
+                categoryId: category.id,
+                userId: req.body.userId,
+                tags: tags
+              }, {
+                include: [
+                // below is only needed if creating a new category when the post is created
+                // {association: db.PostCategory},
+                {association: db.PostTags}
+                ]
+              });
+
+            } else {
+              db.Post.create({
+                comment: req.body.comment,
+                vote_count: 0,
+                categoryId: category.id,
+                userId: req.body.userId,
+                tags: tags
+              }, {
+                include: [
+                // below is only needed if creating a new category when the post is created
+                // {association: db.PostCategory},
+                {association: db.PostTags}
+                ]
+              });
+            }
+          })
         })
         .then(function(err) {
           if (err) {throw err;}
@@ -278,3 +299,56 @@ module.exports = {
 //         })
 //     }
 //   })
+
+
+
+// // First lookup the id of the category which the post belongs to
+// db.Category.findOne({
+//   where: { name: req.body.category }
+// })
+// .then(function(category) {
+//   // Next scrape for meta data from any link in the comment
+//   console.log(req.body.userId);
+//   helpers.externalRequest.linkPreview(link_url)
+//     .then(function(metaData) {
+
+//       if (metaData) {
+//         metaData = JSON.parse(metaData);
+//         db.Post.create({
+//           comment: req.body.comment,
+//           link_url: metaData.url,
+//           link_description: metaData.description,
+//           link_image: metaData.image,
+//           link_title: metaData.title,
+//           vote_count: 0,
+//           categoryId: category.id,
+//           userId: req.body.userId,
+//           tags: tags
+//         }, {
+//           include: [
+//           // below is only needed if creating a new category when the post is created
+//           // {association: db.PostCategory},
+//           {association: db.PostTags}
+//           ]
+//         });
+
+//       } else {
+//         db.Post.create({
+//           comment: req.body.comment,
+//           vote_count: 0,
+//           categoryId: category.id,
+//           userId: req.body.userId,
+//           tags: tags
+//         }, {
+//           include: [
+//           // below is only needed if creating a new category when the post is created
+//           // {association: db.PostCategory},
+//           {association: db.PostTags}
+//           ]
+//         });
+//       }
+//     })
+// })
+// .then(function(result) {
+//   res.json('posted');
+// });

@@ -85,6 +85,7 @@ export default class App extends React.Component {
         updateCategory={this.updateCategory}/>
 
         <MainView
+        userId={this.state.userId}
         currentCategory={this.state.currentCategory}
         allCategories={this.state.allCategories}
         createPost={this.state.createPost}

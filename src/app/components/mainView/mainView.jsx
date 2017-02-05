@@ -22,6 +22,7 @@ export default class MainView extends React.Component {
   createNewPost() {
     return (
       <NewPost
+      userId={this.props.userId}
       allCategories={this.props.allCategories}
       setCreatePost={this.props.setCreatePost}/>
     );
