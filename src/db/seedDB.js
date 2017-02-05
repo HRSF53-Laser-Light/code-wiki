@@ -1,63 +1,23 @@
-var mysql = require('mysql');
-var Sequelize = require('sequelize');
-var sequelize = new Sequelize('wiki', 'root', '');
+var db = require('./schema');
 
-var User = sequelize.define('user', {
-  username: Sequelize.STRING,
-  password: Sequelize.STRING
-});
+var seedCategories = [
+'Angular',
+'React',
+'MySQL',
+'MongoDB',
+'Sequelize',
+'Express'
+];
 
-var Tag = sequelize.define('tag', {
-  tag: Sequelize.STRING
-});
+formatCategories = (array) => {
+  for (var i = 0; i < array.length; i++) {
+    array[i] = {name: array[i]};
+  }
+  return array;
+}
 
-var Post = sequelize.define('post', {
-  problem_statement: Sequelize.STRING,
-  resource: Sequelize.STRING,
-  vote_count: Sequelize.INTEGER
-});
+// Format array in proper Sequelize format
+seedCategories = formatCategories(seedCategories);
 
-var Category = sequelize.define('category', {
-  name: Sequelize.STRING
-});
-
-Category.hasMany(Post);
-Post.belongsToMany(Tag, {through: 'tagpost'});
-Tag.belongsToMany(Post, {through: 'tagpost'});
-
-sequelize.sync();
-
-
-var seedCategories = ['Angular', 'React', 'Databases', 'Express'];
-
-var promises = [];
-
-  // for(var i = 0; i < seedCategories.length; i++) {
-  //   var newPromise = Category.create({
-  //     name: seedCategories[i]
-  //   });
-  //   console.log('pushing');
-  //   promises.push(newPromise);
-  // }
-  
-  // console.log('before promise.all');
-
-  // Promise.all(promises).then( function(results) {
-  //   results.map(result => {
-  //     console.log(result.dataValues);
-  //   });
-  //   sequelize.close();
-  //   console.log('done'); 
-  // });
-
-  // promises.then(function(newCategories) {
-  //   sequelize.close();
-  //   console.log('done');
-  // });
-
-
-  // for(var i = 0; i < seedCategories.length; i++) {
-  //   db.Category.create({
-  //     name: seedCategories[i]
-  //    });
-  // }
+// Add seed categories to the database
+db.Category.bulkCreate(seedCategories);
