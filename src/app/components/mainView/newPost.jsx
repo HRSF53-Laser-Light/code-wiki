@@ -63,6 +63,17 @@ export default class NewPost extends React.Component {
     })
   }
 
+  renderCategories(){
+    
+    return this.props.allCategories.map(category=> {
+      category = category === 'All' ? 'Choose a category' : category;
+
+      return(
+        <option key={category} value={category}>{category}</option>
+      );
+    });
+  }
+
   render() {
     let errorMsg = this.state.errors ? <span className="error-msg">{this.state.errorMsg}</span> : <span></span>;
 
@@ -72,14 +83,13 @@ export default class NewPost extends React.Component {
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
               <label>Comment</label>
-              <textarea value={this.state.comment} onChange={this.handleChange} name="comment" className="form-control" id="comment" rows="3"></textarea>
+              <textarea
+              value={this.state.comment} onChange={this.handleChange} name="comment" className="form-control" id="comment" rows="3"></textarea>
             </div>
             <div className="form-group">
               <label>Category</label>
               <select value={this.state.category} onChange={this.handleChange} name="category" className="form-control" id="exampleSelect1">
-                <option value="Choose a category">Choose a category</option>
-                <option value="React">React</option>
-                <option value="Angular">Angular</option>
+                {this.renderCategories()}
               </select>
             </div>
             <div className="form-group">
