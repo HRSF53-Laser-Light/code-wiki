@@ -24,8 +24,8 @@ var options = {
     database: 'wiki'
 };
 
-var connection = mysql.createConnection(options); // or mysql.createPool(options); 
-var sessionStore = new MySQLStore({}/* session store options */, connection);
+var connection = mysql.createConnection(options);
+var sessionStore = new MySQLStore({}, connection);
 
 // set up authentication session
 app.use(session({
@@ -33,11 +33,7 @@ app.use(session({
   secret: 'saucecat',
   resave: false,
   saveUninitialized: true,
-  store: sessionStore,
-  cookie: {
-    secure: true, 
-    maxAge: 3600000 
-  }
+  store: sessionStore
 }));
 
 // routing
