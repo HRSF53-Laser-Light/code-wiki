@@ -43,7 +43,8 @@ export default class NewPost extends React.Component {
       axios.post('/api/submit', {
         comment: this.state.comment,
         category: this.state.category,
-        tags: this.state.tags
+        tags: this.state.tags,
+        userId: this.props.userId
       })
       .then(function(response) {
         _this.props.setCreatePost(e, false);
