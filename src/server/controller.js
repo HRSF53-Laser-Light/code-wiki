@@ -155,6 +155,54 @@ module.exports = {
     }
   },
 
+  // Retrieve username associated with user id
+  users: {
+    get: function(req, res) {
+      var userId = req.url.slice(9);
+
+      db.User.findAll({
+        where: {
+          id: userId
+        }
+      })
+      .then(function(user) {
+        res.json(user[0].username);
+      });
+    }
+  },
+
+  // Retrieve name of tag associated with tag id
+  tagName: {
+    get: function(req, res) {
+      var tagId = req.url.slice(8);
+
+      db.Tag.findAll({
+        where: {
+          id: tagId
+        }
+      })
+      .then(function(tag) {
+        res.json(tag[0].tag);
+      })
+    }
+  },
+
+  // Retrieve name of category associated with category id
+  categoryName: {
+    get: function(req, res) {
+      var catId = req.url.slice(13);
+
+      db.Category.findAll({
+        where: {
+          id: catId
+        }
+      })
+      .then(function(category) {
+        res.json(category[0].name);
+      })
+    }
+  },
+
   // Add a new post to database
   submit: {
     post: function(req, res) {
