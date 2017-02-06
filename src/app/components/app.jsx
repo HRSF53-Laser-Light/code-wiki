@@ -34,6 +34,7 @@ export default class App extends React.Component {
     this.updatePostData = this.updatePostData.bind(this);
   }
 
+
   getUserFromSession() {
     axios.get('/api/session')
     .then(response => {
@@ -48,6 +49,7 @@ export default class App extends React.Component {
   }
 
   getPosts() {
+    //for access to 'this' in the async part of the calls
     var _this = this;
 
     axios.get('/api/posts', {
@@ -58,6 +60,10 @@ export default class App extends React.Component {
     .then(function(response) {
 
       var rows = response.data.rows;
+      // data is so we can update based on id
+      // dataByVote is so we can display in the order they are sorted by the server/db
+      // (desn't have to be sorted by votes, it can be anything you want by changing it
+      // on the server side)
       var data = {};
       var dataByVote = [];
 
@@ -110,6 +116,8 @@ export default class App extends React.Component {
     e.preventDefault();
 
     this.setState({ currentCategory: currentCategory},
+    // by passing this method to state, it will only run when the state has been
+    // updated, kind of like a .then function
       this.getPosts);
   }
 
@@ -165,8 +173,8 @@ export default class App extends React.Component {
   }
 
   render() {
-    // return this.state.signedIn ? this.signedInView() : this.signedOutView();
-    return true ? this.signedInView() : this.signedOutView();
+    //conditional rendering based on signedIn state
+    return this.state.signedIn ? this.signedInView() : this.signedOutView();
   }
 }
 
