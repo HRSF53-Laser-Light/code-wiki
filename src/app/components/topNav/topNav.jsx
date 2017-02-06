@@ -13,12 +13,15 @@ export default class TopNav extends React.Component {
 
   signedInView() {
     return (
-      <div>
+      <div className="nav-container">
         <ul className="nav navbar-nav navbar-left">
           <li><PostButton setCreatePost={this.props.setCreatePost}/></li>
           <li><SearchBox /></li>
         </ul>
-        <ul className="nav navbar-nav navbar-right">
+        <ul className="nav navbar-nav navbar-center">
+          <li><img height="50px" src="assets/img/logo.svg" /></li>
+        </ul>
+        <ul className="nav navbar-nav navbar-right nav-account">
           <li><AccountLink username={this.props.username}/></li>
           <li><SignoutButton updateUser={this.props.updateUser}/></li>
         </ul>
@@ -30,10 +33,6 @@ export default class TopNav extends React.Component {
     return (
       <nav className='navbar navbar-default navbar-static-top'>
         <div className='container-fluid'>
-          <ul className="nav navbar-nav navbar-left">
-            <li><img className='logo' src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/magic-marker-icons-natural-wonders/115691-magic-marker-icon-natural-wonders-sun9-sc37.png'/></li>
-            <li><a href="#" className="navbar-brand" onClick={(e)=>this.props.resetCategory(e,'All')}>Code Wiki</a></li>
-          </ul>
           {this.props.signedIn ? this.signedInView() : null}
         </div>
       </nav>
