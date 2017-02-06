@@ -59,7 +59,7 @@ export default class Posts extends React.Component {
       var dataByVote = this.state.dataByVote;
       for (var i = 0; i < dataByVote.length; i++) {
         if (dataByVote[i].id === id) {
-          dataByVote[i].vote_count++;
+          dataByVote[i] = data[id];
         }
       }
 
@@ -88,7 +88,7 @@ export default class Posts extends React.Component {
       var dataByVote = this.state.dataByVote;
       for (var i = 0; i < dataByVote.length; i++) {
         if (dataByVote[i].id === id) {
-          dataByVote[i].vote_count--;
+          dataByVote[i] = data[id];
         }
       }
 
