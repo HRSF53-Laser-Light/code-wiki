@@ -11,7 +11,6 @@ export default class GuestView extends React.Component {
     }
   }
 
-  //@QUESTION: should I be grabbing form data this way?
   trackChange(e) {
     // console.log(e.target.name, ": ", e.target.value);
     this.setState({[e.target.name]: e.target.value});
