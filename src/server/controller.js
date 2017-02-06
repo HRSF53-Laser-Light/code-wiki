@@ -221,7 +221,7 @@ module.exports = {
       helpers.externalRequest.linkPreview(link_url)
         .then(function(metaData) {
 
-          // Now lookup the id of the category submitted
+          // Lookup the id of the category submitted
           db.Category.findOne({
             where: { name: req.body.category }
           })
@@ -284,38 +284,104 @@ module.exports = {
     }
   },
 
-  //@TODO need to also add to the post-auth table using id (postId) and commentorId (userId)
-  //commentorId is req.body.commentorId
-  // Increment vote count on post
   upvote: {
     post: function(req, res) {
+
+      // Grab the post associated with the vote
       db.Post.findOne({
-        where: { id: req.body.id },
+        where: { id: req.body.postId },
       })
         .then(function(result) {
-          result.increment('vote_count');
-          result.reload().then(function() {
-            res.json(result);  
-          });
+          // Check if this user has already voted this post
+          db.UserVotes.findOrCreate({
+            where: {
+              userId: req.body.userId,
+              postId: req.body.postId
+            },
+            defaults: {
+              userId: req.body.userId,
+              postId: req.body.postId,
+              upvote: false,
+              downvote: false
+            }
+          })
+            .then(function(uservote) {
+              if (!uservote[0].dataValues.upvote && !uservote[0].dataValues.downvote) {
+                result.increment('vote_count');
+                result.reload().then(function() {
+                  // Flag that the user submitted an upvote
+                  uservote[0].update({
+                    upvote: true,
+                    downvote: false
+                  });
+                  res.status(202).json(result);  
+                });
+              } else if (!uservote[0].dataValues.upvote && uservote[0].dataValues.downvote) {
+                result.increment('vote_count');
+                result.reload().then(function() {
+                  // Flag that the user is reversing their downvote decision
+                  uservote[0].update({
+                    upvote: false,
+                    downvote: false
+                  });
+                  res.status(202).json(result);  
+                });
+              } else {
+                res.status(200).json(result);
+              }
+            });
         });
     }
   },
 
-  //@TODO need to also add to the post-auth table using id (postId) and commentorId (userId)
-  //commentorId is req.body.commentorId
-  // Decrement vote count on post
-  // Note: can decrement counts <= 0
   downvote: {
     post: function(req, res) {
+
+      // Grab the post associated with the vote
       db.Post.findOne({
-        where: { id: req.body.id },
+        where: { id: req.body.postId },
       })
         .then(function(result) {
-          result.decrement('vote_count');
-          result.reload().then(function() {
-            res.json(result);  
-          });
+          // Check if this user has already voted this post
+          db.UserVotes.findOrCreate({
+            where: {
+              userId: req.body.userId,
+              postId: req.body.postId
+            },
+            defaults: {
+              userId: req.body.userId,
+              postId: req.body.postId,
+              upvote: false,
+              downvote: false
+            }
+          })
+            .then(function(uservote) {
+              if (!uservote[0].dataValues.downvote && !uservote[0].dataValues.upvote) {
+                result.decrement('vote_count');
+                result.reload().then(function() {
+                  // Flag that the user submitted a downvote
+                  uservote[0].update({
+                    upvote: false,
+                    downvote: true
+                  });
+                  res.status(202).json(result);  
+                });
+              } else if (!uservote[0].dataValues.downvote && uservote[0].dataValues.upvote) {
+                result.decrement('vote_count');
+                result.reload().then(function() {
+                  // Flag that the user is reversing their upvote decision
+                  uservote[0].update({
+                    upvote: false,
+                    downvote: false
+                  });
+                  res.status(202).json(result);  
+                });
+              } else {
+                res.status(200).json(result);
+              }
+            });
         });
+
     }
   }
 };
