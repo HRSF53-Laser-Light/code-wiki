@@ -9,8 +9,8 @@ var Promise = require('bluebird');
 var saltRounds = 10;
 
 module.exports = {
-  // Sign up new user
 
+  // Check if user is logged in
   session: {
     get: function(req, res) {
       if(req.session.user) { 
@@ -19,12 +19,12 @@ module.exports = {
         });
       }
       else {
-        res.send(401);
+        res.sendStatus(401);
       }
     }
   },
 
-
+  // Sign up new user
   signup: {
     post: function(req, res) {
       var username = req.body.username;
@@ -127,7 +127,7 @@ module.exports = {
     }
   },
 
-  // Retrieve 10 most recent posts in Posts table
+  // Retrieve 20 posts in Posts table, sorted by descending votes
   posts: {
     get: function(req, res) {
       db.Post.findAndCountAll({
@@ -136,11 +136,10 @@ module.exports = {
             model: db.User
           }
         ],
-        order: [['createdAt', 'DESC']],
-        limit: 10
+        order: [['vote_count', 'DESC']],
+        limit: 20
       })
         .then(function(posts) {
-          console.log(posts.rows[0].dataValues);
           res.json(posts);
         });
     }
