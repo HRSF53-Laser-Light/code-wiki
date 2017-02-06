@@ -178,7 +178,8 @@ module.exports = {
   // Retrieve username associated with user id
   users: {
     get: function(req, res) {
-      var userId = req.url.slice(9);
+      var userId = req.url.match(/\d+/);
+      console.log('userId is', userId);
 
       db.User.findAll({
         where: {
@@ -194,7 +195,7 @@ module.exports = {
   // Retrieve name of tag associated with tag id
   tagName: {
     get: function(req, res) {
-      var tagId = req.url.slice(8);
+      var tagId = req.url.match(/\d+/);
 
       db.Tag.findAll({
         where: {
@@ -210,7 +211,7 @@ module.exports = {
   // Retrieve name of category associated with category id
   categoryName: {
     get: function(req, res) {
-      var catId = req.url.slice(13);
+      var catId = req.url.match(/\d+/);
 
       db.Category.findAll({
         where: {
