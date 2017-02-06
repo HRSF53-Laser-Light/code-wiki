@@ -34,6 +34,13 @@ export default class App extends React.Component {
     this.updatePostData = this.updatePostData.bind(this);
   }
 
+  // componentDidMount() {
+  //   console.log('App component mounted');
+  //   if(this.state.signedIn) {
+  //     this.getPosts();
+  //   }
+  // }
+
   getUserFromSession() {
     axios.get('/api/session')
     .then(response => {
@@ -107,11 +114,11 @@ export default class App extends React.Component {
     });
   }
 
+//@QUESTION is this an anti-pattern? pass a function after setState? should this listen somewhere else?
   updateCategory(e, currentCategory) {
     e.preventDefault();
-    this.setState({
-      currentCategory: currentCategory
-    });
+    this.setState({ currentCategory: currentCategory},
+      this.getPosts);
   }
 
   updatePostData(data) {
@@ -120,7 +127,6 @@ export default class App extends React.Component {
     });
   }
 
-  // @QUESTION should I be passing app state through as props into child components? Is this when we start using Flux/Redux?
   signedInView() {
     return (
       <div>

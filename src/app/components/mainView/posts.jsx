@@ -10,10 +10,11 @@ export default class Posts extends React.Component {
     this.state = {
       // loaded: false
     }
-    this.componentDidMount = this.componentDidMount.bind(this);
+
     this.upVotePost = this.upVotePost.bind(this);
     this.downVotePost = this.downVotePost.bind(this);
   }
+
   componentDidMount() {
     this.props.getPosts();    
   }
