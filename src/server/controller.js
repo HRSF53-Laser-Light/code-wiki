@@ -112,12 +112,12 @@ module.exports = {
     }
   },
 
-  // Retrieve 10 most recent posts in Posts table
+  // Retrieve 20 posts in Posts table, sorted by descending votes
   posts: {
     get: function(req, res) {
-      db.Post.findAndCountAll({
-        order: [['createdAt', 'DESC']],
-        limit: 10
+      db.Post.findAll({
+        order: [['vote_count', 'DESC']],
+        limit: 20
       })
         .then(function(posts) {
           res.json(posts);
@@ -137,6 +137,7 @@ module.exports = {
 
   tagId: {
     get: function(req, res) {
+      console.log('tagId req', req.query)
       db.sequelize.query('select tag from tags where id in (select tagId from tagpost where postId = ' + req.query.postId + ');').spread(function(results, metadata) {
         var tags = [];
         results.map(tag => {tags.push(tag.tag);})
