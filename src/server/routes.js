@@ -14,6 +14,8 @@ router.post('/api/signout', controller.signout.post);
 
 router.get('/api/session', controller.session.get);
 
+
+
 /** LOADING COMPONENTS ON HOMEPAGE **/
 
 // Routes for getting posts, tags, and categories in db
