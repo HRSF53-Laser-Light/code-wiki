@@ -7,6 +7,7 @@ import TopNav from './topNav/topNav.jsx';
 import SideNav from './sideNav/sideNav.jsx';
 import MainView from './mainView/mainView.jsx';
 import GuestView from './guestView/guestView.jsx';
+import Posts from './mainView/posts.jsx';
 
 export default class App extends React.Component {
   constructor() {
@@ -26,7 +27,7 @@ export default class App extends React.Component {
     this.setCreatePost  = this.setCreatePost.bind(this);
     this.updateUser     = this.updateUser.bind(this);
     this.updateCategory = this.updateCategory.bind(this);
-    this.getCategories = this.getCategories.bind(this);
+    this.getCategories  = this.getCategories.bind(this);
   }
 
   getUserFromSession() {
@@ -39,6 +40,36 @@ export default class App extends React.Component {
           userId: response.data.user.id
         });
       }
+    });
+  }
+
+  getPosts() {
+    //getPosts gets called in Posts.jsx and is called on the Posts object (line 20)
+
+    var _this = this;
+
+    console.log(_this);
+    axios.get('/api/posts', {
+      params: {
+        category: _this.props.currentCategory
+      }
+    })
+    .then(function(response) {
+
+      var rows = response.data.rows;
+      var data = {};
+
+      for(var i = 0; i < rows.length; i++) {
+        data[rows[i].id] = rows[i];
+      }
+      console.log('THIS: ', _this);
+      _this.setState({
+        data: data,
+        loaded: true
+      });
+    })
+    .catch(function(err) {
+      console.log(err);
     });
   }
 
@@ -101,6 +132,7 @@ export default class App extends React.Component {
         userId={this.state.userId}
         currentCategory={this.state.currentCategory}
         allCategories={this.state.allCategories}
+        getPosts={this.getPosts}
         createPost={this.state.createPost}
         setCreatePost={this.setCreatePost}/>
       </div>

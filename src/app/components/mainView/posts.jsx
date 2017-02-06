@@ -16,25 +16,7 @@ export default class Posts extends React.Component {
     this.downVotePost = this.downVotePost.bind(this);
   }
   componentDidMount() {
-    var _this = this;
-    // grab post data
-    axios.get('/api/posts')
-      .then(function(response) {
-
-        var rows = response.data.rows;
-        var data = {};
-
-        for(var i = 0; i < rows.length; i++) {
-          data[rows[i].id] = rows[i];
-        }
-        _this.setState({
-          data: data,
-          loaded: true
-        });
-      })
-      .catch(function(err) {
-        console.log(err);
-      })
+    this.props.getPosts.call(this);
   }
 
   upVotePost(postId) {
