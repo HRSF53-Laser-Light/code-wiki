@@ -310,6 +310,11 @@ module.exports = {
 
       // Grab the post associated with the vote
       db.Post.findOne({
+        include: [
+          {
+            model: db.User
+          }
+        ],
         where: { id: req.body.postId },
       })
         .then(function(result) {
@@ -360,6 +365,11 @@ module.exports = {
 
       // Grab the post associated with the vote
       db.Post.findOne({
+        include: [
+          {
+            model: db.User
+          }
+        ],
         where: { id: req.body.postId },
       })
         .then(function(result) {
