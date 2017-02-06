@@ -5,6 +5,7 @@ export default class AccountLink extends React.Component {
     super(props);
   }
 
+  //clicking on this doesn't do anything for now
   render() {
     return (
       <a href="#" >{this.props.username}</a>
