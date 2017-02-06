@@ -25,15 +25,6 @@ describe('', function() {
     server.close();
   });
 
-  // beforeEach(function() {
-  //   // remove Sterling Archer from db for future tests
-  //   db.User.destroy({
-  //     where: { username: 'sterlingarcher' }
-  //   }).then(function(results) {
-  //     console.log('results', results);
-  //   });
-  // });
-
 
   describe('Sign up:', function() {
 
@@ -117,6 +108,34 @@ describe('', function() {
         done();
       });
     });
+
+    it('Adds a session to the database sessions table', function(done) {
+      var options = {
+        'method': 'POST',
+        'followAllRedirects': true,
+        'uri': 'http://127.0.0.1:4568/api/signup',
+        'json': {
+          'username': 'sterlingarcher',
+          'password': 'phrasing'
+        }
+      };
+
+      request(options, function(err, res, body) {});
+
+
+      var found = false;
+
+      db.sequelize.query('select data from sessions').spread(function(results) {
+        for (var key in results) {
+          var row = JSON.parse(results[key].data);
+          if (row.user && row.user.username === 'sterlingarcher') {
+            found = true;
+          }
+        }
+        expect(found).to.equal(true);
+        done();
+      });
+    });
   });
 
   describe('Sign in:', function() {
@@ -177,8 +196,24 @@ describe('', function() {
 
   // TODO: test status code and/or session when frontend components complete and authentication/sessions done
   describe('Sign out:', function() {
-
+    
     var requestWithSession = request.defaults({jar: true});
+    
+    before(function() {
+      var options = {
+        'method': 'POST',
+        'uri': 'http://127.0.0.1:4568/api/signin',
+        'json': {
+          'username': 'sterlingarcher',
+          'password': 'phrasing'
+        }
+      };
+
+      requestWithSession(options, function(err, res, body) {
+        done();
+      });
+    })
+
 
     it('Redirects to sign out page', function(done) {
       var options = {
@@ -186,7 +221,7 @@ describe('', function() {
         'uri': 'http://127.0.0.1:4568/api/signout',
       }
 
-      requestWithSession(options, function(err, res, body) {
+      request(options, function(err, res, body) {
         expect(res.statusCode).to.equal(200);
         done();
       });
@@ -200,41 +235,58 @@ describe('', function() {
 
   describe('Posting:', function() {
 
-    var requestWithSession = request.defaults({jar: true});
+    beforeEach(function() {
+      // remove Sterling Archer from db for future tests
+      var options = {
+        'method': 'POST',
+        'followAllRedirects': true,
+        'uri': 'http://127.0.0.1:4568/api/signup',
+        'json': {
+          'username': 'sterlingarcher',
+          'password': 'phrasing'
+        }
+      };
+
+      request(options, function(err, res, body) {
+        console.log('beforeEach signup body', body);
+      });
+    });
+
+    // var requestWithSession = request.defaults({jar: true});
 
     before(function() {
-
-      // var options = {
-      //   'method': 'POST',
-      //   'uri': 'http://127.0.0.1:4568/api/signup',
-      //   'json': {
-      //     'username': 'sterlingarcher',
-      //     'password': 'phrasing'
-      //   }
-      // };
-
-      // request(options, function(err, res, body) {
-      //   console.log('res', res);
-      //   done();
-      // });
 
       db.Post.destroy({
         where: {}
       });
 
-      for (var i = 0; i < 14; i++) {
+      for (var i = 0; i < 25; i++) {
         db.Post.create({
-          comment: 'problem' + i,
+          comment: 'comment' + i,
           link_url: 'link' + i,
           link_description: 'desc' + i,
           link_image: 'img' + i,
           link_title: 'title' + i,
-          vote_count: 0
+          vote_count: Math.random() * 100
         });
       }
     });
     
-    it('Retrieves latest 10 posts from database for frontend to render', function(done) {
+    it('Retrieves 20 posts from database and sorts by descending vote count', function(done) {
+      var options = {
+        'method': 'POST',
+        'uri': 'http://127.0.0.1:4568/api/signin',
+        'json': {
+          'username': 'sterlingarcher',
+          'password': 'phrasing'
+        }
+      };
+
+      request(options, function(err, res, body) {
+        expect(res.statusCode).to.equal(200);
+        done();
+      })
+
       var options = {
         'method': 'GET',
         'url': 'http://127.0.0.1:4568/api/posts'
@@ -242,7 +294,7 @@ describe('', function() {
 
       request(options, function(err, res, body) {
         expect(res.statusCode).to.equal(200);
-        expect(JSON.parse(body).rows.length).to.equal(10);
+        expect(JSON.parse(body).rows.length).to.equal(20);
         done();
       });
     });
@@ -257,7 +309,7 @@ describe('', function() {
         }
       };
 
-      requestWithSession(options, function(err, res, body) {
+      request(options, function(err, res, body) {
         done();
       })
     });
@@ -274,7 +326,7 @@ describe('', function() {
             'id': results.dataValues.id
           }
         };
-        requestWithSession(options, function(err, res, body) {
+        request(options, function(err, res, body) {
           db.Post.find({
             where: { id: results.dataValues.id }
           })
@@ -289,7 +341,7 @@ describe('', function() {
   });
 
   describe('Tagging:', function() {
-    var requestWithSession = request.defaults({jar: true});
+    // var requestWithSession = request.defaults({jar: true});
 
     before(function() {
       db.Tag.destroy({
@@ -311,7 +363,8 @@ describe('', function() {
         'url': 'http://127.0.0.1:4568/api/tags'
       }
 
-      requestWithSession(options, function(err, res, body) {
+      request(options, function(err, res, body) {
+        console.log('body is', body);
         expect(JSON.parse(body).length).to.equal(4);
         done();
       });
@@ -328,7 +381,7 @@ describe('', function() {
   });
 
   describe('Categories:', function() {
-    var requestWithSession = request.defaults({jar: true});
+    // var requestWithSession = request.defaults({jar: true});
 
     before(function() {
       db.Category.destroy({
@@ -350,7 +403,7 @@ describe('', function() {
         'url': 'http://127.0.0.1:4568/api/categories'
       }
 
-      requestWithSession(options, function(err, res, body) {
+      request(options, function(err, res, body) {
         expect(JSON.parse(body).length).to.equal(2);
         done();
       });
@@ -363,7 +416,7 @@ describe('', function() {
   });
 
   describe('Ranking:', function() {
-    var requestWithSession = request.defaults({jar: true});
+    // var requestWithSession = request.defaults({jar: true});
 
     before(function() {
       db.Post.destroy({
@@ -391,7 +444,7 @@ describe('', function() {
             'id': results.dataValues.id
           }
         };
-        requestWithSession(options, function(err, res, body) {
+        request(options, function(err, res, body) {
           db.Post.find({
             where: { comment: 'my favorite black turtlenecks' }
           }).then(function(posts) {
@@ -413,7 +466,7 @@ describe('', function() {
             'id': results.dataValues.id
           }
         };
-        requestWithSession(options, function(err, res, body) {
+        request(options, function(err, res, body) {
           db.Post.find({
             where: { comment: 'my favorite black turtlenecks' }
           }).then(function(posts) {
@@ -435,7 +488,7 @@ describe('', function() {
             'id': results.dataValues.id
           }
         };
-        requestWithSession(options, function(err, res, body) {
+        request(options, function(err, res, body) {
           db.Post.find({
             where: { comment: 'my favorite black turtlenecks' }
           }).then(function(posts) {
