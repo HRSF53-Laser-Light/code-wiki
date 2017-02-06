@@ -9,6 +9,7 @@ export default class Posts extends React.Component {
     super(props);
     this.state = {
       data: {},
+      dataByVote: [],
       loaded: false
     }
     this.componentDidMount = this.componentDidMount.bind(this);
@@ -23,12 +24,15 @@ export default class Posts extends React.Component {
 
         var rows = response.data.rows;
         var data = {};
+        var dataByVote = [];
 
         for(var i = 0; i < rows.length; i++) {
           data[rows[i].id] = rows[i];
+          dataByVote.push(rows[i]);
         }
         _this.setState({
           data: data,
+          dataByVote: dataByVote,
           loaded: true
         });
       })
@@ -78,11 +82,13 @@ export default class Posts extends React.Component {
   renderPosts() {
     var posts = [];
     var data = this.state.data;
-    for(var key in data) {
+    var dataByVote = this.state.dataByVote;
+
+    for(var i = 0; i < dataByVote.length; i++) {
       posts.push(
         <Post
-        data={data[key]}
-        key={data[key].id}
+        data={dataByVote[i]}
+        key={dataByVote[i].id}
         downVotePost={this.downVotePost}
         upVotePost={this.upVotePost}/>
       )
