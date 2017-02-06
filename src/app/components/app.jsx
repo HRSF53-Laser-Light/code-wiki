@@ -26,6 +26,7 @@ export default class App extends React.Component {
 
     this.getUserFromSession();
 
+    //to give the reference to 'this' the correct context
     this.setCreatePost  = this.setCreatePost.bind(this);
     this.updateUser     = this.updateUser.bind(this);
     this.updateCategory = this.updateCategory.bind(this);
@@ -98,6 +99,7 @@ export default class App extends React.Component {
     });
   }
 
+  //a flag to let MainView know if it should be showing the 'create post' view or not
   setCreatePost(e, boolValue) {
     this.setState({
       createPost: boolValue

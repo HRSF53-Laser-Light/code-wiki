@@ -7,6 +7,7 @@ export default class SideNav extends React.Component {
   }
 
   componentDidMount() {
+    //get the categories the first time the sideNav mounts
     this.props.getCategories();  
   }  
 
@@ -14,7 +15,7 @@ export default class SideNav extends React.Component {
     return (
       this.props.allCategories.map(name => {
         
-        //Sets the class to active based on the App's state
+        //Sets the class to active (purely for styling) based on the App's state
         var activeStatus = (name === this.props.currentCategory ? 'active' : '');
 
         return (

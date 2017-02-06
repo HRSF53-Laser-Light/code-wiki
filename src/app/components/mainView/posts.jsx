@@ -7,6 +7,7 @@ import Post from './post.jsx';
 export default class Posts extends React.Component {
   constructor(props) {
     super(props);
+    //for the Loader that we need to figure out how to implement proprerly
     this.state = {
       // loaded: false
     }
@@ -16,10 +17,13 @@ export default class Posts extends React.Component {
   }
 
   componentDidMount() {
+    //Posts loads for the first time when the Posts compenented 
     this.props.getPosts();    
   }
 
   upVotePost(postId) {
+    // need to send userId with it, so we can keep track of who voted
+    // and not let people vote more than once
     axios.post('/api/upvote', {
       postId: postId,
       userId: this.props.userId
@@ -28,6 +32,8 @@ export default class Posts extends React.Component {
       if (response.status === 200) {
         console.log('You can\'t upvote twice!');
       }
+
+      //takes the updated post and updates just that post in data & dataByVote
       var updatedPost = response.data;
       var id = updatedPost.id;
 
@@ -76,6 +82,7 @@ export default class Posts extends React.Component {
     var data = this.props.postData;
     var postDataByVote = this.props.postDataByVote;
 
+    //creates a b
     for(var i = 0; i < postDataByVote.length; i++) {
       posts.push(
         <Post

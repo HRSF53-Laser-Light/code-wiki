@@ -55,6 +55,7 @@ export default class NewPost extends React.Component {
     }
   }
 
+  //this keeps state in-sync with the form
   handleChange(e) {
     const target = e.target;
     const value = target.value;
