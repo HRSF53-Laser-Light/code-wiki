@@ -171,6 +171,126 @@
   z-index: 9999;
 }
 
+.login-container {
+  background-color: #080A30;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.login-container .footer {
+  background-color: #353879;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 8px 0;
+  font-size: 14px;
+  color: white;
+  font-weight: 200;
+}
+
+.login-container .footer a {
+  color: white;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.signup-main, .login-main, .spaceman {
+  margin-top: auto;
+  margin-bottom: auto;
+  position: absolute;
+  display: table;
+}
+
+.spaceman {
+  top: 0;
+  bottom: 0;
+}
+
+.signup-main, .login-main {
+  color: white;
+  font-weight: 200;
+  top: 0;
+  bottom: 100px;
+}
+
+.signup-main input, .login-main input {
+  background-color: white;
+  color: #FA6600;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 400;
+  border: 3px solid #FA6600;
+  padding: 18px;
+  margin-bottom: 10px;
+}
+
+.signup-main input {
+  border: 3px solid #5400FF;
+  color: #5400FF;
+}
+
+.signup-main input::-webkit-input-placeholder,
+.login-main input::-webkit-input-placeholder {
+  color: #FA6600;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 400; 
+}
+
+.signup-main input::-webkit-input-placeholder {
+  color: #5400FF;
+}
+
+.signup-main input:focus {
+  border: 3px solid #5400FF;
+}
+
+.login-main input:focus {
+  border: 3px solid #FA6600;
+}
+
+.signup-main span,
+.login-main span {
+  display: block;
+}
+
+.login-main button,
+.login-main button:hover {
+  width: 100%;
+  color: white;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 400;
+  background-color: #FA6600;
+  border-radius: 5px;
+  border: 3px solid #FA6600;
+}
+
+.signup-main button,
+.signup-main button:hover {
+  width: 100%;
+  color: white;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 400;
+  background-color: #5400FF;
+  border-radius: 5px;
+  border: 3px solid #5400FF;
+}
+
+.login-main button:hover,
+.login-main button:focus {
+  background-color: #ff8d3e;
+}
+
+.signup-main button:hover,
+.signup-main button:focus {
+  background-color: #6e26ff;
+}
+
 /*==================================*/
 /*============ Spacing =============*/
 /*==================================*/
