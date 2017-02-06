@@ -39,11 +39,13 @@ export default class Posts extends React.Component {
 
   upVotePost(postId) {
     axios.post('/api/upvote', {
-      id: postId,
-      commentorId: this.props.userId
+      postId: postId,
+      userId: this.props.userId
     })
     .then(response => {
-      console.log(response);
+      if (response.status === 200) {
+        console.log('You can\'t upvote twice!');
+      }
       var updatedPost = response.data;
       var id = updatedPost.id;
 
@@ -56,10 +58,13 @@ export default class Posts extends React.Component {
 
   downVotePost(postId) {
     axios.post('/api/downvote', {
-      id: postId,
-      commentorId: this.props.userId
+      postId: postId,
+      userId: this.props.userId
     })
     .then(response => {
+      if (response.status === 200) {
+        console.log('You can\'t downvote twice!');
+      }
       var updatedPost = response.data;
       var id = updatedPost.id;
 
