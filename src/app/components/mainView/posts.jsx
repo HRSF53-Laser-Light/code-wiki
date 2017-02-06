@@ -34,7 +34,14 @@ export default class Posts extends React.Component {
       var data = this.props.postData;
       data[id] = updatedPost;
 
-      this.props.updatePostData(data);
+      var dataByVote = this.props.dataByVote;
+      for (var i = 0; i < dataByVote.length; i++) {
+        if (dataByVote[i].id === id) {
+          dataByVote[i] = data[id];
+        }
+      }
+
+      this.props.updatePostData(data, dataByVote);
     });
   }
 
@@ -53,7 +60,14 @@ export default class Posts extends React.Component {
       var data = this.props.postData;
       data[id] = updatedPost;
 
-      this.props.updatePostData(data);
+      var dataByVote = this.props.dataByVote;
+      for (var i = 0; i < dataByVote.length; i++) {
+        if (dataByVote[i].id === id) {
+          dataByVote[i] = data[id];
+        }
+      }
+
+      this.props.updatePostData(data, dataByVote);
     });
   }
 
