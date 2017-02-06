@@ -113,9 +113,10 @@ export default class App extends React.Component {
       this.getPosts);
   }
 
-  updatePostData(data) {
+  updatePostData(data, dataByVote) {
     this.setState({
-      postData: data
+      postData: data,
+      postDataByVote: dataByVote
     });
   }
 
