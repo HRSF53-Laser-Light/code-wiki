@@ -130,13 +130,12 @@ module.exports = {
   // Retrieve 20 posts in Posts table, sorted by descending votes
   posts: {
     get: function(req, res) {
-      console.log('query: ', req.query);
-      // //pass in option if it exists
+
+      //get the categoryId from a category name
       var options = {where: {name: req.query.category}};
 
       db.Category.findOne(options)
       .then(category => {
-        // console.log('CATEGORY: ', category.id, category.name);
         var options = {
           include: [{model: db.User}],
           limit: 20,
