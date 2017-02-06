@@ -76,7 +76,40 @@ module.exports.UserPosts = UserPosts;
 module.exports.PostUser = PostUser;
 
 
+// User.create({
+//   username: 'Justin',
+//   password: 'password'
+// })
 
+// User.create({
+//   username: 'Groot',
+//   password: 'iamgroot'
+// })
+
+// Post.create({
+//   comment: 'some comment',
+//   link_url: 'some link',
+//   link_description: 'some descr',
+//   link_image: 'some image',
+//   link_title: 'some title',
+//   vote_count: 0
+// })
+
+// Post.create({
+//   comment: 'another comment',
+//   link_url: 'another link',
+//   link_description: 'another descr',
+//   link_image: 'another image',
+//   link_title: 'another title',
+//   vote_count: 0
+// })
+
+// UserVotes.create({
+//   userId: 2,
+//   postId: 1,
+//   upvote: false,
+//   downvote: true
+// });
 
 
 
