@@ -221,7 +221,7 @@ module.exports = {
       helpers.externalRequest.linkPreview(link_url)
         .then(function(metaData) {
 
-          // Now lookup the id of the category submitted
+          // Lookup the id of the category submitted
           db.Category.findOne({
             where: { name: req.body.category }
           })
