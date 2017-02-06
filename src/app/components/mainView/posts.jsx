@@ -58,7 +58,7 @@ export default class Posts extends React.Component {
 
   renderPosts() {
     var posts = [];
-    var data = this.props.data;
+    var data = this.props.postData;
     var postDataByVote = this.props.postDataByVote;
 
     for(var i = 0; i < postDataByVote.length; i++) {
