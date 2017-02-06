@@ -164,10 +164,9 @@ export default class App extends React.Component {
     console.log(this.state.signedIn);
     return (
       <div>
-        <TopNav
+        {/*<TopNav
         signedIn={this.state.signedIn}
-        updateUser={this.updateUser}/>
-
+        updateUser={this.updateUser}/>*/}
         <GuestView
         updateUser={this.updateUser}/>
       </div>

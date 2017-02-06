@@ -66,43 +66,60 @@ export default class GuestView extends React.Component {
 
   newUserForm() {
     return (
-      <div className="text-center">
-      <form className="sign-in">
-        <div className="form-group">
-          <input name="username" type="text" className="form-control" placeholder="username" onChange={(e)=>this.trackChange(e)}/>
-          <input name="password" type="text" className="form-control" placeholder="password" onChange={(e)=>this.trackChange(e)}/>
-          {/*<input id="password2" type="text" className="form-control" placeholder="re-enter password" />*/}
+      <div>
+        <div className="container">
+          <div className="spaceman">
+            <img height="600px" src="assets/img/astronaut.gif"/>
+          </div>
+          <div className="signup-main text-center col-sm-4 col-sm-offset-5">
+            <img className="mb30" height="150px" src="assets/img/logo.svg"/>
+            <span className="mb20">New? Sweet, let’s sign you up!</span>
+            <form>
+              <input name="username" type="text" className="form-control" placeholder="username" onChange={(e)=>this.trackChange(e)}/>
+              <input name="password" type="text" className="form-control" placeholder="password" onChange={(e)=>this.trackChange(e)}/>
+              <button onClick={(e)=>this.signUpNewUser(e)} type="submit" className="btn">Sign up</button>
+            </form>
+          </div>
         </div>
-        <button onClick={(e)=>this.signUpNewUser(e)} type="submit" className="btn btn-default">Sign Up</button>
-      </form>
-        <a href="#" onClick={(e)=>this.toggleView(e)}>Sign In</a>
+        <div className="footer">
+          <div className="text-center">
+            <span>Already have a WikiLinks account? <a href="#" onClick={(e)=>this.toggleView(e)}>Log in</a>.</span>
+          </div>
+        </div>
       </div>
     );
   }
 
   existingUserForm() {
     return (
-      <div className="text-center">
-      <form className="sign-in">
-        <div className="form-group">
-          <input name="username" type="text" className="form-control" placeholder="username" onChange={(e)=>this.trackChange(e)}/>
-          <input name="password" type="text" className="form-control" placeholder="password" onChange={(e)=>this.trackChange(e)}/>
+      <div>
+        <div className="container">
+          <div className="spaceman">
+            <img height="600px" src="assets/img/astronaut.gif"/>
+          </div>
+          <div className="login-main text-center col-sm-4 col-sm-offset-5">
+            <img className="mb30" height="150px" src="assets/img/logo.svg"/>
+            <span className="mb20">Log in to your account</span>
+            <form>
+              <input name="username" type="text" className="form-control" placeholder="username" onChange={(e)=>this.trackChange(e)}/>
+              <input name="password" type="text" className="form-control" placeholder="password" onChange={(e)=>this.trackChange(e)}/>
+              <button onClick={(e)=>this.signInUser(e)} type="submit" className="btn">Sign In</button>
+            </form>
+          </div>
         </div>
-        <button onClick={(e)=>this.signInUser(e)} type="submit" className="btn btn-default">Sign In</button>
-      </form>
-      <a href="#" onClick={(e)=>this.toggleView(e)}>Sign Up</a>
+        <div className="footer">
+          <div className="text-center">
+            <span>Don’t have a WikiLinks account? <a href="#" onClick={(e)=>this.toggleView(e)}>Sign Up</a>.</span>
+          </div>
+        </div>
       </div>
     );
   }
 
   render() {
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-sm-6 col-sm-offset-3">
-            {(this.state.newUser) ? this.newUserForm() : this.existingUserForm()}
-          </div>
-        </div>
+      <div className="login-container">
+        {(this.state.newUser) ? this.newUserForm() : this.existingUserForm()}
       </div>
     );
   }

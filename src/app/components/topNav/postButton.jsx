@@ -7,7 +7,7 @@ export default class PostButton extends React.Component {
 
   render() {
     return (
-      <a href="#" onClick={(e)=>this.props.setCreatePost(e, true)}>Post</a>
+      <a className="post-btn" href="#" onClick={(e)=>this.props.setCreatePost(e, true)}>Add post</a>
     );
   }
 }

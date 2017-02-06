@@ -3,15 +3,67 @@
 }
 .navbar {
   margin-bottom: 0;
+  background-color: white;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
 }
+.post-btn, .post-btn:hover {
+  background-color: #5400FF !important;
+  border-radius: 5px;
+  color: white !important;
+  font-weight: 200;
+  font-size: 16px;
+  line-height: 24px !important;
+  padding: 3px 20px !important;
+  margin-top: 10px;
+}
+
+.search-box {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #080A30;
+  margin-top: 6px;
+  color: #080A30;
+}
+
+.search-box::-webkit-input-placeholder {
+  color: #080A30;
+}
+
+.search-box:focus {
+  outline: none;
+}
+
+.nav-account {
+  color: #080A30;
+}
+
+.navbar-center {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  display: inline-flex;
+  left: 0;
+  right: 0;
+}
+
+.navbar-center li {
+  position: relative;
+  margin: auto;
+}
+
 .form-control {
   margin-right: 5px;
 }
 .main {
-  background-color: gray;
+  background-color: white;
 }
 .navbar-side {
-  background-color: lightblue;
+  background-color: #080A30;
+}
+.navbar-side .divider-full {
+  border-bottom: 1px solid white;
 }
 .navbar-side-container,
 .main-container {
@@ -20,10 +72,22 @@
 .main {
   padding: 20px;
 }
+.current-category {
+  color: #FA6600;
+  font-weight: 600;
+}
+.filtering-by {
+  margin-left: 10px;
+}
 .navbar-side {
   padding: 20px;
-  height: calc(100vh - 51px);
+  height: 100vh;
+  color: white;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 200;
 }
+
 .category-list {
   margin-top: 10px;
 }
@@ -31,16 +95,13 @@
 .category-list li {
   font-size: 16px;
   line-height: 24px;
-  color: #732cf3;
+  color: #8F92CC;
 }
 
 .category-list li:hover,
 .active {
-  background-color: #67daff;
   cursor: pointer;
-  padding-left: 5px;
-  margin-left: -2px;
-  border-left: 2px solid blue;
+  color: white;
 }
 
 .category-list li:focus,
@@ -141,8 +202,8 @@
 }
 
 .add-filter a {
-  font-size: 12px;
-  color: #67daff;
+  font-size: 14px;
+  color: #5400FF;
 }
 
 .form-group label {
@@ -169,6 +230,126 @@
   left: 0;
   background: white;
   z-index: 9999;
+}
+
+.login-container {
+  background-color: #080A30;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.login-container .footer {
+  background-color: #353879;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 8px 0;
+  font-size: 14px;
+  color: white;
+  font-weight: 200;
+}
+
+.login-container .footer a {
+  color: white;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.signup-main, .login-main, .spaceman {
+  margin-top: auto;
+  margin-bottom: auto;
+  position: absolute;
+  display: table;
+}
+
+.spaceman {
+  top: 0;
+  bottom: 0;
+}
+
+.signup-main, .login-main {
+  color: white;
+  font-weight: 200;
+  top: 0;
+  bottom: 100px;
+}
+
+.signup-main input, .login-main input {
+  background-color: white;
+  color: #FA6600;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 400;
+  border: 3px solid #FA6600;
+  padding: 18px;
+  margin-bottom: 10px;
+}
+
+.signup-main input {
+  border: 3px solid #5400FF;
+  color: #5400FF;
+}
+
+.signup-main input::-webkit-input-placeholder,
+.login-main input::-webkit-input-placeholder {
+  color: #FA6600;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 400; 
+}
+
+.signup-main input::-webkit-input-placeholder {
+  color: #5400FF;
+}
+
+.signup-main input:focus {
+  border: 3px solid #5400FF;
+}
+
+.login-main input:focus {
+  border: 3px solid #FA6600;
+}
+
+.signup-main span,
+.login-main span {
+  display: block;
+}
+
+.login-main button,
+.login-main button:hover {
+  width: 100%;
+  color: white;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 400;
+  background-color: #FA6600;
+  border-radius: 5px;
+  border: 3px solid #FA6600;
+}
+
+.signup-main button,
+.signup-main button:hover {
+  width: 100%;
+  color: white;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 400;
+  background-color: #5400FF;
+  border-radius: 5px;
+  border: 3px solid #5400FF;
+}
+
+.login-main button:hover,
+.login-main button:focus {
+  background-color: #ff8d3e;
+}
+
+.signup-main button:hover,
+.signup-main button:focus {
+  background-color: #6e26ff;
 }
 
 /*==================================*/

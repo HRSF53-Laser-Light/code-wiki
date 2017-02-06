@@ -35,6 +35,7 @@ export default class SideNav extends React.Component {
       <div className="col-sm-2 navbar-side-container">
         <div className="navbar-side">
           <span>Categories</span>
+          <div className="divider-full"></div>
           <ul className="category-list">
             {this.renderCategories()}
           </ul>
