@@ -16,7 +16,10 @@ export default class MainView extends React.Component {
         <div className="divider-full"></div>
         <Posts
         userId={this.props.userId}
+        postData={this.props.postData}
+        postDataByVote={this.props.postDataByVote}
         currentCategory={this.props.currentCategory}
+        updatePostData={this.props.updatePostData}
         getPosts={this.props.getPosts}/>
       </div>
     );

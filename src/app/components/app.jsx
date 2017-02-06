@@ -19,7 +19,9 @@ export default class App extends React.Component {
       allCategories: ['All'],
       currentCategory: 'All',
       tags: [],
-      createPost: false
+      createPost: false,
+      postData: {},
+      postDataByVote: []
     }
 
     this.getUserFromSession();
@@ -28,6 +30,8 @@ export default class App extends React.Component {
     this.updateUser     = this.updateUser.bind(this);
     this.updateCategory = this.updateCategory.bind(this);
     this.getCategories  = this.getCategories.bind(this);
+    this.getPosts       = this.getPosts.bind(this);
+    this.updatePostData = this.updatePostData.bind(this);
   }
 
   getUserFromSession() {
@@ -44,28 +48,27 @@ export default class App extends React.Component {
   }
 
   getPosts() {
-    //getPosts gets called in Posts.jsx and is called on the Posts object (line 20)
-
     var _this = this;
 
-    console.log(_this);
     axios.get('/api/posts', {
       params: {
-        category: _this.props.currentCategory
+        category: _this.state.currentCategory
       }
     })
     .then(function(response) {
 
       var rows = response.data.rows;
       var data = {};
+      var dataByVote = [];
 
       for(var i = 0; i < rows.length; i++) {
         data[rows[i].id] = rows[i];
+        dataByVote.push(rows[i]);
       }
-      console.log('THIS: ', _this);
       _this.setState({
-        data: data,
-        loaded: true
+        postData: data,
+        postDataByVote: dataByVote
+        // loaded: true
       });
     })
     .catch(function(err) {
@@ -111,6 +114,12 @@ export default class App extends React.Component {
     });
   }
 
+  updatePostData(data) {
+    this.setState({
+      postData: data
+    });
+  }
+
   // @QUESTION should I be passing app state through as props into child components? Is this when we start using Flux/Redux?
   signedInView() {
     return (
@@ -132,7 +141,10 @@ export default class App extends React.Component {
         userId={this.state.userId}
         currentCategory={this.state.currentCategory}
         allCategories={this.state.allCategories}
+        postData={this.state.postData}
+        postDataByVote={this.state.postDataByVote}
         getPosts={this.getPosts}
+        updatePostData={this.updatePostData}
         createPost={this.state.createPost}
         setCreatePost={this.setCreatePost}/>
       </div>
@@ -140,6 +152,7 @@ export default class App extends React.Component {
   }
 
   signedOutView() {
+    console.log(this.state.signedIn);
     return (
       <div>
         <TopNav
@@ -153,7 +166,8 @@ export default class App extends React.Component {
   }
 
   render() {
-    return this.state.signedIn ? this.signedInView() : this.signedOutView();
+    // return this.state.signedIn ? this.signedInView() : this.signedOutView();
+    return true ? this.signedInView() : this.signedOutView();
   }
 }
 
