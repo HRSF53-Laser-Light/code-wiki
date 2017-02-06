@@ -157,7 +157,6 @@ module.exports = {
 
   tagId: {
     get: function(req, res) {
-      console.log('tagId req', req.query)
       db.sequelize.query('select tag from tags where id in (select tagId from tagpost where postId = ' + req.query.postId + ');').spread(function(results, metadata) {
         var tags = [];
         results.map(tag => {tags.push(tag.tag);})
