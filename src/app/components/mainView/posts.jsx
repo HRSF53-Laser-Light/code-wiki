@@ -39,14 +39,18 @@ export default class Posts extends React.Component {
 
   upVotePost(postId) {
     axios.post('/api/upvote', {
-      id: postId,
-      commentorId: this.props.userId
+      postId: postId,
+      userId: this.props.userId
     })
     .then(response => {
-      var id = response.data.id;
+      if (response.status === 200) {
+        console.log('You can\'t upvote twice!');
+      }
+      var updatedPost = response.data;
+      var id = updatedPost.id;
 
       var data = this.state.data;
-      data[id].vote_count += 1;
+      data[id] = updatedPost;
 
       this.setState({data: data});
     });
@@ -54,14 +58,18 @@ export default class Posts extends React.Component {
 
   downVotePost(postId) {
     axios.post('/api/downvote', {
-      id: postId,
-      commentorId: this.props.userId
+      postId: postId,
+      userId: this.props.userId
     })
     .then(response => {
-      var id = response.data.id;
+      if (response.status === 200) {
+        console.log('You can\'t downvote twice!');
+      }
+      var updatedPost = response.data;
+      var id = updatedPost.id;
 
       var data = this.state.data;
-      data[id].vote_count -= 1;
+      data[id] = updatedPost;
 
       this.setState({data: data});
     });
@@ -86,11 +94,11 @@ export default class Posts extends React.Component {
     return (
       <div className="row">
         <div className="col-sm-12">
-          <ul className="posts">
-            <Loader loaded={this.state.loaded}>
+          <Loader loaded={this.state.loaded}>
+            <ul className="posts">
               {this.renderPosts()}
-            </Loader>
-          </ul>
+            </ul>
+          </Loader>
         </div>
       </div>
     );

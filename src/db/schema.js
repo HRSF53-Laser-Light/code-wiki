@@ -21,8 +21,29 @@ var Post = sequelize.define('post', {
 });
 
 var Category = sequelize.define('category', {
-  name: {type: Sequelize.STRING, unique: false}
+  name: {type: Sequelize.STRING, unique: true}
 });
+
+// Store if user has already up or down voted for a specific post
+var UserVotes = sequelize.define('uservotes', {
+  userId: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    model: 'user',
+    key: 'id'
+  },
+  postId: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    model: 'post',
+    key: 'id'
+  },
+  upvote: Sequelize.BOOLEAN,
+  downvote: Sequelize.BOOLEAN
+})
+// Foreign key association between the uservotes table and users/posts
+User.hasMany(UserVotes);
+Post.hasMany(UserVotes);
 
 // Association between a category and all of it's posts
 var CategoryPosts = Category.hasMany(Post);
@@ -45,6 +66,7 @@ module.exports.User = User;
 module.exports.Tag = Tag;
 module.exports.Post = Post;
 module.exports.Category = Category;
+module.exports.UserVotes = UserVotes;
 
 module.exports.CategoryPosts = CategoryPosts;
 module.exports.PostCategory = PostCategory;
@@ -52,6 +74,9 @@ module.exports.PostTags = PostTags;
 module.exports.TagPosts = TagPosts;
 module.exports.UserPosts = UserPosts;
 module.exports.PostUser = PostUser;
+
+
+
 
 
 

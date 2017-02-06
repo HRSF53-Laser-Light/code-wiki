@@ -10,6 +10,21 @@ var saltRounds = 10;
 
 module.exports = {
   // Sign up new user
+
+  session: {
+    get: function(req, res) {
+      if(req.session.user) { 
+        res.json({
+          user: req.session.user
+        });
+      }
+      else {
+        res.send(401);
+      }
+    }
+  },
+
+
   signup: {
     post: function(req, res) {
       var username = req.body.username;
@@ -115,11 +130,17 @@ module.exports = {
   // Retrieve 20 posts in Posts table, sorted by descending votes
   posts: {
     get: function(req, res) {
-      db.Post.findAll({
+      db.Post.findAndCountAll({
+        include: [
+          {
+            model: db.User
+          }
+        ],
         order: [['vote_count', 'DESC']],
         limit: 20
       })
         .then(function(posts) {
+          console.log(posts.rows[0].dataValues);
           res.json(posts);
         });
     }
@@ -222,7 +243,7 @@ module.exports = {
       helpers.externalRequest.linkPreview(link_url)
         .then(function(metaData) {
 
-          // Now lookup the id of the category submitted
+          // Lookup the id of the category submitted
           db.Category.findOne({
             where: { name: req.body.category }
           })
@@ -285,34 +306,104 @@ module.exports = {
     }
   },
 
-  //@TODO need to also add to the post-auth table using id (postId) and commentorId (userId)
-  //commentorId is req.body.commentorId
-  // Increment vote count on post
   upvote: {
     post: function(req, res) {
+
+      // Grab the post associated with the vote
       db.Post.findOne({
-        where: { id: req.body.id },
+        where: { id: req.body.postId },
       })
         .then(function(result) {
-          result.increment('vote_count');
-          res.json(result);
+          // Check if this user has already voted this post
+          db.UserVotes.findOrCreate({
+            where: {
+              userId: req.body.userId,
+              postId: req.body.postId
+            },
+            defaults: {
+              userId: req.body.userId,
+              postId: req.body.postId,
+              upvote: false,
+              downvote: false
+            }
+          })
+            .then(function(uservote) {
+              if (!uservote[0].dataValues.upvote && !uservote[0].dataValues.downvote) {
+                result.increment('vote_count');
+                result.reload().then(function() {
+                  // Flag that the user submitted an upvote
+                  uservote[0].update({
+                    upvote: true,
+                    downvote: false
+                  });
+                  res.status(202).json(result);  
+                });
+              } else if (!uservote[0].dataValues.upvote && uservote[0].dataValues.downvote) {
+                result.increment('vote_count');
+                result.reload().then(function() {
+                  // Flag that the user is reversing their downvote decision
+                  uservote[0].update({
+                    upvote: false,
+                    downvote: false
+                  });
+                  res.status(202).json(result);  
+                });
+              } else {
+                res.status(200).json(result);
+              }
+            });
         });
     }
   },
 
-  //@TODO need to also add to the post-auth table using id (postId) and commentorId (userId)
-  //commentorId is req.body.commentorId
-  // Decrement vote count on post
-  // Note: can decrement counts <= 0
   downvote: {
     post: function(req, res) {
+
+      // Grab the post associated with the vote
       db.Post.findOne({
-        where: { id: req.body.id },
+        where: { id: req.body.postId },
       })
         .then(function(result) {
-          result.decrement('vote_count');
-          res.json(result);
+          // Check if this user has already voted this post
+          db.UserVotes.findOrCreate({
+            where: {
+              userId: req.body.userId,
+              postId: req.body.postId
+            },
+            defaults: {
+              userId: req.body.userId,
+              postId: req.body.postId,
+              upvote: false,
+              downvote: false
+            }
+          })
+            .then(function(uservote) {
+              if (!uservote[0].dataValues.downvote && !uservote[0].dataValues.upvote) {
+                result.decrement('vote_count');
+                result.reload().then(function() {
+                  // Flag that the user submitted a downvote
+                  uservote[0].update({
+                    upvote: false,
+                    downvote: true
+                  });
+                  res.status(202).json(result);  
+                });
+              } else if (!uservote[0].dataValues.downvote && uservote[0].dataValues.upvote) {
+                result.decrement('vote_count');
+                result.reload().then(function() {
+                  // Flag that the user is reversing their upvote decision
+                  uservote[0].update({
+                    upvote: false,
+                    downvote: false
+                  });
+                  res.status(202).json(result);  
+                });
+              } else {
+                res.status(200).json(result);
+              }
+            });
         });
+
     }
   }
 };
@@ -321,87 +412,5 @@ module.exports = {
 
 
 
-// OLD POST LOOKUP FUNCTIONALITY
-
-// db.Post.findOne({
-//   where: {
-//     problem_statement: req.body.problem,
-//     resource: req.body.resource
-//   }
-// })
-//   .then(function(results) {
-//     // Message if exact post has already been made
-//     if (results !== null) {
-//       console.log('Your message has already been posted');
-//     // Create new post
-//     } else {
-//       db.Category.findOne({
-//         where: { name: req.body.category }
-//       })
-//         .then(function(results) {
-//           /**** TO DO: createdAt, updatedAt, CategoryId ****/
-//           db.Post.create({
-//             problem_statement: req.body.problem,
-//             resource: req.body.resource,
-//             vote_count: 0,
-//             CategoryId: results.dataValues.id
-//           })
-//             .then(function() {
-//               res.sendStatus(201);
-//             });
-//         })
-//     }
-//   })
 
 
-
-// // First lookup the id of the category which the post belongs to
-// db.Category.findOne({
-//   where: { name: req.body.category }
-// })
-// .then(function(category) {
-//   // Next scrape for meta data from any link in the comment
-//   console.log(req.body.userId);
-//   helpers.externalRequest.linkPreview(link_url)
-//     .then(function(metaData) {
-
-//       if (metaData) {
-//         metaData = JSON.parse(metaData);
-//         db.Post.create({
-//           comment: req.body.comment,
-//           link_url: metaData.url,
-//           link_description: metaData.description,
-//           link_image: metaData.image,
-//           link_title: metaData.title,
-//           vote_count: 0,
-//           categoryId: category.id,
-//           userId: req.body.userId,
-//           tags: tags
-//         }, {
-//           include: [
-//           // below is only needed if creating a new category when the post is created
-//           // {association: db.PostCategory},
-//           {association: db.PostTags}
-//           ]
-//         });
-
-//       } else {
-//         db.Post.create({
-//           comment: req.body.comment,
-//           vote_count: 0,
-//           categoryId: category.id,
-//           userId: req.body.userId,
-//           tags: tags
-//         }, {
-//           include: [
-//           // below is only needed if creating a new category when the post is created
-//           // {association: db.PostCategory},
-//           {association: db.PostTags}
-//           ]
-//         });
-//       }
-//     })
-// })
-// .then(function(result) {
-//   res.json('posted');
-// });

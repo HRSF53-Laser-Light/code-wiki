@@ -29,10 +29,10 @@ export default class Post extends React.Component {
 
   render() {
     return (
-      <li>
+      <li key={this.props.data.id}>
         <div className="row mb10">
           <div className="col-sm-10">
-            <span className="username">Kay</span>
+            <span className="username">{this.props.data.user.username}</span>
             <span className="posted-details">posted {this.props.data.comment} at {this.props.data.createdAt}</span>
           </div>
           <div className="col-sm-2 text-right">

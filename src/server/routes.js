@@ -12,7 +12,7 @@ router.post('/api/signin', controller.signin.post);
 
 router.post('/api/signout', controller.signout.post);
 
-
+router.get('/api/session', controller.session.get);
 
 /** LOADING COMPONENTS ON HOMEPAGE **/
 
