@@ -130,16 +130,26 @@ module.exports = {
   // Retrieve 20 posts in Posts table, sorted by descending votes
   posts: {
     get: function(req, res) {
-      db.Post.findAndCountAll({
-        include: [
-          {
-            model: db.User
-          }
-        ],
-        order: [['vote_count', 'DESC']],
-        limit: 20
+      console.log('query: ', req.query);
+      // //pass in option if it exists
+      var options = {where: {name: req.query.category}};
+
+      db.Category.findOne(options)
+      .then(category => {
+        // console.log('CATEGORY: ', category.id, category.name);
+        var options = {
+          include: [{model: db.User}],
+          limit: 20,
+          order: [['vote_count', 'DESC']]
+        }
+        // options.where = {categoryId: 1};
+        if (category) { options.where = {categoryId: category.id};}
+
+      //   console.log(options);
+       return db.Post.findAndCountAll(options)
       })
-        .then(function(posts) {
+        .then(posts => {
+          // console.log(posts.rows[0]);
           res.json(posts);
         });
     }
