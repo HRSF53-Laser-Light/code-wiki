@@ -10,6 +10,21 @@ var saltRounds = 10;
 
 module.exports = {
   // Sign up new user
+
+  session: {
+    get: function(req, res) {
+      if(req.session.user) { 
+        res.json({
+          user: req.session.user
+        });
+      }
+      else {
+        res.send(401);
+      }
+    }
+  },
+
+
   signup: {
     post: function(req, res) {
       var username = req.body.username;
@@ -116,10 +131,16 @@ module.exports = {
   posts: {
     get: function(req, res) {
       db.Post.findAndCountAll({
+        include: [
+          {
+            model: db.User
+          }
+        ],
         order: [['createdAt', 'DESC']],
         limit: 10
       })
         .then(function(posts) {
+          console.log(posts.rows[0].dataValues);
           res.json(posts);
         });
     }
