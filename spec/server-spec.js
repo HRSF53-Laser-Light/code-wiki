@@ -27,7 +27,7 @@ describe('', function() {
   });
 
 
-  describe('Sign up:', function() {
+  xdescribe('Sign up:', function() {
     var j = request.jar()
     var requestWithSession = request.defaults({jar:j})
 
@@ -138,7 +138,7 @@ describe('', function() {
     });
   });
 
-  describe('Sign in:', function() {
+  xdescribe('Sign in:', function() {
     
     before(function(done) {
       db.User.destroy({
@@ -193,7 +193,7 @@ describe('', function() {
   });
 
 
-  describe('Sign out:', function() {
+  xdescribe('Sign out:', function() {
     
     before(function(done) {
       var options = {
@@ -235,7 +235,7 @@ describe('', function() {
     });
   });
 
-  describe('Posting:', function() {
+  xdescribe('Posting:', function() {
 
     var cookie;
 
@@ -338,7 +338,7 @@ describe('', function() {
     });
   });
 
-  describe('Tagging:', function() {
+  xdescribe('Tagging:', function() {
 
     var cookie;
 
@@ -396,7 +396,7 @@ describe('', function() {
     });
   });
 
-  describe('Categories:', function() {
+  xdescribe('Categories:', function() {
 
     var cookie;
 
@@ -456,6 +456,7 @@ describe('', function() {
     var postId;
 
     before(function(done) {
+
       var options = {
         'method': 'POST',
         'followAllRedirects': true,
@@ -470,45 +471,53 @@ describe('', function() {
         var cookies = res.headers['set-cookie'];
         var results = cookies.filter((cookie) => { return cookie.includes('app.sess') });
         cookie = results[0];
-
-        var options = {
-          'method': 'POST',
-          'followAllRedirects': true,
-          'uri': 'http://127.0.0.1:4568/api/submit',
-          'json': {
-            'comment': 'archer is awesome http://www.imdb.com/title/tt1486217/',
-            'vote_count': 0,
-            'category': 'missions',
-            'tags': 'mawp',
-            'userId': 58
-          },
-          'headers': {
-            'Cookie': cookie
-          }
-        };
-        request(options, function(err, res, body) {
-          db.Post.findOne({
-            where: {
-              'comment': 'archer is awesome http://www.imdb.com/title/tt1486217/'
-            }
-          }).then(function(results) {
-            postId = results.dataValues.id;
-          });
-
-          db.User.findOne({
-            where: {
-              'username': 'sterlingarcher'
-            }
-          }).then(function(users) {
-            userId = users.dataValues.id;
-            done();
-          });
-        });
+        done();
       });
     });
 
+    it('Adds a new comment with all values', function(done) {
+      before(function(done) {
+        db.User.findOne({
+          where: {
+            'username': 'sterlingarcher'
+          }
+        }).then(function(users) {
+          userId = users.dataValues.id;
+        });
+      });
+
+      var options = {
+        'method': 'POST',
+        'followAllRedirects': true,
+        'uri': 'http://127.0.0.1:4568/api/submit',
+        'json': {
+          'comment': 'archer is awesome http://www.imdb.com/title/tt1486217/',
+          'vote_count': 0,
+          'category': 'missions',
+          'tags': 'mawp',
+          'userId': userId
+        },
+        'headers': {
+          'Cookie': cookie
+        }
+      };
+
+      request(options, function(err, res, body) {
+        expect(body).to.equal('Created');
+        done();
+      });
+    });
 
     it('Adds one to vote count when user upvotes post', function(done) {
+      before(function(done) {
+        db.Post.findOne({
+          where: {
+            'comment': 'archer is awesome http://www.imdb.com/title/tt1486217/'
+          }
+        }).then(function(results) {
+          postId = results.dataValues.id;
+        });
+      });
 
       var options = {
         'method': 'POST',
