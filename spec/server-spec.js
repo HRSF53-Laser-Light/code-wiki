@@ -233,7 +233,7 @@ describe('', function() {
     });
   });
 
-  describe('Posting:', function() {
+  xdescribe('Posting:', function() {
 
     beforeEach(function() {
       // remove Sterling Archer from db for future tests
@@ -340,7 +340,7 @@ describe('', function() {
     });
   });
 
-  describe('Tagging:', function() {
+  xdescribe('Tagging:', function() {
     // var requestWithSession = request.defaults({jar: true});
 
     before(function() {
@@ -380,7 +380,7 @@ describe('', function() {
     });
   });
 
-  describe('Categories:', function() {
+  xdescribe('Categories:', function() {
     // var requestWithSession = request.defaults({jar: true});
 
     before(function() {
@@ -415,7 +415,7 @@ describe('', function() {
     });
   });
 
-  describe('Ranking:', function() {
+  xdescribe('Ranking:', function() {
     // var requestWithSession = request.defaults({jar: true});
 
     before(function() {
