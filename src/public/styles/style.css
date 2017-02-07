@@ -1,6 +1,16 @@
+body {
+  overflow: hidden;
+}
+
 #app {
   height: 100%;
 }
+
+.main {
+  height: 100vh;
+  overflow-y:auto;
+}
+
 .navbar {
   margin-bottom: 0;
   background-color: white;
@@ -39,6 +49,7 @@
 }
 
 .navbar-center {
+  z-index: -1;
   position: absolute;
   margin: auto;
   top: 0;
@@ -128,58 +139,6 @@
   left: 0;
   bottom: 0;
   width: 100%;
-}
-
-.posts li {
-  background: #dadada;
-  border-radius: 10px;
-  padding: 10px;
-  margin: 10px 0;
-}
-
-.votes {
-  margin-top: 20px;
-}
-
-.votes a {
-  display: block;
-}
-
-.votes a:hover {
-  cursor: pointer;
-}
-
-.votes-numb {
-  font-size: 24px;
-  line-height: 24px;
-  margin: 8px 0px;
-  display: block;
-}
-
-.post-img img {
-  width: 100%;
-}
-
-.post-content h4 {
-  font-size: 20px;
-  color: #732cf3;
-  margin-bottom: 5px;
-}
-
-.post-content p {
-  font-size: 14px;
-  line-height: 20px;
-}
-
-.username,
-.posted-details {
-  margin-right: 5px;
-  font-size: 14px;
-  line-height: 22px;
-}
-
-.username {
-  font-weight: 600;
 }
 
 .tag-list {
@@ -350,6 +309,73 @@
 .signup-main button:hover,
 .signup-main button:focus {
   background-color: #6e26ff;
+}
+
+.posts li {
+  margin: 20px 0;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.vote-container i {
+  color: #5400FF;
+}
+
+.vote-count {
+  color: #5400FF;
+  font-size: 24px;
+  line-height: 24px;
+  margin: 8px 0px;
+  display: block;
+}
+
+.post-img img {
+  width: 100%;
+}
+
+.post-content h4 {
+  font-size: 20px;
+  color: #732cf3;
+  margin-bottom: 5px;
+}
+
+.post-content p {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.username, .comment {
+  margin-right: 10px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: #080A30;
+}
+
+.username {
+  font-weight: 600;
+}
+
+.posted-time {
+  color: #8F8F8F;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.link {
+  border-left: 2px solid #FA6600;
+  padding-left: 10px;
+}
+
+.link h4 {
+  color: #5400FF;
+}
+
+.link p {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  color: #080A30;
 }
 
 /*==================================*/
