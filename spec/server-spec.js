@@ -42,8 +42,7 @@ describe('', function() {
         }
       };
 
-      requestWithSession(options, function(error, res, body) {
-        // console.log('res headers', res.headers)
+      request(options, function(error, res, body) {
         // find db record for sterlingarcher
         db.User.findAll({
           where: { username: 'sterlingarcher' }
@@ -159,7 +158,6 @@ describe('', function() {
         done();
       });
     });
-
    
     it('Does not authenticate if stored username is entered but password does not match', function(done) {
       var options = {
@@ -210,8 +208,7 @@ describe('', function() {
       request(options, function(err, res, body) {
         done();
       });
-    })
-
+    });
 
     it('Redirects to sign out page', function(done) {
       var options = {
@@ -238,7 +235,7 @@ describe('', function() {
     });
   });
 
-  describe('Posting:', function() {
+  xdescribe('Posting:', function() {
 
     var cookie;
 
@@ -271,7 +268,7 @@ describe('', function() {
               link_description: 'desc' + i,
               link_image: 'img' + i,
               link_title: 'title' + i,
-              vote_count: Math.random() * 100
+              vote_count: Math.random() * 100,
             })
           );
         }
@@ -281,29 +278,8 @@ describe('', function() {
         })
       });
     });
-
-    var requestWithSession = request.defaults({jar: true});
     
     it('Retrieves 20 posts from database', function(done) {
-      // var options = {
-      //   'method': 'POST',
-      //   'uri': 'http://127.0.0.1:4568/api/signin',
-      //   // 'headers': {
-      //   //   'Cookie': cookie
-      //   // },
-      //   'json': {
-      //     'username': 'sterlingarcher',
-      //     'password': 'phrasing'
-      //   }
-      // };
-
-      request.cookie(cookie);
-
-      // requestWithSession(options, function(err, res, body) {
-      //   expect(res.statusCode).to.equal(200);
-      //   done();
-      // })
-
       var options = {
         'method': 'GET',
         'url': 'http://127.0.0.1:4568/api/posts',
@@ -312,7 +288,7 @@ describe('', function() {
         }
       }
 
-      requestWithSession(options, function(err, res, body) {
+      request(options, function(err, res, body) {
         expect(res.statusCode).to.equal(200);
         expect(JSON.parse(body).rows.length).to.equal(20);
         done();
@@ -331,7 +307,7 @@ describe('', function() {
 
       request(options, function(err, res, body) {
         done();
-      })
+      });
     });
 
     it('Deletes post from database when user removes post', function(done) {
@@ -359,11 +335,10 @@ describe('', function() {
           })
         });
       });
-
     });
   });
 
-  describe('Tagging:', function() {
+  xdescribe('Tagging:', function() {
 
     var cookie;
 
@@ -421,7 +396,7 @@ describe('', function() {
     });
   });
 
-  describe('Categories:', function() {
+  xdescribe('Categories:', function() {
 
     var cookie;
 
@@ -452,6 +427,7 @@ describe('', function() {
         db.Category.create({
           name: 'lacrosse'
         });
+
         done();
       });
     });
@@ -472,69 +448,114 @@ describe('', function() {
     });
   });
 
-  xdescribe('Ranking:', function() {
-    // var requestWithSession = request.defaults({jar: true});
 
-    before(function() {
-      db.Post.destroy({
-        where: { comment: 'not enough black turtlenecks' }
-      });
+  describe('Ranking:', function() {
 
-      db.Post.create({
-        comment: 'my favorite black turtlenecks',
-        link_url: 'http://www.turtlenecksgalore.com',
-        link_description: 'turtlenecks up to your neck!',
-        link_image: 'http://www.turtlenecks.com',
-        link_title: 'turtlenecks galore',
-        vote_count: 0
-      });
-    });
+    var cookie;
+    var userId;
+    var postId;
 
-    it('Adds one to vote count when user upvotes post', function(done) {
-      db.Post.find({
-        where: { comment: 'my favorite black turtlenecks' }
-      }).then(function(results) {
+    before(function(done) {
+      var options = {
+        'method': 'POST',
+        'followAllRedirects': true,
+        'uri': 'http://127.0.0.1:4568/api/signin',
+        'json': {
+          'username': 'sterlingarcher',
+          'password': 'phrasing'
+        }
+      };
+
+      request(options, function(err, res, body) {
+        var cookies = res.headers['set-cookie'];
+        var results = cookies.filter((cookie) => { return cookie.includes('app.sess') });
+        cookie = results[0];
+
         var options = {
           'method': 'POST',
-          'uri': 'http://127.0.0.1:4568/api/upvote',
+          'followAllRedirects': true,
+          'uri': 'http://127.0.0.1:4568/api/submit',
           'json': {
-            'id': results.dataValues.id
+            'comment': 'archer is awesome http://www.imdb.com/title/tt1486217/',
+            'vote_count': 0,
+            'category': 'missions',
+            'tags': 'mawp',
+            'userId': 58
+          },
+          'headers': {
+            'Cookie': cookie
           }
         };
         request(options, function(err, res, body) {
-          db.Post.find({
-            where: { comment: 'my favorite black turtlenecks' }
-          }).then(function(posts) {
-            expect(posts.dataValues.vote_count).to.equal(1);
+          db.Post.findOne({
+            where: {
+              'comment': 'archer is awesome http://www.imdb.com/title/tt1486217/'
+            }
+          }).then(function(results) {
+            postId = results.dataValues.id;
+          });
+
+          db.User.findOne({
+            where: {
+              'username': 'sterlingarcher'
+            }
+          }).then(function(users) {
+            userId = users.dataValues.id;
             done();
           });
+        });
+      });
+    });
+
+
+    it('Adds one to vote count when user upvotes post', function(done) {
+
+      var options = {
+        'method': 'POST',
+        'uri': 'http://127.0.0.1:4568/api/upvote',
+        'json': {
+          'userId': userId,
+          'postId': postId
+        },
+        'headers': {
+          'Cookie': cookie
+        }
+      };
+
+      request(options, function(err, res, body) {
+        db.Post.find({
+          where: { id: postId }
+        }).then(function(posts) {
+          expect(posts.dataValues.vote_count).to.equal(1);
+          done();
         });
       });
     });
 
     it('Subtracts one from vote count when user downvotes post', function(done) {
-      db.Post.find({
-        where: { comment: 'my favorite black turtlenecks' }
-      }).then(function(results) {
-        var options = {
-          'method': 'POST',
-          'uri': 'http://127.0.0.1:4568/api/downvote',
-          'json': {
-            'id': results.dataValues.id
-          }
-        };
-        request(options, function(err, res, body) {
-          db.Post.find({
-            where: { comment: 'my favorite black turtlenecks' }
-          }).then(function(posts) {
-            expect(posts.dataValues.vote_count).to.equal(0);
-            done();
-          });
+      var options = {
+        'method': 'POST',
+        'uri': 'http://127.0.0.1:4568/api/downvote',
+        'json': {
+          'userId': userId,
+          'postId': postId
+        },
+        'headers': {
+          'Cookie': cookie
+        }
+      };
+
+      request(options, function(err, res, body) {
+        db.Post.find({
+          where: { id: postId }
+        }).then(function(posts) {
+          expect(posts.dataValues.vote_count).to.equal(0);
+          done();
         });
       });
     });
 
-    it('Decrements vote count even when vote is zero or negative', function(done) {
+    xit('Decrements vote count even when vote is zero or negative', function(done) {
       db.Post.find({
         where: { comment: 'my favorite black turtlenecks' }
       }).then(function(results) {
