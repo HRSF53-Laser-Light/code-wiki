@@ -30,44 +30,36 @@ export default class Post extends React.Component {
   render() {
     return (
       <li key={this.props.data.id}>
-        <div className="row mb10">
-          <div className="col-sm-10">
-            <span className="username">{this.props.data.user.username}</span>
-            <span className="posted-details">posted {this.props.data.comment} at {this.props.data.createdAt}</span>
-          </div>
-          <div className="col-sm-2 text-right">
-            <ul className="tag-list">
-              {this.state.tags.map(tag => (<li>{tag}</li>))}
-            </ul>
-          </div>
-        </div>
-        <div className="row mb10">
+        <div className="row">
           <div className="col-sm-1 text-center">
-            <div className="votes">
-              <a><i
-              className="fa fa-arrow-circle-up fa-2x"
-              aria-hidden="true"
-              onClick={()=>this.props.upVotePost(this.props.data.id)}>
-              </i></a>
-              <span className="votes-numb">{this.props.data.vote_count}</span>
-              <a><i
-              className="fa fa-arrow-circle-down fa-2x"
-              aria-hidden="true"
-              onClick={()=>this.props.downVotePost(this.props.data.id)}>
-              </i></a>
+            <div className="vote-container">
+              <i className="fa fa-chevron-up" aria-hidden="true" onClick={()=>this.props.upVotePost(this.props.data.id)}></i>
+              <div className="vote-count">{this.props.data.vote_count}</div>
+              <i className="fa fa-chevron-down" aria-hidden="true" onClick={()=>this.props.downVotePost(this.props.data.id)}></i>
             </div>
           </div>
-          <div className="col-sm-2 text-center">
-            <div className="post-img">
-              <img src={this.props.data.link_image} />
+          <div className="col-sm-11">
+            <div className="row mb5">
+              <div className="col-sm-12">
+                <span className="username">{this.props.data.user.username}</span>
+                <span className="posted-time">{this.props.data.createdAt}</span>
+              </div>
             </div>
-          </div>
-          <div className="col-sm-9">
-            <div className="post-content">
-              <a href={this.props.data.link_url} target="_blank">
-                <h4>{this.props.data.link_title}</h4>
-              </a>
-              <p>{this.props.data.link_description}</p>
+            <div className="row mb10">
+              <div className="col-sm-12">
+                <p className="comment">{this.props.data.comment}</p>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-12">
+                <div className="link">
+                  <a href={this.props.data.link_url} target="_blank">
+                    <h4 className="mb5">{this.props.data.link_title}</h4>
+                  </a>
+                  <p className="mb5">{this.props.data.link_description}</p>
+                  <img height="125" src={this.props.data.link_image} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
