@@ -27,7 +27,7 @@ describe('', function() {
   });
 
 
-  xdescribe('Sign up:', function() {
+  describe('Sign up:', function() {
     var j = request.jar()
     var requestWithSession = request.defaults({jar:j})
 
@@ -138,7 +138,7 @@ describe('', function() {
     });
   });
 
-  xdescribe('Sign in:', function() {
+  describe('Sign in:', function() {
     
     before(function(done) {
       db.User.destroy({
@@ -193,7 +193,7 @@ describe('', function() {
   });
 
 
-  xdescribe('Sign out:', function() {
+  describe('Sign out:', function() {
     
     before(function(done) {
       var options = {
@@ -235,7 +235,7 @@ describe('', function() {
     });
   });
 
-  xdescribe('Posting:', function() {
+  describe('Posting:', function() {
 
     var cookie;
 
@@ -338,7 +338,7 @@ describe('', function() {
     });
   });
 
-  xdescribe('Tagging:', function() {
+  describe('Tagging:', function() {
 
     var cookie;
 
@@ -396,7 +396,7 @@ describe('', function() {
     });
   });
 
-  xdescribe('Categories:', function() {
+  describe('Categories:', function() {
 
     var cookie;
 
@@ -555,24 +555,25 @@ describe('', function() {
       });
     });
 
-    xit('Decrements vote count even when vote is zero or negative', function(done) {
-      db.Post.find({
-        where: { comment: 'my favorite black turtlenecks' }
-      }).then(function(results) {
-        var options = {
-          'method': 'POST',
-          'uri': 'http://127.0.0.1:4568/api/downvote',
-          'json': {
-            'id': results.dataValues.id
-          }
-        };
-        request(options, function(err, res, body) {
-          db.Post.find({
-            where: { comment: 'my favorite black turtlenecks' }
-          }).then(function(posts) {
-            expect(posts.dataValues.vote_count).to.equal(-1);
-            done();
-          });
+    it('Will decrement vote count into negatives', function(done) {
+      var options = {
+        'method': 'POST',
+        'uri': 'http://127.0.0.1:4568/api/downvote',
+        'json': {
+          'userId': userId,
+          'postId': postId
+        },
+        'headers': {
+          'Cookie': cookie
+        }
+      };
+
+      request(options, function(err, res, body) {
+        db.Post.find({
+          where: { id: postId }
+        }).then(function(posts) {
+          expect(posts.dataValues.vote_count).to.equal(-1);
+          done();
         });
       });
     });
