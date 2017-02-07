@@ -80,6 +80,26 @@ body {
 .main-container {
   padding: 0;
 }
+
+.nav-spaceman {
+  position: absolute;
+  bottom: 45px;
+  left: 0px;
+  margin-left: 20%;
+}
+
+.side-footer {
+  color: #62fdff;
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 400;
+  position: absolute;
+  bottom: 60px;
+  width: 100%;
+  margin-left: -20px;
+  display: block;
+}
+
 .main {
   padding: 20px;
 }
