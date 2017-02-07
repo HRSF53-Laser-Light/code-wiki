@@ -92,7 +92,7 @@ describe('', function() {
     });
 
     // TODO: fill out test when error components are complete
-    it('Tells user to use sign in page when user enters account info in database', function(done) {
+    it('Indicates that user should sign in when user enters stored account info', function(done) {
       var options = {
         'method': 'POST',
         'followAllRedirects': true,
@@ -159,8 +159,8 @@ describe('', function() {
       });
     });
 
-    // TODO: test status code when frontend components complete
-    it('Prompts user to correct password if stored username is entered but password does not match', function(done) {
+   
+    it('Does not authenticate if stored username is entered but password does not match', function(done) {
       var options = {
         'method': 'POST',
         'uri': 'http://127.0.0.1:4568/api/signin',
@@ -176,8 +176,7 @@ describe('', function() {
       });
     });
 
-    // TODO: test status code when frontend components complete
-    it('Redirects to home page if correct username and password info entered', function(done) {
+    it('Sends status so that frontend renders home page if correct username and password info entered', function(done) {
       var options = {
         'method': 'POST',
         'uri': 'http://127.0.0.1:4568/api/signin',
@@ -194,7 +193,7 @@ describe('', function() {
     });
   });
 
-  // TODO: test status code and/or session when frontend components complete and authentication/sessions done
+
   describe('Sign out:', function() {
     
     var requestWithSession = request.defaults({jar: true});
@@ -228,15 +227,22 @@ describe('', function() {
     });
 
     // TODO: check session destroy
-    xit('Destroys session cookie upon signout', function(done) {
+    it('Does not allow access to cookie-protected data after signout', function(done) {
+      var options = {
+        'method': 'GET',
+        'url': 'http://127.0.0.1:4568/api/posts'
+      };
 
+      request(options, function(err, res, body) {
+        expect(body).to.equal('Unauthorized');
+        done();
+      });
     });
   });
 
-  xdescribe('Posting:', function() {
+  describe('Posting:', function() {
 
-    beforeEach(function() {
-      // remove Sterling Archer from db for future tests
+    before(function() {
       var options = {
         'method': 'POST',
         'followAllRedirects': true,
@@ -249,28 +255,29 @@ describe('', function() {
 
       request(options, function(err, res, body) {
         console.log('beforeEach signup body', body);
+        done();
       });
     });
 
     // var requestWithSession = request.defaults({jar: true});
 
-    before(function() {
+    // before(function() {
 
-      db.Post.destroy({
-        where: {}
-      });
+    //   db.Post.destroy({
+    //     where: {}
+    //   });
 
-      for (var i = 0; i < 25; i++) {
-        db.Post.create({
-          comment: 'comment' + i,
-          link_url: 'link' + i,
-          link_description: 'desc' + i,
-          link_image: 'img' + i,
-          link_title: 'title' + i,
-          vote_count: Math.random() * 100
-        });
-      }
-    });
+    //   for (var i = 0; i < 25; i++) {
+    //     db.Post.create({
+    //       comment: 'comment' + i,
+    //       link_url: 'link' + i,
+    //       link_description: 'desc' + i,
+    //       link_image: 'img' + i,
+    //       link_title: 'title' + i,
+    //       vote_count: Math.random() * 100
+    //     });
+    //   }
+    // });
     
     it('Retrieves 20 posts from database and sorts by descending vote count', function(done) {
       var options = {
