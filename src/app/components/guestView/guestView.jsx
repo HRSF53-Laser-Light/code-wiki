@@ -109,7 +109,7 @@ export default class GuestView extends React.Component {
         </div>
         <div className="footer">
           <div className="text-center">
-            <span>Don’t have a WikiLinks account? <a href="#" onClick={(e)=>this.toggleView(e)}>Sign Up</a>.</span>
+            <span>Don’t have an account? <a href="#" onClick={(e)=>this.toggleView(e)}>Sign Up</a>.</span>
           </div>
         </div>
       </div>
